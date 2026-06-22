@@ -1,0 +1,27 @@
+export const NAV_ITEMS = [
+  { label: "Home", url: "/" },
+  { label: "About Us", url: "/about" },
+  {
+    label: "Pages",
+    url: "#",
+    submenu: [
+      { text: "Service", url: "/service" },
+      { text: "Service Details", url: "/service-details" },
+      { text: "Deals", url: "/deals" },
+      { text: "Deal Details", url: "/deals-details" },
+      { text: "Package", url: "/package" },
+      { text: "Package Details", url: "/package-details" },
+      { text: "Our Course", url: "/courses" },
+      { text: "Course Details", url: "/course-details" },
+      { text: "Our Team", url: "/team" },
+      { text: "Team Details", url: "/team-details" },
+      { text: "FAQ", url: "/faq" },
+      { text: "Sign In", url: "/login" },
+      { text: "Sign Up", url: "/register" },
+      { text: "404 Page", url: "/404" },
+    ],
+  },
+  { label: "Blog", url: "/blog" },
+  { label: "FAQ", url: "/faq" },
+  { label: "Contact Us", url: "/contact" },
+];
