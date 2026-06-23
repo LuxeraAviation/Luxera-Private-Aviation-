@@ -202,7 +202,6 @@ const ClientRatings = styled.span`
 
 const Icon = styled.i`
   color: #dcbb87;
-  font-size: 12px;
 `;
 
 const ClientItem = styled.div`

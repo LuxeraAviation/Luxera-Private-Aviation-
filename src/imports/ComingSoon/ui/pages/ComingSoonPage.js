@@ -3,19 +3,32 @@
 import { useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 
-const HERO = "/image/luxera/final.webp";
+const HERO = "/image/luxera/gold_plane_tight.webp";
+const HERO_WIDE = "/image/luxera/gold_plane.webp";
 
 export default function ComingSoonPage() {
   useEffect(() => {
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const html = document.documentElement;
+    const body = document.body;
+    const prev = { html: html.style.overflow, body: body.style.overflow };
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = prev;
+      html.style.overflow = prev.html;
+      body.style.overflow = prev.body;
     };
   }, []);
 
   return (
     <Screen>
+      <PlaneWide>
+        <WideImg src={HERO_WIDE} alt="LUXERA private jet" />
+      </PlaneWide>
+
+      <PlaneStacked>
+        <StackedImg src={HERO} alt="LUXERA private jet" />
+      </PlaneStacked>
+
       <Brand>
         <Wordmark>LUXERA</Wordmark>
         <Tagline>PRIVATE AVIATION</Tagline>
@@ -34,78 +47,179 @@ const Screen = styled.main`
   position: fixed;
   inset: 0;
   z-index: 1000001;
-  background-color: #000;
-  background-image: url(${HERO});
-  background-repeat: no-repeat;
-  background-position: left center;
-  background-size: cover;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
+  padding: 24px 0;
+  background: #000;
+  box-sizing: border-box;
+  overflow: hidden;
 
-  padding-left: clamp(32px, 12vw, 230px);
+  @media (max-width: 560px) {
+    padding: 16px 0;
+  }
 
-  @media (max-width: 860px) {
-    background-position: center center;
-    justify-content: center;
-    align-items: flex-end;
-    padding: 0 24px clamp(56px, 14vh, 120px);
-    &::after {
-      content: "";
-      position: absolute;
-      inset: 0;
+  @media (min-width: 1100px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 48px 64px;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 50%,
+      rgba(0, 0, 0, 0.55) 100%
+    );
+
+    @media (min-width: 1100px) {
       background: linear-gradient(
-        180deg,
-        rgba(0, 0, 0, 0) 40%,
-        rgba(0, 0, 0, 0.78) 100%
+        90deg,
+        rgba(0, 0, 0, 0.7) 0%,
+        rgba(0, 0, 0, 0.25) 38%,
+        rgba(0, 0, 0, 0) 62%
       );
-      pointer-events: none;
     }
   }
 `;
 
+const PlaneWide = styled.div`
+  display: none;
+  @media (min-width: 1100px) {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+`;
+
+const WideImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: right center;
+`;
+
+const PlaneStacked = styled.div`
+  z-index: 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  @media (min-width: 1100px) {
+    display: none;
+  }
+`;
+
+const StackedImg = styled.img`
+  width: auto;
+  height: auto;
+  max-width: min(100%, 1100px);
+  max-height: 90vh;
+`;
+
 const Brand = styled.div`
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  max-width: 100%;
+  margin-top: -210px;
   animation: ${fadeIn} 1.2s ease both;
+
+  @media (max-width: 900px) {
+    margin-top: -180px;
+  }
+
+  @media (max-width: 800px) {
+    margin-top: -150px;
+  }
+
+  @media (max-width: 700px) {
+    margin-top: -130px;
+  }
+
+  @media (max-width: 600px) {
+    margin-top: -100px;
+  }
+
+  @media (max-width: 480px) {
+    margin-top: -90px;
+  }
+
+  @media (min-width: 1100px) {
+    align-items: flex-start;
+    text-align: left;
+    margin-top: 0;
+  }
 `;
 
 const Wordmark = styled.h1`
   margin: 0;
-  font-family: var(--font-mulish), sans-serif;
-  font-weight: 500;
-  color: #f3f1ee;
-  font-size: clamp(2.6rem, 7vw, 5.4rem);
-  letter-spacing: clamp(0.5rem, 1.6vw, 1.1rem);
-  text-indent: clamp(0.5rem, 1.6vw, 1.1rem);
+  max-width: 100%;
+  font-family: var(--font-nasalization), var(--font-mulish), sans-serif;
+  font-weight: 400;
+  color: #fff;
+  font-size: 65px;
+  letter-spacing: 30px;
   line-height: 1;
-  text-shadow: 0 2px 34px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+
+  @media (max-width: 900px) {
+    font-size: 50px;
+    letter-spacing: 20px;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 28px;
+    letter-spacing: 15px;
+  }
 `;
 
 const Tagline = styled.p`
-  margin: clamp(10px, 1.4vw, 16px) 0 0;
+  margin: clamp(8px, 1.4vw, 15px) 0 0;
+  max-width: 100%;
   font-family: var(--font-mulish), sans-serif;
   font-weight: 400;
   color: #d7d0c5;
-  font-size: clamp(0.7rem, 1.6vw, 1.15rem);
-  letter-spacing: clamp(0.32rem, 1.1vw, 0.78rem);
-  text-indent: clamp(0.32rem, 1.1vw, 0.78rem);
+  font-size: clamp(11px, 1.75vw, 19px);
+  letter-spacing: clamp(5px, 1vw, 11px);
+  text-indent: clamp(5px, 1vw, 11px);
+  white-space: nowrap;
+
+  @media (max-width: 500px) {
+    font-size: clamp(8px, 2.2vw, 11px);
+    letter-spacing: clamp(3px, 0.9vw, 5px);
+    text-indent: clamp(3px, 0.9vw, 5px);
+  }
 `;
 
 const Coming = styled.p`
-  margin: clamp(26px, 3.6vw, 48px) 0 0;
+  margin: clamp(16px, 2.9vw, 25px) 0 0;
+  max-width: 100%;
   font-family: var(--font-playfair-display), serif;
   font-weight: 600;
-  font-size: clamp(1.3rem, 3.4vw, 2.5rem);
-  letter-spacing: clamp(0.18rem, 0.9vw, 0.5rem);
-  text-indent: clamp(0.18rem, 0.9vw, 0.5rem);
+  font-size: clamp(20px, 3.7vw, 41px);
+  letter-spacing: clamp(4px, 0.65vw, 7px);
+  text-indent: clamp(4px, 0.65vw, 7px);
+  white-space: nowrap;
   background: linear-gradient(180deg, #f6e6c4 0%, #cda968 55%, #9a7434 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: #cda968;
+
+  @media (max-width: 500px) {
+    font-size: clamp(14px, 4vw, 20px);
+    letter-spacing: clamp(2px, 0.6vw, 4px);
+    text-indent: clamp(2px, 0.6vw, 4px);
+  }
 `;

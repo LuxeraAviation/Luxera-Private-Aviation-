@@ -1,5 +1,6 @@
 import StyledComponentsRegistry from "@/lib/Registry";
 import { Mulish, Playfair_Display } from "next/font/google";
+import localFont from "next/font/local";
 import { ScrollToTop } from "@/styles/Theme";
 import Preloader from "@/imports/core/components/Preloader";
 import Header from "@/imports/core/components/Header";
@@ -17,6 +18,11 @@ const playfairDisplay = Playfair_Display({
   weight: ["400", "500", "600", "700", "800", "900"],
   variable: "--font-playfair-display",
 });
+const nasalization = localFont({
+  src: "../../public/fonts/nasalization.otf",
+  variable: "--font-nasalization",
+  display: "swap",
+});
 
 export const metadata = {
   title: "FlyNext — Book a Private Jet Instantly",
@@ -29,7 +35,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${mulish.variable} ${playfairDisplay.variable}`}
+      className={`${mulish.variable} ${playfairDisplay.variable} ${nasalization.variable}`}
     >
       <head>
         <link
