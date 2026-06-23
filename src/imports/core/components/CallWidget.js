@@ -153,7 +153,6 @@ const Icon = styled.i`
   color: #dcbb87;
   font-size: 16px;
   margin-right: 8px;
-  transform: rotate(135deg);
 `;
 
 const TabArrow = styled.span`
