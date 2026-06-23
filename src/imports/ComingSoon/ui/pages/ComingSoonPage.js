@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 
-const HERO = "/image/luxera/final.png";
+const HERO = "/image/luxera/final.webp";
 
 export default function ComingSoonPage() {
   useEffect(() => {
