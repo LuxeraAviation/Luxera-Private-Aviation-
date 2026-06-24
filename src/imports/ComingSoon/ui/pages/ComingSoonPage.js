@@ -151,8 +151,8 @@ const Brand = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  animation: ${fadeIn} 1s ease both;
-  animation-delay: 2s;
+  animation: ${fadeIn} 1.5s ease both;
+  animation-delay: 0s;
   opacity: 0;
   animation-fill-mode: forwards;
   padding: 0 clamp(12px, 4vw, 32px);
@@ -176,7 +176,7 @@ const Rule = styled.div`
   will-change: transform;
   backface-visibility: hidden;
   animation: ${spreadRule} 1.1s ease-out forwards;
-  animation-delay: 2.4s;
+  animation-delay: 1s;
 `;
 
 const Wordmark = styled.h1`
