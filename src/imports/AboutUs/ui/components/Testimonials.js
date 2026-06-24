@@ -19,6 +19,7 @@ export default function Testimonials() {
 
         <Slider
           items={TESTIMONIALS}
+          autoplay
           perView={3}
           renderItem={(t) => (
             <ClientItem>

@@ -23,9 +23,6 @@ const GlobalStyles = createGlobalStyle`
     overflow-x: hidden;
     overflow-y: auto;
     max-width: 100%;
-
-    scrollbar-width: thin;
-    scrollbar-color: #dcbb87 #ffffff;
   }
 
   html,
@@ -48,7 +45,7 @@ const GlobalStyles = createGlobalStyle`
 
   ::-webkit-scrollbar {
     width: 6px;
-    height: 6px;
+    height: 8px;
   }
 
   ::-webkit-scrollbar-track {
@@ -57,8 +54,6 @@ const GlobalStyles = createGlobalStyle`
 
   ::-webkit-scrollbar-thumb {
     background: #dcbb87;
-    border-radius: 4px;
-    border: 1px solid #19232d;
   }
 
   ::-webkit-scrollbar-thumb:hover {

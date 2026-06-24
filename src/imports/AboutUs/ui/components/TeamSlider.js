@@ -16,6 +16,7 @@ export default function TeamSlider() {
         <Slider
           items={TEAM_MEMBERS}
           perView={3}
+          autoplay
           renderItem={(m) => (
             <TeamItem>
               <TeamThumb>
@@ -23,9 +24,9 @@ export default function TeamSlider() {
                   src={m.img}
                   alt={m.name}
                   width={370}
-                  height={420}
+                  height={360}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  style={{ width: "100%", height: "auto" }}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </TeamThumb>
               <TeamContent>
@@ -140,6 +141,10 @@ const SectionTitle = styled.h2`
 const SliderNavArea = styled.div`
   display: flex;
   gap: 15px;
+
+  @media (max-width: 991px) {
+    display: none;
+  }
 `;
 
 const SliderBtn = styled.button`
@@ -167,6 +172,7 @@ const PaginationDots = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 50px;
+  padding-bottom: 4px;
   gap: 8px;
 `;
 
@@ -215,11 +221,13 @@ const TeamSection = styled(Section)`
 const TeamThumb = styled.div`
   background-color: #dde6ef;
   text-align: center;
+  aspect-ratio: 370 / 360;
   overflow: hidden;
 
   img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
     display: block;
     transition: transform 0.5s ease;
   }
@@ -265,7 +273,7 @@ const TeamRole = styled.span`
 const TeamSocialArea = styled.div`
   position: absolute;
   top: 0;
-  right: -100%;
+  right: 0;
   background-color: #f5f3f1;
   width: 15%;
   height: 100%;
@@ -273,7 +281,11 @@ const TeamSocialArea = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: all 0.5s ease-in-out;
+  transform: translateX(101%);
+  visibility: hidden;
+  transition:
+    transform 0.5s ease-in-out,
+    visibility 0.5s ease-in-out;
 `;
 
 const TeamSocialList = styled.ul`
@@ -317,7 +329,8 @@ const TeamItem = styled.div`
     }
 
     ${TeamSocialArea} {
-      right: 0;
+      transform: translateX(0);
+      visibility: visible;
     }
   }
 `;
@@ -328,7 +341,7 @@ const StyledContainer = styled(Container)`
   padding-right: 15px;
   margin-left: auto;
   margin-right: auto;
-  overflow: visible;
+  overflow: hidden;
 
   @media (min-width: 1200px) {
     max-width: 1140px;

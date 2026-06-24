@@ -182,6 +182,11 @@ const FeatureGrid = styled.div`
   & > div {
     display: flex;
     flex-direction: column;
+    position: relative;
+  }
+
+  & > div:hover {
+    z-index: 10;
   }
 
   @media (min-width: 992px) {

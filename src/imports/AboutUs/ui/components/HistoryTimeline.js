@@ -108,6 +108,7 @@ const StyledContainer = styled(Container)`
   padding-right: 15px;
   margin-left: auto;
   margin-right: auto;
+  overflow: visible;
 
   @media (min-width: 1200px) {
     max-width: 1140px;
