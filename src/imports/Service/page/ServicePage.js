@@ -19,7 +19,7 @@ export default function ServicePage() {
       />
       <Statistics />
       <BookFlight />
-      <Charter {...Home_Luxery_deals_section} />
+      <Charter {...Home_Luxery_deals_section} noPaddingTop hasPaddingBottom />
       <Brands />
     </main>
   );

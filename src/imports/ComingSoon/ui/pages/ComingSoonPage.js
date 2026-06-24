@@ -103,59 +103,49 @@ const PlaneWide = styled.div`
 const WideImg = styled.img`
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: right center;
 `;
 
 const PlaneStacked = styled.div`
+  display: block;
+  position: absolute;
+  inset: 0;
   z-index: 0;
-  display: flex;
-  justify-content: center;
-  width: 100%;
   @media (min-width: 1100px) {
     display: none;
   }
 `;
 
 const StackedImg = styled.img`
-  width: auto;
-  height: auto;
-  max-width: min(100%, 1100px);
-  max-height: 90vh;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
 `;
 
 const Brand = styled.div`
-  position: relative;
+  position: absolute;
+  bottom: 18vh;
+  left: 0;
+  right: 0;
   z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   max-width: 100%;
-  margin-top: -210px;
   animation: ${fadeIn} 1.2s ease both;
 
-  @media (max-width: 900px) {
-    margin-top: -180px;
-  }
-
-  @media (max-width: 800px) {
-    margin-top: -150px;
-  }
-
-  @media (max-width: 700px) {
-    margin-top: -130px;
-  }
-
-  @media (max-width: 600px) {
-    margin-top: -100px;
-  }
-
-  @media (max-width: 480px) {
-    margin-top: -90px;
+  @media (max-width: 560px) {
+    bottom: 24vh;
   }
 
   @media (min-width: 1100px) {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    right: auto;
     align-items: flex-start;
     text-align: left;
     margin-top: 0;
@@ -177,11 +167,6 @@ const Wordmark = styled.h1`
     font-size: 50px;
     letter-spacing: 20px;
   }
-
-  @media (max-width: 600px) {
-    font-size: 28px;
-    letter-spacing: 15px;
-  }
 `;
 
 const Tagline = styled.p`
@@ -190,16 +175,10 @@ const Tagline = styled.p`
   font-family: var(--font-mulish), sans-serif;
   font-weight: 400;
   color: #d7d0c5;
-  font-size: clamp(11px, 1.75vw, 19px);
-  letter-spacing: clamp(5px, 1vw, 11px);
-  text-indent: clamp(5px, 1vw, 11px);
+  font-size: 12px;
+  letter-spacing: 5px;
+  text-indent: 5px;
   white-space: nowrap;
-
-  @media (max-width: 500px) {
-    font-size: clamp(8px, 2.2vw, 11px);
-    letter-spacing: clamp(3px, 0.9vw, 5px);
-    text-indent: clamp(3px, 0.9vw, 5px);
-  }
 `;
 
 const Coming = styled.p`
@@ -207,7 +186,7 @@ const Coming = styled.p`
   max-width: 100%;
   font-family: var(--font-playfair-display), serif;
   font-weight: 600;
-  font-size: clamp(20px, 3.7vw, 41px);
+  font-size: 24px;
   letter-spacing: clamp(4px, 0.65vw, 7px);
   text-indent: clamp(4px, 0.65vw, 7px);
   white-space: nowrap;
@@ -217,9 +196,5 @@ const Coming = styled.p`
   -webkit-text-fill-color: transparent;
   color: #cda968;
 
-  @media (max-width: 500px) {
-    font-size: clamp(14px, 4vw, 20px);
-    letter-spacing: clamp(2px, 0.6vw, 4px);
-    text-indent: clamp(2px, 0.6vw, 4px);
-  }
+
 `;

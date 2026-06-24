@@ -16,9 +16,12 @@ export default function Charter(props) {
     seats,
     price,
     ctaLabel,
+    noPaddingTop,
+    hasPaddingBottom,
+    autoplay = true,
   } = props || {};
   return (
-    <Section>
+    <Section $noPaddingTop={noPaddingTop} $hasPaddingBottom={hasPaddingBottom}>
       <Container>
         <HeaderWithNav>
           <SectionHeader>
@@ -29,6 +32,7 @@ export default function Charter(props) {
             items={items}
             perView={perView}
             resolvePerView={resolvePerView}
+            autoplay={autoplay}
             controls={({ prev, next }) => (
               <Reveal variant="fade-left" duration={1200}>
                 <SliderNav>
@@ -48,7 +52,7 @@ export default function Charter(props) {
                 </Thumb>
                 <CardBody>
                   <CardTitle>
-                    <CardLink href={c.href || "#0"}>{c.title}</CardLink>
+                    <CardLink href={c.href || "#"}>{c.title}</CardLink>
                   </CardTitle>
                   <CardSub>{c.sub}</CardSub>
                   <CardMeta>
@@ -56,7 +60,7 @@ export default function Charter(props) {
                     <MetaItem>{c.price || price}</MetaItem>
                   </CardMeta>
                   <CardBtn>
-                    <BtnLink href={c.href || "#0"}>
+                    <BtnLink href={c.href || "#"}>
                       <Image
                         src="/image/fav.png"
                         alt=""
@@ -92,10 +96,12 @@ const Container = styled.div`
 `;
 
 const Section = styled.section`
-  padding-top: 120px;
+  padding-top: ${(props) => (props.$noPaddingTop ? "0" : "120px")};
+  padding-bottom: ${(props) => (props.$hasPaddingBottom ? "120px" : "0")};
   position: relative;
   @media (max-width: 767px) {
-    padding-top: 70px;
+    padding-top: ${(props) => (props.$noPaddingTop ? "0" : "70px")};
+    padding-bottom: ${(props) => (props.$hasPaddingBottom ? "70px" : "0")};
   }
 `;
 
@@ -226,7 +232,7 @@ const CardMeta = styled.div`
 
 const MetaItem = styled.span`
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   color: ${theme.dark};
 `;
 

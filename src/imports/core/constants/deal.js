@@ -22,7 +22,7 @@ const Private_Jet_Model = [
   },
   {
     img: "/image/charter/charter-4.png",
-    title: "AEmbraer Phenom 300",
+    title: "Embraer P-300E",
     sub: "Private Jet",
     seats: "8 - 14 Seats",
     price: "Price: $9,000/ hr",
@@ -64,7 +64,7 @@ const Business_Jet_Model = [
   },
   {
     img: "/image/charter/charter-4.png",
-    title: "AEmbraer Phenom 300",
+    title: "Embraer P-300E",
     sub: "Private Jet",
     seats: "8 - 14 Seats",
     price: "Price: $9,000/ hr",
@@ -106,7 +106,7 @@ const Private_Helicopter_Model = [
   },
   {
     img: "/image/charter/charter-4.png",
-    title: "AEmbraer Phenom 300",
+    title: "Embraer P-300E",
     sub: "Private Jet",
     seats: "8 - 14 Seats",
     price: "Price: $9,000/ hr",
@@ -148,7 +148,7 @@ const Air_Ambulance_Model = [
   },
   {
     img: "/image/charter/charter-4.png",
-    title: "AEmbraer Phenom 300",
+    title: "Embraer P-300E",
     sub: "Private Jet",
     seats: "8 - 14 Seats",
     price: "Price: $9,000/ hr",

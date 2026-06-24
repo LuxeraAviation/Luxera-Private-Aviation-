@@ -19,7 +19,7 @@ function DealPage() {
       <Charter {...PRIVATE_JET_MODEL_SECTION} />
       <Charter {...BUSINESS_JET_MODEL_SECTION} />
       <Charter {...PRIVATE_HELICOPTER_MODEL_SECTION} />
-      <Charter {...AIR_AMBULANCE_MODEL_SECTION} />
+      <Charter {...AIR_AMBULANCE_MODEL_SECTION} hasPaddingBottom />
       <Brands />
     </div>
   );
