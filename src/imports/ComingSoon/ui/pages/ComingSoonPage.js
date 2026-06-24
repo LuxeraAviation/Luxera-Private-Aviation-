@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 
 const LEFT = "/image/luxera/left.png";
-const RIGHT = "/image/luxera/right.png";
 
 function ParticleCanvas() {
   const ref = useRef(null);
@@ -167,14 +166,12 @@ export default function ComingSoonPage() {
       <ParticleCanvas />
 
       <LeftWing src={LEFT} alt="LUXERA private jet left" />
-      <RightWing src={RIGHT} alt="LUXERA private jet right" />
 
       <Brand>
         <WordmarkFrame>
           <Rule />
           <WordmarkWrap>
             <Wordmark>LUXERA</Wordmark>
-            <ShimmerOverlay aria-hidden="true">LUXERA</ShimmerOverlay>
           </WordmarkWrap>
           <Rule />
         </WordmarkFrame>
@@ -183,32 +180,6 @@ export default function ComingSoonPage() {
           <span>—</span> PRIVATE AVIATION <span>—</span>
         </Tagline>
         <Coming>COMING SOON</Coming>
-
-        <Emblem>
-          <svg
-            viewBox="0 0 60 30"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M30 28 L2 4 L14 10 L30 2 L46 10 L58 4 Z"
-              fill="url(#gold)"
-            />
-            <defs>
-              <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#f6e6c4" />
-                <stop offset="55%" stopColor="#cda968" />
-                <stop offset="100%" stopColor="#9a7434" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </Emblem>
-
-        <DiamondRow aria-hidden="true">
-          <Diamond />
-          <DiamondLarge />
-          <Diamond />
-        </DiamondRow>
       </Brand>
     </Screen>
   );
@@ -217,6 +188,11 @@ export default function ComingSoonPage() {
 const slideFromLeft = keyframes`
   from { opacity: 0; transform: translateY(-50%) translateX(-110%); }
   to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+`;
+
+const slideFromLeftCenter = keyframes`
+  from { opacity: 0; transform: translateY(-50%) translateX(-150%); }
+  to   { opacity: 1; transform: translateY(-50%) translateX(-50%); }
 `;
 
 const slideFromRight = keyframes`
@@ -244,33 +220,10 @@ const goldPulse = keyframes`
   50%       { text-shadow: 0 0 24px rgba(246,230,196,0.55), 0 0 60px rgba(205,169,104,0.3), 0 0 90px rgba(184,153,90,0.15); }
 `;
 
-const emblemFloat = keyframes`
-  0%, 100% { transform: translateY(0)   rotate(0deg); }
-  33%       { transform: translateY(-5px) rotate(1.5deg); }
-  66%       { transform: translateY(3px)  rotate(-1deg); }
-`;
-
-const emblemGlow = keyframes`
-  0%, 100% { filter: drop-shadow(0 0 6px rgba(205,169,104,0.4)); }
-  50%       { filter: drop-shadow(0 0 18px rgba(246,230,196,0.9)) drop-shadow(0 0 36px rgba(205,169,104,0.55)); }
-`;
-
 const orbFloat = keyframes`
   0%, 100% { transform: translate(0, 0) scale(1); }
   33%       { transform: translate(20px, -30px) scale(1.06); }
   66%       { transform: translate(-15px, 20px) scale(0.95); }
-`;
-
-const diamondSpin = keyframes`
-  0%   { transform: rotate(45deg) scale(1);    opacity: 0.6; }
-  50%  { transform: rotate(225deg) scale(1.25); opacity: 1; }
-  100% { transform: rotate(405deg) scale(1);    opacity: 0.6; }
-`;
-
-const diamondSpinLarge = keyframes`
-  0%   { transform: rotate(45deg) scale(1);   opacity: 0.8; }
-  50%  { transform: rotate(225deg) scale(1.4); opacity: 1; }
-  100% { transform: rotate(405deg) scale(1);   opacity: 0.8; }
 `;
 
 const comingGlow = keyframes`
@@ -314,8 +267,8 @@ const Screen = styled.main`
   overflow: hidden;
   background: #000;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: flex-end;
 `;
 
 const PlaneBase = styled.img`
@@ -330,54 +283,49 @@ const PlaneBase = styled.img`
 
 const LeftWing = styled(PlaneBase)`
   left: 0;
-  width: clamp(260px, 48vw, 780px);
+  top: 50%;
+  width: clamp(480px, 58vw, 1020px);
+  max-height: 100vh;
   animation: ${slideFromLeft} 2.2s cubic-bezier(0.16, 1, 0.3, 1) both;
 
-  @media (min-width: 1100px) and (max-width: 1600px) {
-    width: clamp(300px, 30vw, 460px);
-  }
   @media (max-width: 1099px) {
-    width: clamp(380px, 75vw, 680px);
-    top: 22%;
-    left: 0;
+    width: clamp(560px, 92vw, 900px);
+    top: 38%;
+    left: 50%;
+    animation: ${slideFromLeftCenter} 2.2s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
-  @media (max-width: 480px) {
-    width: clamp(420px, 100vw, 480px);
-    top: 18%;
-    left: calc(40vw - 210px);
-  }
-`;
-
-const RightWing = styled(PlaneBase)`
-  right: 0;
-  width: clamp(260px, 48vw, 780px);
-  animation: ${slideFromRight} 2.2s cubic-bezier(0.16, 1, 0.3, 1) both;
-
-  @media (min-width: 1100px) and (max-width: 1600px) {
-    width: clamp(300px, 30vw, 460px);
-  }
-  @media (max-width: 1099px) {
-    width: clamp(380px, 75vw, 680px);
-    top: 75%;
-    right: 0;
-  }
-  @media (max-width: 480px) {
-    width: clamp(420px, 100vw, 480px);
-    top: 78%;
-    right: auto;
-    left: calc(60vw - 210px);
+  @media (max-width: 600px) {
+    width: clamp(400px, 100vw, 640px);
+    top: 35%;
+    left: 50%;
+    animation: ${slideFromLeftCenter} 2.2s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 `;
 
 const Brand = styled.div`
   position: relative;
   z-index: 3;
+  width: clamp(280px, 42vw, 680px);
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 0 clamp(12px, 4vw, 32px);
+  padding: 0 clamp(20px, 4vw, 60px);
   gap: 0;
+  margin-right: clamp(24px, 5vw, 80px);
+
+  opacity: 0;
+  animation: ${fadeUp} 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+
+  @media (max-width: 1099px) {
+    width: 100%;
+    margin-right: 0;
+    justify-content: flex-end;
+    padding-bottom: clamp(16px, 3vw, 36px);
+    top: -20%;
+  }
 `;
 
 const WordmarkFrame = styled.div`
@@ -424,6 +372,9 @@ const Wordmark = styled.h1`
   font-size: clamp(32px, 5vw, 60px);
   letter-spacing: clamp(10px, 2.5vw, 36px);
   animation: ${goldPulse} 4s ease-in-out 2s infinite;
+  @media (max-width: 700px) {
+    font-size: clamp(52px, 5vw, 60px);
+  }
 `;
 
 const ShimmerOverlay = styled.span`
@@ -463,7 +414,7 @@ const Tagline = styled.p`
   display: flex;
   align-items: center;
   gap: clamp(6px, 1vw, 12px);
-  font-size: clamp(9px, 1.1vw, 13px);
+  font-size: clamp(12px, 1.1vw, 13px);
   letter-spacing: clamp(3px, 0.8vw, 8px);
 
   opacity: 0;
@@ -473,6 +424,9 @@ const Tagline = styled.p`
     color: #b8995a;
     font-size: 0.85em;
     letter-spacing: 0;
+  }
+  @media (max-width: 700px) {
+    font-size: clamp(10px, 1.1vw, 13px);
   }
 `;
 
@@ -495,49 +449,7 @@ const Coming = styled.p`
   animation:
     ${fadeUp} 1s cubic-bezier(0.22, 1, 0.36, 1) 1.1s forwards,
     ${comingGlow} 3s ease-in-out 2.5s infinite;
-`;
-
-const Emblem = styled.div`
-  margin-top: clamp(10px, 1.5vw, 18px);
-  width: clamp(36px, 5vw, 56px);
-  opacity: 0;
-  animation:
-    ${fadeUp} 1s cubic-bezier(0.22, 1, 0.36, 1) 1.4s forwards,
-    ${emblemFloat} 7s ease-in-out 2.8s infinite,
-    ${emblemGlow} 3.5s ease-in-out 2.8s infinite;
-
-  svg {
-    width: 100%;
-    height: auto;
-  }
-`;
-
-const DiamondRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-top: clamp(10px, 1.4vw, 18px);
-
-  opacity: 0;
-  animation: ${fadeUp} 1s cubic-bezier(0.22, 1, 0.36, 1) 1.7s forwards;
-`;
-
-const Diamond = styled.div`
-  width: 6px;
-  height: 6px;
-  background: linear-gradient(135deg, #f6e6c4, #cda968);
-  box-shadow: 0 0 8px rgba(205, 169, 104, 0.6);
-  animation: ${diamondSpin} 5s linear infinite;
-  animation-delay: calc(var(--i, 0) * 0.5s);
-`;
-
-const DiamondLarge = styled.div`
-  width: 10px;
-  height: 10px;
-  background: linear-gradient(135deg, #fff8e8, #e8c97a, #b8995a);
-  box-shadow:
-    0 0 14px rgba(246, 230, 196, 0.8),
-    0 0 28px rgba(205, 169, 104, 0.4);
-  animation: ${diamondSpinLarge} 4s linear infinite;
+  @media (max-width: 700px) {
+    font-size: clamp(20px, 1.1vw, 13px);
+  } 
 `;
