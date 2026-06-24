@@ -120,6 +120,7 @@ const LeftWing = styled(PlaneBase)`
   @media (max-width: 480px) {
     width: clamp(420px, 100vw, 480px);
     top: 18%;
+    left: calc(40vw - 210px);
   }
 `;
 
@@ -141,6 +142,8 @@ const RightWing = styled(PlaneBase)`
   @media (max-width: 480px) {
     width: clamp(420px, 100vw, 480px);
     top: 78%;
+    right: auto;
+    left: calc(60vw - 210px);
   }
 `;
 
