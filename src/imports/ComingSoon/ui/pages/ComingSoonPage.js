@@ -282,7 +282,7 @@ const PlaneBase = styled.img`
 `;
 
 const LeftWing = styled(PlaneBase)`
-  left: 0;
+  left: 5%;
   top: 50%;
   width: clamp(480px, 58vw, 1020px);
   max-height: 100vh;
@@ -300,6 +300,9 @@ const LeftWing = styled(PlaneBase)`
     left: 50%;
     animation: ${slideFromLeftCenter} 2.2s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
+  @media (min-width: 1100px) and (max-width: 1800px) {
+    left: 2%;
+  }
 `;
 
 const Brand = styled.div`
@@ -314,7 +317,6 @@ const Brand = styled.div`
   text-align: center;
   padding: 0 clamp(20px, 4vw, 60px);
   gap: 0;
-  margin-right: clamp(24px, 5vw, 80px);
 
   opacity: 0;
   animation: ${fadeUp} 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
@@ -451,5 +453,5 @@ const Coming = styled.p`
     ${comingGlow} 3s ease-in-out 2.5s infinite;
   @media (max-width: 700px) {
     font-size: clamp(20px, 1.1vw, 13px);
-  } 
+  }
 `;
