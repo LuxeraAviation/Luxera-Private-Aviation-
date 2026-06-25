@@ -7,6 +7,7 @@ import Header from "@/imports/core/components/Header";
 import Footer from "@/imports/core/components/Footer";
 import CallWidget from "@/imports/core/components/CallWidget";
 import GlobalStyles from "@/styles/GlobalStyles";
+import LockdownGate from "@/imports/core/components/LockdownGate";
 
 const mulish = Mulish({
   subsets: ["latin"],
@@ -32,6 +33,8 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const isProd = process.env.NODE_ENV === "production";
+
   return (
     <html
       lang="en"
@@ -48,12 +51,14 @@ export default function RootLayout({ children }) {
       <body>
         <StyledComponentsRegistry>
           <GlobalStyles />
-          <Preloader />
-          <Header />
-          {children}
-          <Footer />
-          <CallWidget />
-          <ScrollToTop />
+          <LockdownGate isProd={isProd}>
+            <Preloader />
+            <Header />
+            {children}
+            <Footer />
+            <CallWidget />
+            <ScrollToTop />
+          </LockdownGate>
         </StyledComponentsRegistry>
       </body>
     </html>

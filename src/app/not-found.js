@@ -67,13 +67,6 @@ export default function NotFoundPage() {
             Page does not exist or some other error occured. Go to our{" "}
             <HomeLink href="/">Home page</HomeLink>
           </Description>
-
-          <SearchForm onSubmit={handleSearchSubmit}>
-            <SearchInput type="text" name="search" placeholder="Search" />
-            <SearchButton type="submit">
-              <SearchIcon />
-            </SearchButton>
-          </SearchForm>
         </ContentSection>
       </ContentWrapper>
     </PageContainer>
@@ -248,61 +241,6 @@ const Description = styled.p`
 const HomeLink = styled(Link)`
   color: #dcbb87;
   text-decoration: none;
-  transition: color 0.15s ease-in-out;
-
-  &:hover {
-    color: #c9a56f;
-  }
-`;
-
-const SearchForm = styled.form`
-  max-width: 300px;
-  width: 100%;
-  margin: 0 auto;
-  position: relative;
-`;
-
-const SearchInput = styled.input`
-  border: 1px solid #e5e5e5;
-  background-color: white;
-  font-family: var(--font-mulish), "Mulish", sans-serif;
-  color: #3d3d3d;
-  padding: 10px 45px 10px 15px;
-  font-weight: 700;
-  height: 45px;
-  width: 100%;
-  font-size: 15px;
-  box-sizing: border-box;
-  transition: border-color 0.2s ease-in-out;
-
-  &:focus {
-    background-color: white;
-    border-color: #dcbb87;
-    outline: none;
-  }
-
-  &::placeholder {
-    color: rgba(61, 61, 61, 0.7);
-  }
-
-  @media only screen and (max-width: 991px) {
-    font-size: 14px;
-  }
-`;
-
-const SearchButton = styled.button`
-  position: absolute;
-  top: 50%;
-  right: 18px;
-  transform: translateY(-50%);
-  background-color: transparent;
-  color: #dcbb87;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
   transition: color 0.15s ease-in-out;
 
   &:hover {
