@@ -214,6 +214,7 @@ const Brand = styled.div`
   z-index: 4;
   flex: 1 1 0;
   min-width: 0;
+  top: -3%;
 
   display: flex;
   flex-direction: column;
@@ -241,7 +242,7 @@ const Wordmark = styled.h1`
   color: #fff;
   white-space: nowrap;
   line-height: 1.2;
-  font-size: clamp(34px, 5vw, 62px);
+  font-size: clamp(34px, 5vw, 55px);
   letter-spacing: clamp(10px, 2.5vw, 34px);
   text-indent: clamp(10px, 2.5vw, 34px);
   text-shadow: 0 0 18px rgba(246, 230, 196, 0.18);
