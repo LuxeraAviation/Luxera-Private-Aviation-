@@ -1,151 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 
-const LEFT = "/image/luxera/left.png";
-
-function ParticleCanvas() {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const canvas = ref.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    resize();
-    window.addEventListener("resize", resize);
-
-    const COLORS = [
-      "rgba(248,230,180,",
-      "rgba(205,169,104,",
-      "rgba(246,230,196,",
-      "rgba(184,153,90,",
-      "rgba(255,245,210,",
-    ];
-
-    const COUNT = 90;
-    const particles = Array.from({ length: COUNT }, () =>
-      spawnParticle(canvas),
-    );
-
-    function spawnParticle(c) {
-      const base = COLORS[Math.floor(Math.random() * COLORS.length)];
-      return {
-        x: Math.random() * c.width,
-        y: Math.random() * c.height,
-        r: Math.random() * 1.8 + 0.3,
-        dx: (Math.random() - 0.5) * 0.25,
-        dy: -(Math.random() * 0.35 + 0.08),
-        alpha: Math.random() * 0.55 + 0.1,
-        dAlpha:
-          (Math.random() * 0.003 + 0.001) * (Math.random() < 0.5 ? 1 : -1),
-        color: base,
-        twinkleSpeed: Math.random() * 0.02 + 0.005,
-        twinkleOffset: Math.random() * Math.PI * 2,
-        life: 0,
-        maxLife: Math.random() * 400 + 200,
-      };
-    }
-
-    let frame;
-    let t = 0;
-
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      t += 1;
-
-      particles.forEach((p, i) => {
-        p.life++;
-        if (p.life > p.maxLife) {
-          particles[i] = spawnParticle(canvas);
-          return;
-        }
-
-        const lifeRatio = p.life / p.maxLife;
-        const lifeFade =
-          lifeRatio < 0.15
-            ? lifeRatio / 0.15
-            : lifeRatio > 0.75
-              ? (1 - lifeRatio) / 0.25
-              : 1;
-
-        const twinkle =
-          0.7 + 0.3 * Math.sin(t * p.twinkleSpeed + p.twinkleOffset);
-        const finalAlpha = p.alpha * twinkle * lifeFade;
-
-        p.x += p.dx;
-        p.y += p.dy;
-
-        const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 4);
-        grd.addColorStop(0, `${p.color}${finalAlpha})`);
-        grd.addColorStop(1, `${p.color}0)`);
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r * 4, 0, Math.PI * 2);
-        ctx.fillStyle = grd;
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `${p.color}${Math.min(finalAlpha * 1.8, 1)})`;
-        ctx.fill();
-      });
-
-      frame = requestAnimationFrame(draw);
-    };
-
-    draw();
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("resize", resize);
-    };
-  }, []);
-
-  return <Canvas ref={ref} aria-hidden="true" />;
-}
-
-function AmbientOrbs() {
-  return (
-    <OrbLayer aria-hidden="true">
-      <Orb
-        style={{
-          width: 520,
-          height: 520,
-          top: "10%",
-          left: "-12%",
-          animationDelay: "0s",
-          animationDuration: "12s",
-        }}
-      />
-      <Orb
-        style={{
-          width: 380,
-          height: 380,
-          bottom: "8%",
-          right: "-10%",
-          animationDelay: "4s",
-          animationDuration: "15s",
-        }}
-      />
-      <Orb
-        style={{
-          width: 220,
-          height: 220,
-          top: "42%",
-          left: "45%",
-          animationDelay: "2s",
-          animationDuration: "9s",
-          opacity: 0.07,
-        }}
-      />
-    </OrbLayer>
-  );
-}
+const PHOTO = "/image/luxera/new.png";
 
 export default function ComingSoonPage() {
   useEffect(() => {
@@ -162,20 +20,12 @@ export default function ComingSoonPage() {
 
   return (
     <Screen>
-      <AmbientOrbs />
-      <ParticleCanvas />
-
-      <LeftWing src={LEFT} alt="LUXERA private jet left" />
+      <Glint aria-hidden="true" />
+      <Vignette aria-hidden="true" />
+      <Photo aria-hidden="true" />
 
       <Brand>
-        <WordmarkFrame>
-          <Rule />
-          <WordmarkWrap>
-            <Wordmark>LUXERA</Wordmark>
-          </WordmarkWrap>
-          <Rule />
-        </WordmarkFrame>
-
+        <Wordmark>LUXERA</Wordmark>
         <Tagline>
           <span>—</span> PRIVATE AVIATION <span>—</span>
         </Tagline>
@@ -185,79 +35,17 @@ export default function ComingSoonPage() {
   );
 }
 
-const slideFromLeft = keyframes`
-  from { opacity: 0; transform: translateY(-50%) translateX(-110%); }
-  to   { opacity: 1; transform: translateY(-50%) translateX(0); }
-`;
-
-const slideFromLeftCenter = keyframes`
-  from { opacity: 0; transform: translateY(-50%) translateX(-150%); }
-  to   { opacity: 1; transform: translateY(-50%) translateX(-50%); }
-`;
-
-const slideFromRight = keyframes`
-  from { opacity: 0; transform: translateY(-50%) translateX(110%); }
-  to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+const glintSweep = keyframes`
+  0%, 3%   { -webkit-mask-position: -40% 0; mask-position: -40% 0; opacity: 0; }
+  12%      { opacity: 1; }
+  44%      { opacity: 1; }
+  56%      { -webkit-mask-position: 140% 0; mask-position: 140% 0; opacity: 0; }
+  100%     { -webkit-mask-position: 140% 0; mask-position: 140% 0; opacity: 0; }
 `;
 
 const fadeUp = keyframes`
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
-`;
-
-const spreadRule = keyframes`
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-`;
-
-const shimmerSweep = keyframes`
-  0%   { background-position: -300% center; }
-  100% { background-position: 300% center; }
-`;
-
-const goldPulse = keyframes`
-  0%, 100% { text-shadow: 0 0 12px rgba(205,169,104,0.25), 0 0 30px rgba(205,169,104,0.1); }
-  50%       { text-shadow: 0 0 24px rgba(246,230,196,0.55), 0 0 60px rgba(205,169,104,0.3), 0 0 90px rgba(184,153,90,0.15); }
-`;
-
-const orbFloat = keyframes`
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33%       { transform: translate(20px, -30px) scale(1.06); }
-  66%       { transform: translate(-15px, 20px) scale(0.95); }
-`;
-
-const comingGlow = keyframes`
-  0%, 100% { filter: brightness(1)   drop-shadow(0 0 0px transparent); }
-  50%       { filter: brightness(1.25) drop-shadow(0 0 12px rgba(246,230,196,0.5)); }
-`;
-
-const Canvas = styled.canvas`
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-`;
-
-const OrbLayer = styled.div`
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-`;
-
-const Orb = styled.div`
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(205, 169, 104, 0.18) 0%,
-    rgba(184, 153, 90, 0.06) 55%,
-    transparent 80%
-  );
-  opacity: 0.12;
-  animation: ${orbFloat} linear infinite;
-  will-change: transform;
 `;
 
 const Screen = styled.main`
@@ -265,103 +53,185 @@ const Screen = styled.main`
   inset: 0;
   z-index: 1000001;
   overflow: hidden;
-  background: #000;
+  background-color: #000;
+  background-image: url(${PHOTO});
+  background-size: cover;
+  background-position: left center;
+  background-repeat: no-repeat;
+
   display: flex;
-  align-items: stretch;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  padding-left: calc(max(34.25vw, 72.87vh) + clamp(8px, 1.5vw, 28px));
+  @media (max-width: 1199px) {
+    background-size: max(80vw, 170.21vh) auto;
+    padding-left: calc(max(27.4vw, 58.3vh) + clamp(8px, 1.5vw, 28px));
+  }
+
+  @media (orientation: portrait) {
+    background-size: contain;
+    background-position: center 22%;
+    justify-content: center;
+    align-items: flex-end;
+    padding-left: 0;
+  }
+
+  @media (orientation: portrait) and (max-width: 799px) {
+    background-image: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(28px, 6vh, 64px);
+    padding: 0 ;
+  }
 `;
 
-const PlaneBase = styled.img`
+const Glint = styled.div`
   position: absolute;
-  top: 50%;
-  height: auto;
-  max-height: 90vh;
+  inset: 0;
   z-index: 2;
   pointer-events: none;
-  user-select: none;
+
+  background-image: url(${PHOTO});
+  background-size: cover;
+  background-position: left center;
+  background-repeat: no-repeat;
+  filter: brightness(2.5) saturate(1.45) contrast(1.05);
+
+  --band: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgba(0, 0, 0, 0.35) 42%,
+    rgba(0, 0, 0, 0.85) 48%,
+    #000 50%,
+    rgba(0, 0, 0, 0.85) 52%,
+    rgba(0, 0, 0, 0.35) 58%,
+    transparent 70%
+  );
+  -webkit-mask-image: var(--band);
+  mask-image: var(--band);
+  -webkit-mask-size: 250% 100%;
+  mask-size: 250% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: -40% 0;
+  mask-position: -40% 0;
+
+  opacity: 0;
+  will-change: mask-position, opacity;
+  animation: ${glintSweep} 6.5s cubic-bezier(0.45, 0, 0.3, 1) 1.2s infinite;
+
+  @media (max-width: 1199px) {
+    background-size: max(80vw, 170.21vh) auto;
+  }
+
+  @media (orientation: portrait) {
+    background-size: contain;
+    background-position: center 22%;
+  }
+
+  @media (orientation: portrait) and (max-width: 799px) {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 `;
 
-const LeftWing = styled(PlaneBase)`
-  left: 5%;
-  top: 50%;
-  width: clamp(480px, 58vw, 1020px);
-  max-height: 100vh;
-  animation: ${slideFromLeft} 2.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+const Vignette = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(
+    130% 100% at 70% 50%,
+    transparent 40%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+`;
 
-  @media (max-width: 1099px) {
-    width: clamp(560px, 92vw, 900px);
-    top: 38%;
-    left: 50%;
-    animation: ${slideFromLeftCenter} 2.2s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  @media (max-width: 600px) {
-    width: clamp(400px, 100vw, 640px);
-    top: 35%;
-    left: 50%;
-    animation: ${slideFromLeftCenter} 2.2s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  @media (min-width: 1100px) and (max-width: 1800px) {
-    left: 2%;
+const Photo = styled.div`
+  display: none;
+
+  @media (orientation: portrait) and (max-width: 799px) {
+    display: block;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    width: 100%;
+    height: clamp(220px, 40vh, 380px);
+    background-image: url(${PHOTO});
+    background-size: cover;
+    background-position: left center;
+    background-repeat: no-repeat;
+
+    --band: linear-gradient(
+      100deg,
+      transparent 30%,
+      rgba(0, 0, 0, 0.35) 42%,
+      rgba(0, 0, 0, 0.85) 48%,
+      #000 50%,
+      rgba(0, 0, 0, 0.85) 52%,
+      rgba(0, 0, 0, 0.35) 58%,
+      transparent 70%
+    );
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: url(${PHOTO});
+      background-size: cover;
+      background-position: left center;
+      background-repeat: no-repeat;
+      filter: brightness(2.5) saturate(1.45) contrast(1.05);
+      -webkit-mask-image: var(--band);
+      mask-image: var(--band);
+      -webkit-mask-size: 250% 100%;
+      mask-size: 250% 100%;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-position: -40% 0;
+      mask-position: -40% 0;
+      opacity: 0;
+      will-change: mask-position, opacity;
+      animation: ${glintSweep} 6.5s cubic-bezier(0.45, 0, 0.3, 1) 1.2s infinite;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      &::after {
+        animation: none;
+      }
+    }
   }
 `;
 
 const Brand = styled.div`
   position: relative;
-  z-index: 3;
-  width: clamp(280px, 42vw, 680px);
-  flex-shrink: 0;
+  z-index: 4;
+  flex: 1 1 0;
+  min-width: 0;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
   padding: 0 clamp(20px, 4vw, 60px);
-  gap: 0;
 
-  opacity: 0;
-  animation: ${fadeUp} 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
-
-  @media (max-width: 1099px) {
+  @media (orientation: portrait) {
+    flex: 0 0 auto;
     width: 100%;
     margin-right: 0;
-    justify-content: flex-end;
-    padding-bottom: clamp(16px, 3vw, 36px);
-    top: -20%;
+    margin-bottom: clamp(48px, 16vh, 180px);
   }
-`;
 
-const WordmarkFrame = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  gap: 6px;
-
-  opacity: 0;
-  animation: ${fadeUp} 1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
-`;
-
-const Rule = styled.div`
-  width: clamp(160px, 30vw, 320px);
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    #b8995a 30%,
-    #e8d4a0 50%,
-    #b8995a 70%,
-    transparent 100%
-  );
-  transform-origin: center;
-  transform: scaleX(0);
-  will-change: transform;
-  backface-visibility: hidden;
-  animation: ${spreadRule} 1.1s ease-out 1s forwards;
-`;
-
-const WordmarkWrap = styled.div`
-  position: relative;
-  display: inline-block;
+  @media (orientation: portrait) and (max-width: 799px) {
+    margin-bottom: 0;
+  }
 `;
 
 const Wordmark = styled.h1`
@@ -371,40 +241,25 @@ const Wordmark = styled.h1`
   color: #fff;
   white-space: nowrap;
   line-height: 1.2;
-  font-size: clamp(32px, 5vw, 60px);
-  letter-spacing: clamp(10px, 2.5vw, 36px);
-  animation: ${goldPulse} 4s ease-in-out 2s infinite;
-  @media (max-width: 700px) {
-    font-size: clamp(52px, 5vw, 60px);
+  font-size: clamp(34px, 5vw, 62px);
+  letter-spacing: clamp(10px, 2.5vw, 34px);
+  text-indent: clamp(10px, 2.5vw, 34px);
+  text-shadow: 0 0 18px rgba(246, 230, 196, 0.18);
+
+  opacity: 0;
+  animation: ${fadeUp} 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+
+  @media (max-width: 1199px) {
+    font-size: 50px;
+    letter-spacing: 15px;
+    text-indent: 15px;
   }
-`;
 
-const ShimmerOverlay = styled.span`
-  position: absolute;
-  inset: 0;
-  font-family: var(--font-nasalization), var(--font-mulish), sans-serif;
-  font-weight: 400;
-  font-size: clamp(32px, 5vw, 60px);
-  letter-spacing: clamp(10px, 2.5vw, 36px);
-  line-height: 1.2;
-  white-space: nowrap;
-  pointer-events: none;
-
-  background: linear-gradient(
-    105deg,
-    transparent 30%,
-    rgba(255, 245, 210, 0.85) 48%,
-    rgba(205, 169, 104, 0.95) 50%,
-    rgba(255, 245, 210, 0.85) 52%,
-    transparent 70%
-  );
-  background-size: 300% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-
-  animation: ${shimmerSweep} 3.5s ease-in-out 1.8s infinite;
+  @media (orientation: portrait) {
+    font-size: clamp(34px, 11vw, 58px);
+    letter-spacing: clamp(8px, 3.5vw, 26px);
+    text-indent: clamp(8px, 3.5vw, 26px);
+  }
 `;
 
 const Tagline = styled.p`
@@ -416,24 +271,35 @@ const Tagline = styled.p`
   display: flex;
   align-items: center;
   gap: clamp(6px, 1vw, 12px);
-  font-size: clamp(12px, 1.1vw, 13px);
-  letter-spacing: clamp(3px, 0.8vw, 8px);
+  font-size: clamp(11px, 1.1vw, 13px);
+  letter-spacing: clamp(3px, 0.8vw, 7px);
+  text-indent: clamp(3px, 0.8vw, 7px);
 
   opacity: 0;
-  animation: ${fadeUp} 1s cubic-bezier(0.22, 1, 0.36, 1) 0.7s forwards;
+  animation: ${fadeUp} 1s cubic-bezier(0.22, 1, 0.36, 1) 0.55s forwards;
 
   span {
     color: #b8995a;
     font-size: 0.85em;
     letter-spacing: 0;
+    text-indent: 0;
   }
-  @media (max-width: 700px) {
-    font-size: clamp(10px, 1.1vw, 13px);
+
+  @media (max-width: 1199px) {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-indent: 2px;
+  }
+
+  @media (orientation: portrait) {
+    font-size: clamp(10px, 2.2vw, 14px);
+    letter-spacing: clamp(3px, 1vw, 7px);
+    text-indent: clamp(3px, 1vw, 7px);
   }
 `;
 
 const Coming = styled.p`
-  margin: clamp(10px, 1.8vw, 22px) 0 0;
+  margin: clamp(12px, 2vw, 26px) 0 0;
   font-family: var(--font-playfair-display), serif;
   font-weight: 600;
   font-style: italic;
@@ -443,15 +309,22 @@ const Coming = styled.p`
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: #cda968;
-  font-size: clamp(14px, 2.2vw, 32px);
-  letter-spacing: clamp(4px, 0.8vw, 10px);
-  text-indent: clamp(4px, 0.8vw, 10px);
+  font-size: clamp(18px, 2.4vw, 34px);
+  letter-spacing: clamp(4px, 0.9vw, 11px);
+  text-indent: clamp(4px, 0.9vw, 11px);
 
   opacity: 0;
-  animation:
-    ${fadeUp} 1s cubic-bezier(0.22, 1, 0.36, 1) 1.1s forwards,
-    ${comingGlow} 3s ease-in-out 2.5s infinite;
-  @media (max-width: 700px) {
-    font-size: clamp(20px, 1.1vw, 13px);
+  animation: ${fadeUp} 1s cubic-bezier(0.22, 1, 0.36, 1) 0.9s forwards;
+
+  @media (max-width: 1199px) {
+    font-size: 21px;
+    letter-spacing: 6px;
+    text-indent: 6px;
+  }
+
+  @media (orientation: portrait) {
+    font-size: clamp(16px, 4.6vw, 28px);
+    letter-spacing: clamp(4px, 1.4vw, 11px);
+    text-indent: clamp(4px, 1.4vw, 11px);
   }
 `;
