@@ -242,7 +242,7 @@ const Wordmark = styled.h1`
   color: #fff;
   white-space: nowrap;
   line-height: 1.2;
-  font-size: clamp(34px, 5vw, 55px);
+  font-size: clamp(34px, 5vw, 48px);
   letter-spacing: clamp(10px, 2.5vw, 34px);
   text-indent: clamp(10px, 2.5vw, 34px);
   text-shadow: 0 0 18px rgba(246, 230, 196, 0.18);
@@ -251,7 +251,7 @@ const Wordmark = styled.h1`
   animation: ${fadeUp} 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
 
   @media (max-width: 1199px) {
-    font-size: 50px;
+    font-size: 40px;
     letter-spacing: 15px;
     text-indent: 15px;
   }
@@ -310,7 +310,7 @@ const Coming = styled.p`
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: #cda968;
-  font-size: clamp(18px, 2.4vw, 34px);
+  font-size: clamp(18px, 2.4vw, 30px);
   letter-spacing: clamp(4px, 0.9vw, 11px);
   text-indent: clamp(4px, 0.9vw, 11px);
 
