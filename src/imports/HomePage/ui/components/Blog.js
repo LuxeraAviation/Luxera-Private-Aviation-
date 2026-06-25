@@ -12,7 +12,7 @@ export default function Blog() {
       <Container>
         <SectionHeader>
           <SubTitle>
-            Flynext <SubTitleBlog>Blog</SubTitleBlog>
+            Luxera <SubTitleBlog>Blog</SubTitleBlog>
           </SubTitle>
           <SectionTitle>Latest News From Us</SectionTitle>
         </SectionHeader>

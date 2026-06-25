@@ -14,7 +14,7 @@ export default function Feature({ subTitle, sectionTitle }) {
           <SubTitle>
             {subTitle || (
               <>
-                Discover <span>Flynext</span> Benefits
+                Discover <span>Luxera</span> Benefits
               </>
             )}
           </SubTitle>

@@ -124,7 +124,7 @@ export default function AboutUsDetail() {
             </CloseBtn>
             <StyledIframe
               src="#"
-              title="FlyNext Video"
+              title="Luxera Video"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />

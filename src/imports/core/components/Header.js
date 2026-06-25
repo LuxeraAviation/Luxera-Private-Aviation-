@@ -43,7 +43,7 @@ export default function Header() {
           <LogoLink href="/">
             <Image
               src="/image/logo.png"
-              alt="FlyNext"
+              alt="Luxera"
               width={185}
               height={55}
               priority

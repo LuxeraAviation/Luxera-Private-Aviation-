@@ -12,13 +12,13 @@ export default function About() {
         <AboutRow>
           <Reveal variant="fade-right" duration={1200}>
             <SubTitle>
-              <SubTitleText>About</SubTitleText> Flynext
+              <SubTitleText>About</SubTitleText> Luxera
             </SubTitle>
             <Title>
               Private Jet Charters save your time and give more comfort
             </Title>
             <Description>
-              FlyNext is the only way to fully travel on your terms. Whether
+              Luxera is the only way to fully travel on your terms. Whether
               it&apos;s accessing a remote destination or taking back control of
               productivity and flight scheduling.
             </Description>

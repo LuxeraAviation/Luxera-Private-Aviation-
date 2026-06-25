@@ -52,7 +52,7 @@ export default function Banner() {
         <BannerRow>
           <BannerContent variant="fade-right" duration={1800}>
             <SubTitle>
-              <SubTitleAccent>Fly</SubTitleAccent>next
+              LUXERA
             </SubTitle>
             <Title>Book a private jet instantly</Title>
             <Description>
@@ -299,10 +299,6 @@ const SubTitle = styled.span`
     font-size: 20px;
     margin-bottom: 14px;
   }
-`;
-
-const SubTitleAccent = styled.span`
-  color: #fff;
 `;
 
 const Title = styled.h1`

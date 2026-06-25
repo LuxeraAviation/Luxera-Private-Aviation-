@@ -28,10 +28,10 @@ export default function Footer() {
           <FooterTopRow>
             <Col $xl={4} $lg={3} $md={6}>
               <FooterLogo>
-                <Image src={logoImg} alt="FlyNext" width={185} height={55} />
+                <Image src={logoImg} alt="Luxera" width={185} height={55} />
               </FooterLogo>
               <FooterText>
-                Flynext was founded in 1991 by a group of safety-focused
+                Luxera was founded in 1991 by a group of safety-focused
                 professionals who created The Wingman Standard for rigorously
                 vetting air charter operators.
               </FooterText>
@@ -85,7 +85,7 @@ export default function Footer() {
             <Col $xl={4} $lg={4} $md={6}>
               <SectionTitle>Newsletter</SectionTitle>
               <FooterText>
-                Flynext was founded in 1991 by a group of safety-focused
+                Luxera was founded in 1991 by a group of safety-focused
                 professionals erators.
               </FooterText>
               <SubscribeForm onSubmit={(e) => e.preventDefault()}>

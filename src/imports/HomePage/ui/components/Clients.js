@@ -27,7 +27,7 @@ export default function Clients() {
       <Container>
         <SectionHeader>
           <SubTitle>
-            <span>Flynext</span> Testimonial
+            <span>Luxera</span> Testimonial
           </SubTitle>
           <SectionTitle>Our Customer Feedback</SectionTitle>
         </SectionHeader>

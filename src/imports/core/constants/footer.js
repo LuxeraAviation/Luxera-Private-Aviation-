@@ -28,7 +28,7 @@ export const NAVIGATION_COLUMNS = [
       { text: "Private jet", url: "/private-jet" },
       { text: "Register", url: "/register" },
       { text: "Current Jet Deals", url: "/deals" },
-      { text: "Flynext mobile app", url: "/mobile-app" },
+      { text: "Luxera mobile app", url: "/mobile-app" },
     ],
   },
   {
@@ -54,8 +54,24 @@ export const NAVIGATION_COLUMNS = [
 ];
 
 export const SOCIAL_LINKS = [
-  { iconClass: "fab fa-facebook-f", url: "https://www.facebook.com/flynextflights", active: false },
-  { iconClass: "fab fa-twitter", url: "https://twitter.com/flynextflights", active: false },
-  { iconClass: "fab fa-youtube", url: "https://www.youtube.com/channel/UC57eJ8-0-i5Jj2e74oY6oQA", active: false },
-  { iconClass: "fab fa-instagram", url: "https://www.instagram.com/flynextflights", active: false },
+  {
+    iconClass: "fab fa-facebook-f",
+    url: "https://www.facebook.com/Luxeraflights",
+    active: false,
+  },
+  {
+    iconClass: "fab fa-twitter",
+    url: "https://twitter.com/Luxeraflights",
+    active: false,
+  },
+  {
+    iconClass: "fab fa-youtube",
+    url: "https://www.youtube.com/channel/UC57eJ8-0-i5Jj2e74oY6oQA",
+    active: false,
+  },
+  {
+    iconClass: "fab fa-instagram",
+    url: "https://www.instagram.com/Luxeraflights",
+    active: false,
+  },
 ];

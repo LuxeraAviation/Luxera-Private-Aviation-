@@ -1,15 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
-import SearchIcon from "@/imports/core/assets/SearchIcon";
+import { useHideChrome } from "@/imports/core/components/ChromeGate";
 
 export default function NotFoundPage() {
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-  };
+  useHideChrome();
 
   return (
     <PageContainer>
@@ -86,6 +84,9 @@ const scrollDown = keyframes`
 `;
 
 const PageContainer = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 1000000;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -93,8 +94,7 @@ const PageContainer = styled.div`
   justify-content: center;
   background-color: #f5f3f1;
   padding: 80px 24px;
-  position: relative;
-  overflow: hidden;
+  overflow-y: auto;
   box-sizing: border-box;
   font-family: var(--font-mulish), "Mulish", sans-serif;
 `;

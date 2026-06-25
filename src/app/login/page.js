@@ -1,9 +1,9 @@
 import RegisterPage from "@/imports/Register/ui/pages/RegisterPage";
 
 export const metadata = {
-  title: "Sign-In — FlyNext",
+  title: "Sign-In — Luxera",
   description:
-    "Sign in to your FlyNext account to manage bookings and private flights.",
+    "Sign in to your Luxera account to manage bookings and private flights.",
 };
 
 export default function Page() {

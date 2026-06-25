@@ -5,7 +5,7 @@ export const TEAM_DETAILS = {
   description:
     "The first small jet-powered civil aircraft was the Morane-Saulnier MS.760 Paris, developed privately in the early 1950s from the MS.755 Fleuret two-seat jet trainer.",
   phone: "+1 814 929 4269",
-  email: "contact@flynext.com",
+  email: "contact@Luxera.com",
   socials: [
     { icon: "fab fa-facebook-f", href: "#0" },
     { icon: "fab fa-twitter", href: "#0", active: true },

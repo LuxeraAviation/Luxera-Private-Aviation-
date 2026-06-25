@@ -7,7 +7,7 @@ import Header from "@/imports/core/components/Header";
 import Footer from "@/imports/core/components/Footer";
 import CallWidget from "@/imports/core/components/CallWidget";
 import GlobalStyles from "@/styles/GlobalStyles";
-import LockdownGate from "@/imports/core/components/LockdownGate";
+import { ChromeProvider, Chrome } from "@/imports/core/components/ChromeGate";
 
 const mulish = Mulish({
   subsets: ["latin"],
@@ -26,14 +26,13 @@ const nasalization = localFont({
 });
 
 export const metadata = {
-  title: "FlyNext — Book a Private Jet Instantly",
+  title: "Luxera — Book a Private Jet Instantly",
   description:
-    "FlyNext private airline & charter services — luxury and corporate private jet charter, instant booking.",
+    "Luxera private airline & charter services — luxury and corporate private jet charter, instant booking.",
   icons: { icon: "/image/fav.png" },
 };
 
 export default function RootLayout({ children }) {
-  const isProd = process.env.NODE_ENV === "production";
 
   return (
     <html
@@ -51,14 +50,18 @@ export default function RootLayout({ children }) {
       <body>
         <StyledComponentsRegistry>
           <GlobalStyles />
-          <LockdownGate isProd={isProd}>
+          <ChromeProvider>
             <Preloader />
-            <Header />
+            <Chrome>
+              <Header />
+            </Chrome>
             {children}
-            <Footer />
-            <CallWidget />
+            <Chrome>
+              <Footer />
+              <CallWidget />
+            </Chrome>
             <ScrollToTop />
-          </LockdownGate>
+          </ChromeProvider>
         </StyledComponentsRegistry>
       </body>
     </html>

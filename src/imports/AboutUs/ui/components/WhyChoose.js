@@ -13,7 +13,7 @@ export default function WhyChoose() {
       <StyledContainer>
         <SectionHeader>
           <SubTitle>Why Us</SubTitle>
-          <SectionTitle>Why Choose Our Flynext?</SectionTitle>
+          <SectionTitle>Why Choose Our Luxera?</SectionTitle>
         </SectionHeader>
 
         <Grid>

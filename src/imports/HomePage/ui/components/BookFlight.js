@@ -22,7 +22,7 @@ export default function BookFlight() {
         <BookFormArea>
           <SectionHeader>
             <SubTitle>
-              <span>Flynext</span> Book
+              <span>Luxera</span> Book
             </SubTitle>
             <SectionTitle>Book A Personal Flight</SectionTitle>
           </SectionHeader>

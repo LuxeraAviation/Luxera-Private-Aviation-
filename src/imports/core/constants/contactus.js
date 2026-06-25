@@ -22,7 +22,7 @@ export const CONTACT_DATA = {
       },
       {
         title: "Our Email",
-        lines: ["contact@flynext.com", "contact01@flynext.com"],
+        lines: ["contact@Luxera.com", "contact01@Luxera.com"],
         icon: "Email",
       },
     ],

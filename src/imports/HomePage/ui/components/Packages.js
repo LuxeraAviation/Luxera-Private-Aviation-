@@ -33,10 +33,10 @@ export default function Packages() {
       <Container>
         <SectionHeader>
           <SubTitle $isPackagePage={isPackagePage}>
-            Flynext <span>Package</span>
+            Luxera <span>Package</span>
           </SubTitle>
           <SectionTitle $isPackagePage={isPackagePage}>
-            Flynext Tour Packages
+            Luxera Tour Packages
           </SectionTitle>
         </SectionHeader>
         <Slider
