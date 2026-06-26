@@ -98,7 +98,7 @@ export default function BookFlight() {
 const BookFormSection = styled.section`
   padding: 120px 0;
   position: relative;
-  background-color: #fff;
+  background-color: ${theme.white};
 
   @media (max-width: 991px) {
     padding: 80px 0;
@@ -136,12 +136,12 @@ const SectionHeader = styled.div`
 const SubTitle = styled.span`
   display: inline-block;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  font-weight: 800;
-  font-size: 14px;
+  letter-spacing: 4px;
+  font-weight: 500;
+  font-size: 20px;
   color: ${theme.base};
   margin-bottom: 12px;
-  font-family: ${theme.fonts?.mulish || "var(--font-mulish), sans-serif"};
+  font-family: ${theme.fonts?.mulish};
 
   span {
     color: #fff;
@@ -149,16 +149,16 @@ const SubTitle = styled.span`
 `;
 
 const SectionTitle = styled.h2`
-  font-family: ${theme.fonts?.playfair ||
-  "var(--font-playfair-display), serif"};
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 1.2;
+  font-family: ${theme.fonts?.playfair};
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
   color: #fff;
   margin: 0;
 
   @media (max-width: 767px) {
-    font-size: 28px;
+    font-size: 32px;
   }
 `;
 
@@ -193,9 +193,9 @@ const FormGroup = styled.div`
 
 const Label = styled.label`
   text-align: left;
-  font-family: ${theme.fonts?.mulish || "var(--font-mulish), sans-serif"};
-  font-size: 15px;
-  font-weight: 500;
+  font-family: ${theme.fonts?.mulish};
+  font-size: 18px;
+  font-weight: 300;
   color: white;
   margin-bottom: 8px;
 `;
@@ -284,14 +284,14 @@ const SubmitBtn = styled.button`
   justify-content: center;
   background-color: ${theme.base};
   border: 1px solid ${theme.base};
-  color: #19232d;
+  color: ${theme.dark};
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 500;
   padding: 12px 35px;
   border-radius: 39px;
   cursor: pointer;
   transition: all 0.5s;
-  font-family: ${theme.fonts?.mulish || "var(--font-mulish), sans-serif"};
+  font-family: ${theme.fonts?.mulish};
 
   &:hover {
     background-color: transparent;

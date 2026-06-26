@@ -173,33 +173,37 @@ const AboutRow = styled.div`
 const SubTitle = styled.span`
   color: ${theme.base};
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 500;
+  letter-spacing: 4px;
   text-transform: uppercase;
   span {
     color: #fff;
   }
   @media (max-width: 991px) {
-    font-size: 14px;
+    font-size: 13px;
+    letter-spacing: 3px;
   }
 `;
 
 const Title = styled.h2`
   color: #fff;
   font-family: ${theme.fonts.playfair};
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 1.3;
+  font-size: 42px;
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
   margin: 0;
 
   margin: 20px 0;
   @media (max-width: 991px) {
-    font-size: 28px;
+    font-size: 30px;
   }
 `;
 
 const Description = styled.p`
-  color: rgba(255, 255, 255);
+  color: rgba(255, 255, 255, 0.8);
   font-size: 16px;
+  font-weight: 300;
   line-height: 1.7;
   margin-bottom: 15;
   @media (max-width: 991px) {
@@ -241,7 +245,7 @@ const BookLeft = styled.div``;
 const CallTitle = styled.h3`
   color: ${theme.dark};
   font-family: ${theme.fonts.playfair};
-  font-weight: 800;
+  font-weight: 500;
   font-size: 22px;
   margin: 0 0 15px 0;
 `;
@@ -252,7 +256,7 @@ const Call = styled.span`
 
 const CallLink = styled.a`
   color: ${theme.dark};
-  font-weight: 800;
+  font-weight: 500;
   font-size: 22px;
   text-decoration: none;
 

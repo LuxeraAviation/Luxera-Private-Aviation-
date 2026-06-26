@@ -270,41 +270,45 @@ const NavTabHeader = styled.div`
 `;
 
 const SubTitle = styled.span`
-  color: #fff;
+  color: ${theme?.base};
   margin-bottom: 15px;
-  font-family: ${theme?.fonts?.mulish || "var(--font-mulish), sans-serif"};
+  font-family: ${theme?.fonts?.mulish};
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
   display: block;
 
   @media (max-width: 1919px) {
-    font-size: 14px;
+    font-size: 18px;
+    letter-spacing: 3px;
     margin-bottom: 8px;
   }
 
   span {
-    color: ${theme?.base};
+    color: #fff;
   }
 `;
 
 const NavTabTitle = styled.h2`
   color: #fff;
-  font-family: ${theme?.fonts?.playfair ||
-  "var(--font-playfair-display), serif"};
+  font-family: ${theme?.fonts?.playfair};
   font-size: 40px;
-  font-weight: 700;
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
   margin: 0;
 
   @media (max-width: 1919px) {
-    font-size: 24px;
+    font-size: 36px;
   }
 
   @media (max-width: 1440px) {
-    font-size: 18px;
+    font-size: 30px;
   }
 
   @media (max-width: 575px) {
-    font-size: 20px;
+    font-size: 26px;
   }
 `;
 
@@ -323,7 +327,7 @@ const NavLink = styled.button`
   font-family: ${theme?.fonts?.playfair ||
   "var(--font-playfair-display), serif"};
   font-size: 24px;
-  font-weight: 600;
+  font-weight: 400;
   width: 100%;
   text-align: left;
   padding: 28px 0;
@@ -474,8 +478,8 @@ const OverviewText = styled.p`
 const OverviewTitle = styled.h3`
   color: #fff;
   font-family: ${theme?.fonts?.playfair};
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 30px;
+  font-weight: 500;
   margin: 0 0 15px;
 
   @media (max-width: 1440px) {

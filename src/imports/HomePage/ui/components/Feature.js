@@ -66,8 +66,10 @@ const SectionHeader = styled.div`
 
 const SubTitle = styled.span`
   display: inline-block;
-  font-weight: 800;
+  font-weight: 500;
   font-size: 20px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
   color: ${theme.base};
   margin-bottom: 20px;
   font-family: ${theme?.fonts?.mulish};
@@ -77,20 +79,22 @@ const SubTitle = styled.span`
   }
 
   @media (max-width: 768px) {
-    font-size: 14px;
+    font-size: 13px;
+    letter-spacing: 3px;
   }
 `;
 
 const SectionTitle = styled.h2`
   font-family: ${theme?.fonts?.playfair};
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 1.2;
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
   color: ${theme?.dark || "#19232d"};
   margin: 0;
 
   @media (max-width: 768px) {
-    font-size: 28px;
+    font-size: 32px;
   }
 `;
 
@@ -123,7 +127,7 @@ const FeatureItem = styled(Flex)`
     left: 0;
     width: 100%;
     height: 100%;
-    border: 1px solid #f5f3f1;
+    border: 1px solid ${theme.soft};
     background-color: white;
     z-index: -1;
     opacity: 0;
@@ -220,7 +224,7 @@ const FeatureIcon = styled(Flex)`
   justify-content: flex-start;
   font-size: 80px;
   line-height: 80px;
-  color: ${theme?.dark || "#19232d"};
+  color: ${theme?.dark};
   margin-bottom: 30px;
   transition: all 0.5s;
 
@@ -234,8 +238,8 @@ const FeatureTitle = styled.h3`
   font-family: ${theme?.fonts?.playfair ||
   "var(--font-playfair-display), serif"};
   font-size: 24px;
-  font-weight: 700;
-  color: ${theme?.dark || "#19232d"};
+  font-weight: 500;
+  color: ${theme?.dark};
   margin: 0 0 10px;
   transition: all 0.5s;
 
@@ -246,9 +250,9 @@ const FeatureTitle = styled.h3`
 
 const FeatureText = styled.p`
   font-family: ${theme?.fonts?.mulish};
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.8;
-  font-weight: 600;
+  font-weight: 400;
   color: #3d3d3d;
   margin: 0;
   transition: all 0.5s;

@@ -6,7 +6,7 @@ import { theme, Reveal } from "@/styles/Theme";
 import Slider from "@/imports/core/components/Slider";
 import Link from "next/link";
 
-export default function Charter(props) {
+export default function Charter(props, subTitle) {
   const {
     subtitle,
     title,
@@ -19,13 +19,17 @@ export default function Charter(props) {
     noPaddingTop,
     hasPaddingBottom,
     autoplay = true,
-  } = props || {};
+  } = props;
   return (
     <Section $noPaddingTop={noPaddingTop} $hasPaddingBottom={hasPaddingBottom}>
       <Container>
         <HeaderWithNav>
           <SectionHeader>
-            <SubTitle>{subtitle}</SubTitle>
+            <SubTitle>{subTitle || (
+              <>
+                Luxury <span>Charters</span>
+              </>
+            )}</SubTitle>
             <Title>{title}</Title>
           </SectionHeader>
           <Slider
@@ -120,27 +124,33 @@ const SectionHeader = styled.div`
 
 const SubTitle = styled.span`
   display: inline-block;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 20px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
   margin-bottom: 20px;
   color: ${theme.base};
   font-family: ${theme.fonts.mulish};
+  span{
+    color: ${theme.dark};
+  }
   @media (max-width: 991px) {
     font-size: 13px;
+    letter-spacing: 3px;
   }
 `;
 
 const Title = styled.h2`
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 1.3;
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 1.15;
   margin: 0;
   font-family: ${theme.fonts.playfair};
   @media (max-width: 991px) {
-    font-size: 28px;
+    font-size: 32px;
   }
   @media (max-width: 575px) {
-    font-size: 22px;
+    font-size: 26px;
   }
 `;
 
@@ -232,13 +242,15 @@ const CardMeta = styled.div`
 
 const MetaItem = styled.span`
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 300;
   color: ${theme.dark};
 `;
 
 const CardBtn = styled.div``;
 
 const CardLink = styled.a`
+font-size: 20px;
+font-weight: 400;
   color: ${theme.dark};
   text-decoration: none;
 
@@ -249,7 +261,7 @@ const CardLink = styled.a`
 
 const BtnLink = styled(Link)`
   color: ${theme.dark};
-  font-weight: 800;
+  font-weight: 500;
   text-decoration: none;
   display: inline-flex;
   align-items: center;

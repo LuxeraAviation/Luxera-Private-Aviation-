@@ -400,9 +400,11 @@ const DesktopOnlyBook = styled.div`
 
 const menuLinkStyles = css`
   color: ${theme.white};
-  font-weight: 700;
-  font-size: 16px;
-  padding: 8px 0;
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  padding: 6px 0;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -420,8 +422,8 @@ const menuLinkStyles = css`
     display: flex;
     width: 100%;
     padding: 16px 20px;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: 400;
     border: none;
     background: ${theme?.dark};
     color: ${({ $submenuOpen }) =>

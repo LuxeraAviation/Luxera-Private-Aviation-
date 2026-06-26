@@ -248,7 +248,7 @@ const Col = styled.div`
 
 const FooterLogo = styled.div`
   margin-bottom: 15px;
-
+margin-left: -22px;
   img {
     display: block;
     max-width: 100%;
@@ -260,7 +260,7 @@ const FooterText = styled.p`
   margin-bottom: 15px;
   line-height: 1.7em;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 300;
   color: ${theme.white};
   font-family: ${theme.fonts.mulish};
 
@@ -278,25 +278,28 @@ const WidgetTitle = styled.h4`
   margin-top: 0;
   margin-bottom: 15px;
   line-height: 1.3em;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 18px;
+  letter-spacing: 3px;
   text-transform: uppercase;
-  font-family: ${theme.fonts.playfair};
+  font-family: ${theme.fonts.mulish};
 
   @media only screen and (max-width: 991px) {
-    font-size: 16px;
+    font-size: 13px;
+    letter-spacing: 2px;
   }
 `;
 
 const SectionTitle = styled.h4`
   color: white;
   position: relative;
-  font-family: ${theme.fonts.mulish};
-  font-weight: 800;
+  font-family: ${theme.fonts.playfair};
+  font-weight: 300;
+  letter-spacing: 0.5px;
 
   margin-top: 3px;
   margin-bottom: 30px;
-  font-size: 18px;
+  font-size: 24px;
 
   &::before {
     border: 1px solid ${theme.base};
@@ -308,7 +311,7 @@ const SectionTitle = styled.h4`
   }
 
   @media only screen and (max-width: 991px) {
-    font-size: 16px;
+    font-size: 20px;
   }
 `;
 
@@ -325,7 +328,7 @@ const FooterListItem = styled.li`
 const footerLinkStyles = css`
   color: white;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 300;
   text-decoration: none;
   transition: all 0.3s;
   cursor: pointer;
@@ -348,7 +351,7 @@ const FooterContactLink = styled.a`
 const FooterTextSpan = styled.span`
   color: white;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 300;
   text-decoration: none;
   font-family: ${theme.fonts.mulish};
   display: inline-block;
@@ -413,7 +416,7 @@ const SubscribeBtn = styled.button`
   color: ${theme.dark};
   padding: 12px 25px;
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.5s ease;
   font-family: ${theme.fonts.mulish};
@@ -476,9 +479,9 @@ const SocialListItem = styled.li`
 `;
 
 const SocialLink = styled.a`
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
   text-align: center;
   display: inline-block;
   border-radius: 50%;
@@ -499,7 +502,7 @@ const SocialLink = styled.a`
 
 const CopyrightText = styled.p`
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   margin-bottom: 0;
   color: ${theme.soft};
   font-family: ${theme.fonts.mulish};

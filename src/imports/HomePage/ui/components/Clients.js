@@ -56,10 +56,10 @@ export default function Clients() {
                   <ClientText>{c.text}</ClientText>
                 </ClientContent>
                 <ClientFooter>
-                  <div>
+                  <ClientInfo>
                     <ClientName>{c.name}</ClientName>
                     <ClientRole>{c.role}</ClientRole>
-                  </div>
+                  </ClientInfo>
                   <ClientRatings>
                     {[...Array(5)].map((_, i) => (
                       <Icon key={i} className="fas fa-star" />
@@ -79,15 +79,12 @@ export default function Clients() {
               />
               <ClientThumbOverlay>
                 <VideoMain>
-                  <div className="waves wave-1" />
-                  <div className="waves wave-2" />
-                  <div className="waves wave-3" />
-                  <a
-                    className="video-icon"
-                    href="https://www.youtube.com/embed/Hw4ctvV25H0"
-                  >
+                  <Wave />
+                  <Wave $delay="1s" />
+                  <Wave $delay="2s" />
+                  <VideoIcon href="youtube.com/embed/…">
                     <Icon className="fas fa-play" />
-                  </a>
+                  </VideoIcon>
                 </VideoMain>
               </ClientThumbOverlay>
             </ClientRightThumb>
@@ -123,9 +120,9 @@ const SectionHeader = styled.div`
 const SubTitle = styled.span`
   display: inline-block;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  font-weight: 800;
-  font-size: 14px;
+  letter-spacing: 4px;
+  font-weight: 400;
+  font-size: 20px;
   color: ${theme.base};
   margin-bottom: 12px;
   font-family: ${theme.fonts.mulish};
@@ -136,13 +133,15 @@ const SubTitle = styled.span`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 1.2;
+  font-family: ${theme.fonts.playfair};
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
   color: ${theme.dark};
 
   @media (max-width: 767px) {
-    font-size: 28px;
+    font-size: 32px;
   }
 `;
 
@@ -150,39 +149,35 @@ const VideoMain = styled.div`
   position: relative;
   width: 70px;
   height: 70px;
+`;
 
-  .waves {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 70px;
-    height: 70px;
-    margin-left: -35px;
-    margin-top: -35px;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    animation: ${waves} 3s ease-out infinite;
-  }
-  .wave-2 {
-    animation-delay: 1s;
-  }
-  .wave-3 {
-    animation-delay: 2s;
-  }
-  .video-icon {
-    position: relative;
-    z-index: 2;
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background: #fff;
-    color: ${theme.base};
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-  }
+const Wave = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 70px;
+  height: 70px;
+  margin-left: -35px;
+  margin-top: -35px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  animation: ${waves} 3s ease-out infinite;
+  animation-delay: ${({ $delay }) => $delay || "0s"};
+`;
+
+const VideoIcon = styled.a`
+  position: relative;
+  z-index: 2;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #fff;
+  color: ${theme.base};
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
 `;
 
 const ClientSection = styled(Section)`
@@ -217,7 +212,7 @@ const ClientArea = styled.div`
 `;
 
 const ClientItem = styled.div`
-  background: #fff;
+  background: ${theme.white};
   border-radius: 14px;
   padding: 30px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
@@ -255,7 +250,8 @@ const ClientContent = styled.div`
 `;
 
 const ClientText = styled.p`
-  font-size: 16px;
+  font-size: 14px;
+  color: ${theme.gray};
   margin-bottom: 22px;
   line-height: 1.7;
   margin: 0;
@@ -268,15 +264,18 @@ const ClientFooter = styled.div`
   margin: 0;
 `;
 
+const ClientInfo = styled.div``;
+
 const ClientName = styled.h4`
   font-size: 20px;
+  font-weight: 400;
   line-height: 1.3;
   margin-bottom: 8px;
 `;
 
 const ClientRole = styled.span`
   color: ${theme.base};
-  font-weight: 700;
+  font-weight: 400;
   font-size: 14px;
 `;
 

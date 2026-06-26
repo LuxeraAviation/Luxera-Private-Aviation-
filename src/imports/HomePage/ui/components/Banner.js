@@ -327,8 +327,9 @@ const SubTitle = styled.span`
 const Title = styled.h1`
   margin-top: 0px;
   font-size: 65px;
-  line-height: 1.3;
-  font-weight: 700;
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -1px;
   color: #fff;
   font-family: ${theme.fonts.playfair};
   margin-bottom: 25px;
@@ -341,10 +342,11 @@ const Title = styled.h1`
   }
   @media (max-width: 1199px) {
     font-size: 48px;
-    line-height: 1.2;
+    line-height: 1.15;
   }
   @media (max-width: 767px) {
     font-size: 36px;
+    letter-spacing: -0.5px;
   }
   @media (max-width: 575px) {
     font-size: 30px;
@@ -355,11 +357,12 @@ const Title = styled.h1`
 `;
 
 const Description = styled.p`
-  color: rgba(255, 255, 255, 1);
+  color: rgba(255, 255, 255, 0.85);
   font-family: ${theme.fonts.mulish};
   width: 80%;
   font-size: 15px;
-  line-height: 1.7;
+  line-height: 1.9;
+  letter-spacing: 0.2px;
   margin-bottom: 15px;
 
   @media (max-width: 767px) {
@@ -395,8 +398,10 @@ const BtnBase = styled.a`
   border: 1px solid ${({ $active }) => ($active ? "transparent" : theme.base)};
 
   color: ${({ $active }) => ($active ? "#fff" : theme.base)};
-  font-size: 16px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
   font-family: ${theme.fonts.mulish};
   cursor: pointer;
   z-index: 0;

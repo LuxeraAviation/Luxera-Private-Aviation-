@@ -210,8 +210,10 @@ const SectionHeader = styled.div`
 const SubTitle = styled.span`
   display: inline-block;
 
-  font-weight: 800;
+  font-weight: 400;
   font-size: 20px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
   color: ${theme.base};
   margin-bottom: 20px;
   font-family: ${theme.fonts?.mulish || "var(--font-mulish), sans-serif"};
@@ -221,20 +223,21 @@ const SubTitle = styled.span`
   }
   @media (max-width: 768px) {
     font-size: 13px;
+    letter-spacing: 3px;
   }
 `;
 
 const SectionTitle = styled.h2`
-  font-family: ${theme.fonts?.playfair ||
-  "var(--font-playfair-display), serif"};
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 1.2;
+  font-family: ${theme.fonts?.playfair};
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
   color: ${({ $isPackagePage }) => ($isPackagePage ? theme.dark : theme.white)};
   margin: 0;
 
   @media (max-width: 768px) {
-    font-size: 28px;
+    font-size: 32px;
   }
 `;
 
@@ -294,13 +297,14 @@ const Title = styled.h3`
 `;
 
 const TitleLink = styled(Link)`
-  color: #19232d;
+  color: ${theme.dark};
   text-decoration: none;
   transition: all 0.5s;
   font-size: 24px;
-  font-family: ${theme.fonts?.playfair || "serif"};
+  font-weight: 400;
+  font-family: ${theme.fonts?.playfair};
   &:hover {
-    color: ${theme.base };
+    color: ${theme.base};
   }
   @media (max-width: 768px) {
     font-size: 18px;
@@ -317,9 +321,9 @@ const PackageList = styled.ul`
 
 const PackageListItem = styled.li`
   padding-bottom: 8px;
-  color: #19232d;
-  font-size: 15px;
-  font-weight: 600;
+  color: ${theme.gray};
+  font-size: 14px;
+  font-weight: 400;
 `;
 
 const PackageContentFooter = styled.div`
@@ -342,8 +346,8 @@ const BtnIcon = styled(Image)`
 `;
 
 const CustomBtn = styled(Link)`
-  color: #19232d !important;
-  font-weight: 800;
+  color: ${theme.dark};
+  font-weight: 500;
   background: none;
   border: none;
   padding: 0;

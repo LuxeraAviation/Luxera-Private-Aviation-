@@ -26,10 +26,12 @@ const buttonStyles = css`
   background: ${theme?.base};
   border: 1.5px solid ${theme?.base};
   color: ${theme?.dark};
-  padding: 12px 30px;
+  padding: 14px 32px;
   border-radius: 999px;
-  font-size: 16px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
   cursor: pointer;
   transition: all 0.4s ease-in-out;
   text-decoration: none;
@@ -42,8 +44,8 @@ const buttonStyles = css`
   }
 
   @media (max-width: 767px) {
-    padding: 10px 18px;
-    font-size: 14px;
+    padding: 12px 22px;
+    font-size: 13px;
   }
 `;
 

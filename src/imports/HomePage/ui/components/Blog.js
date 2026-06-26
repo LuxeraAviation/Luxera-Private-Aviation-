@@ -84,8 +84,9 @@ const SectionHeader = styled.div`
 
 const SubTitle = styled.span`
   display: inline-block;
-  letter-spacing: 2px;
-  font-weight: 800;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-weight: 400;
   font-size: 20px;
   color: ${theme.base};
   margin-bottom: 20px;
@@ -97,14 +98,15 @@ const SubTitleBlog = styled.span`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 40px;
-  font-weight: 700;
+  font-size: 42px;
+  font-weight: 400;
   font-family: ${theme.fonts.playfair};
-  line-height: 1.2;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
   color: ${theme.dark};
   margin: 0;
   @media (max-width: 767px) {
-    font-size: 28px;
+    font-size: 32px;
   }
 `;
 
@@ -155,7 +157,7 @@ const BlogContent = styled.div`
 const BlogTitle = styled.h3`
   font-size: 24px;
   font-family: ${theme.fonts.playfair};
-  font-weight: 600;
+  font-weight: 500;
   margin-bottom: 15px;
   line-height: 1.5;
   margin-top: 0;
@@ -218,7 +220,8 @@ const BlogPostMetaComment = styled(BlogPostMetaSpan)``;
 const BlogText = styled.p`
   font-family: ${theme.fonts.mulish};
   font-size: 16px;
-  color: #777;
+  font-weight: 300;
+  color: ${theme.gray};
   line-height: 1.6;
   margin-bottom: 15px;
   margin-top: 0;
@@ -243,7 +246,7 @@ const ArrowIcon = styled.i`
 const BlogBtnLink = styled(Link)`
   color: ${theme.base};
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 500;
   text-decoration: none;
   display: inline-flex;
   align-items: center;

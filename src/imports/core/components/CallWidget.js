@@ -22,7 +22,7 @@ export default function CallWidget() {
         aria-label="Toggle booking form"
         onClick={() => setOpen((o) => !o)}
       >
-        <TabNum>
+        <TabNum $open={open}>
           <Icon className="fas fa-phone-alt" /> +1 814 929 4263
         </TabNum>
         <TabArrow $open={open} />
@@ -145,8 +145,15 @@ const TabNum = styled.span`
   display: flex;
   align-items: center;
   white-space: nowrap;
-  background-color: ${theme.light};
+  background-color: transparent;
   color: ${theme.dark};
+
+  ${({ $open, theme }) =>
+    $open &&
+    css`
+      background-color: ${theme.dark};
+      color: ${theme.white};
+    `}
 `;
 
 const Icon = styled.i`

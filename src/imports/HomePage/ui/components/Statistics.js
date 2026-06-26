@@ -114,7 +114,7 @@ const OdoTitle = styled.h3`
   color: white;
   font-family: ${theme?.fonts?.playfair};
   font-size: 40px;
-  font-weight: 700;
+  font-weight: 500;
   margin-bottom: 0;
   margin-top: -10px;
   line-height: 1.2;
@@ -131,7 +131,7 @@ const OdoTitle = styled.h3`
 const StatisticsText = styled.p`
   font-family: ${theme?.fonts?.mulish};
   font-size: 18px;
-  color: white;
+  color: ${theme?.white};
   margin-top: 10px;
   margin-bottom: 0;
 `;
