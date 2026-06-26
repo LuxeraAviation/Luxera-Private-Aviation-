@@ -125,9 +125,10 @@ const HistoryArea = styled.div`
     content: "";
     top: 7%;
     left: 50.7%;
-    width: 1px;
+    width: 0.5px;
+    opacity: 0.5;
     height: calc(100% - 23%);
-    background-color: #e5e5e5;
+    background-color: ${theme.base};
     z-index: -1;
 
     @media only screen and (max-width: 991px) {

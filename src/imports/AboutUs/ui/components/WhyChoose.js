@@ -136,7 +136,7 @@ const ChooseThumb = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #19232d;
+    background-color: ${theme.dark};
     opacity: 0.7;
     z-index: 1;
   }
@@ -146,7 +146,7 @@ const Num = styled.span`
   display: block;
   font-size: 65px;
   line-height: 65px;
-  color: #e8e9ea;
+  color: ${theme.soft};
   font-family: ${theme.fonts.mulish};
   font-weight: 900;
   margin-bottom: 15px;

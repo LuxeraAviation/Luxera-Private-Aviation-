@@ -40,7 +40,7 @@ const StatsSection = styled.section`
   padding: 120px 0;
   position: relative;
   background:
-    linear-gradient(rgba(25, 35, 45, 0.9), rgba(25, 35, 45, 0.9)),
+    linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
     url("/image/bg/bg-2.png") center/cover no-repeat fixed;
   color: #fff;
 

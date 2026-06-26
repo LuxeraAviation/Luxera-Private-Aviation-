@@ -60,7 +60,7 @@ export default function CourseDetailsPage() {
 
 const DetailsSection = styled.section`
   padding: 120px 0;
-  background-color: #ffffff;
+  background-color: ${theme.white};
   overflow: hidden;
 
   @media (max-width: 991px) {

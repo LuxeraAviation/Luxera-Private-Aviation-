@@ -84,7 +84,7 @@ const BannerContent = styled.div`
 `;
 
 const Title = styled.h1`
-  color: #fff;
+  color: ${theme.white};
   font-size: 65px;
   font-weight: 700;
   line-height: 1.3;
@@ -120,7 +120,7 @@ const BreadcrumbItem = styled.li`
   }
 
   a {
-    color: #ffffff;
+    color: ${theme.white};
     text-decoration: none;
     transition: all 0.3s;
 
@@ -136,7 +136,7 @@ const BreadcrumbItem = styled.li`
 
     &::before {
       content: ">";
-      color: #ffffff;
+      color:  ${theme.white};
       font-weight: 600;
       margin: 0 10px;
       font-size: 20px;

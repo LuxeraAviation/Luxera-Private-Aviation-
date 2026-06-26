@@ -61,7 +61,7 @@ export default function SpecsStatistics() {
 const StatsSection = styled.section`
   padding: 120px 0;
   position: relative;
-  background-color: #ffffff;
+  background-color: ${theme.white};
 
   @media (max-width: 991px) {
     padding: 40px 0 80px 0;

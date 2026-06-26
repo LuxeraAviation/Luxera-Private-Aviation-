@@ -217,7 +217,7 @@ const GalleryItem = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #19232d;
+    background-color: ${theme.dark};
     opacity: ${({ $active }) => ($active ? 0 : 0.6)};
     transition: all 0.5s ease;
     z-index: 1;

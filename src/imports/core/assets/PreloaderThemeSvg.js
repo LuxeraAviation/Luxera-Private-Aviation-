@@ -14,7 +14,7 @@ export default function PreloaderThemeSvg({ planeColor, ...props }) {
         <path
           d="M 138 71 A 80 80 0 0 0 102 86"
           fill="none"
-          stroke="#ffffff"
+          stroke="${theme.white}"
           strokeWidth="5"
           strokeDasharray="0, 22"
           strokeLinecap="round"

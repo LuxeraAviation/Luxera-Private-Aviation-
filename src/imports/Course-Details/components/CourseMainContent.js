@@ -225,7 +225,7 @@ const Td = styled.td`
   padding: 15px 30px;
   border: 1px solid #e5e0db;
   color: ${theme.text};
-  background-color: #ffffff;
+  background-color: ${theme.white};
   font-weight: 500;
 
   ${Tr}:nth-child(even) & {
@@ -312,7 +312,7 @@ const PdfIconCircle = styled.div`
   height: 40px;
   border-radius: 50%;
   background-color: ${theme.dark};
-  color: #ffffff;
+  color: ${theme.white};
   display: flex;
   align-items: center;
   justify-content: center;

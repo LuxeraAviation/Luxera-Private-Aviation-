@@ -25,9 +25,8 @@ import {
 export default function Banner() {
   return (
     <BannerSection>
-      <ElementOne>
-        <Image src={elementOneImg} alt="" />
-      </ElementOne>
+      <ElementOne />
+
       <ElementTwo>
         <Image src={elementTwoImg} alt="" />
       </ElementTwo>
@@ -113,6 +112,7 @@ const BannerElement = styled.div`
   img {
     max-width: 100%;
     height: auto;
+
   }
 
   @media (max-width: 991px) {
@@ -120,10 +120,31 @@ const BannerElement = styled.div`
   }
 `;
 
-const ElementOne = styled(BannerElement)`
+const ElementOne = styled.div`
+  position: absolute;
+  pointer-events: none;
   top: 0;
   right: 0;
-  z-index: -1;
+  z-index: 0;
+  width: 1152px;
+  max-width: 100%;
+  aspect-ratio: 1152 / 1080;
+  background-color: #fff;
+  opacity: 0.5;
+  -webkit-mask: url(${elementOneImg.src}) no-repeat top right / contain,
+    url(${elementOneImg.src}) no-repeat top right / contain,
+    url(${elementOneImg.src}) no-repeat top right / contain,
+    url(${elementOneImg.src}) no-repeat top right / contain;
+  -webkit-mask-composite: source-over;
+  mask: url(${elementOneImg.src}) no-repeat top right / contain,
+    url(${elementOneImg.src}) no-repeat top right / contain,
+    url(${elementOneImg.src}) no-repeat top right / contain,
+    url(${elementOneImg.src}) no-repeat top right / contain;
+  mask-composite: add;
+
+  @media (max-width: 991px) {
+    display: none;
+  }
 `;
 
 const ElementTwo = styled(BannerElement)`
@@ -150,6 +171,7 @@ const BannerSocial = styled.ul`
   position: absolute;
   left: 70px;
   top: 50%;
+  color: transparent;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
@@ -162,7 +184,7 @@ const BannerSocial = styled.ul`
     content: "";
     width: 1px;
     height: 150px;
-    background: rgba(255, 255, 255, 0.1);
+    background: ${theme.base};
   }
 
   @media (max-width: 1599px) {
@@ -189,8 +211,7 @@ const SocialLink = styled.a`
   justify-content: center;
   border-radius: 50%;
   background: ${({ $active }) => ($active ? theme.base : "transparent")};
-  border: 1px solid
-    ${({ $active }) => ($active ? theme.base : "rgba(255, 255, 255, 0.15)")};
+  border: 1px solid ${theme.base};
   color: ${({ $active }) => ($active ? theme.dark : theme.base)};
   font-size: 12px;
   text-decoration: none;
@@ -253,6 +274,8 @@ const BannerThumb = styled.div`
   width: 125%;
   animation: ${scale} 4s linear;
   z-index: 9;
+  isolation: isolate;
+  will-change: transform;
 
   img {
     width: 100%;
@@ -284,19 +307,19 @@ const BannerThumb = styled.div`
 const SubTitle = styled.span`
   display: inline-block;
   text-transform: uppercase;
-  letter-spacing: 3px;
-  font-size: 30px;
+  letter-spacing: 10px;
+  font-size: 40px;
   font-weight: 600;
   color: ${theme.base};
-  font-family: ${theme.fonts.mulish};
+  font-family: ${theme.fonts.nasalization};
   margin-bottom: 25px;
 
   @media (max-width: 1199px) {
-    font-size: 24px;
+    font-size: 35px;
     margin-bottom: 18px;
   }
   @media (max-width: 767px) {
-    font-size: 20px;
+    font-size: 25px;
     margin-bottom: 14px;
   }
 `;

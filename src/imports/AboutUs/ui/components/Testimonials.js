@@ -130,7 +130,7 @@ const TestimonialSection = styled(Section)`
 `;
 
 const ClientQuote = styled.div`
-  color: #e8e9ea;
+  color: ${theme.white};
   font-size: 40px;
   line-height: 40px;
   margin-bottom: 20px;
@@ -142,13 +142,13 @@ const ClientContent = styled.div`
 `;
 
 const ClientText = styled.p`
-  color: #3d3d3d;
+  color: ${theme.text};
   font-size: 14px;
   line-height: 1.6;
   margin: 0;
 
   .dark & {
-    color: #dfdfdf;
+    color: ${theme.white};
   }
 `;
 
@@ -158,7 +158,7 @@ const ClientFooter = styled.div`
   justify-content: space-between;
   background-color: transparent;
   padding: 0;
-  border-top: 1px dashed #e5e5e5;
+  border-top: 1px dashed ${theme.soft};
   padding-top: 10px;
   margin-top: 10px;
   transition: all 0.5s;
@@ -184,7 +184,7 @@ const UserThumb = styled.div`
 
 const ClientName = styled.span`
   padding-left: 15px;
-  color: #19232d;
+  color: ${theme.dark};
   font-weight: 700;
   font-size: 14px;
   font-family: ${theme.fonts.mulish};
@@ -195,14 +195,14 @@ const ClientName = styled.span`
 `;
 
 const ClientRatings = styled.span`
-  color: #dcbb87;
+  color: ${theme.base};
   font-size: 12px;
   display: flex;
   gap: 2px;
 `;
 
 const Icon = styled.i`
-  color: #dcbb87;
+  color: $;
 `;
 
 const ClientItem = styled.div`
@@ -217,7 +217,7 @@ const ClientItem = styled.div`
   box-shadow: 0 10px 10px rgba(50, 73, 179, 0.08);
 
   .dark & {
-    background-color: #1f2e3c;
+    background-color: ${theme.dark};
     box-shadow: none;
   }
 

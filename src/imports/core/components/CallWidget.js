@@ -95,8 +95,8 @@ const WidgetWrap = styled.div`
   width: 900px;
   transform: translateY(-50%) translateX(900px);
   transition: transform 0.5s ease;
-  background-color: #1f2e3c;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.25);
+  background-color: ${theme.dark};
+  box-shadow: 0 5px 100px rgba(255, 255, 255, 0.25);
   padding: 50px 30px;
   display: flex;
   flex-direction: column;
@@ -112,15 +112,14 @@ const WidgetWrap = styled.div`
     display: none;
   }
 `;
-
 const ToggleTab = styled.button`
   position: absolute;
   top: 50%;
   left: -20px;
-  background-color: #fff8ee;
+  background-color: ${theme.white};
   transform: translate(-50%, -50%) rotate(-90deg);
-  transform-origin: center center;
-  color: #19232d;
+  transform-origin: center;
+  color: ${theme.dark};
   font-weight: 700;
   border-radius: 5px 5px 0 0;
   border: none;
@@ -132,25 +131,26 @@ const ToggleTab = styled.button`
   cursor: pointer;
   transition: all 0.5s;
 
-  ${({ $open }) =>
+  ${({ $open, theme }) =>
     $open &&
     css`
-      background-color: #19232d;
+      background-color: ${theme.dark};
+      color: ${theme.white};
       border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      color: white;
     `}
 `;
-
 const TabNum = styled.span`
   padding: 10px 27px;
   font-size: 15px;
   display: flex;
   align-items: center;
   white-space: nowrap;
+  background-color: ${theme.light};
+  color: ${theme.dark};
 `;
 
 const Icon = styled.i`
-  color: #dcbb87;
+  color: ${theme.base};
   font-size: 16px;
   margin-right: 8px;
 `;
@@ -158,7 +158,7 @@ const Icon = styled.i`
 const TabArrow = styled.span`
   width: 50px;
   height: 100%;
-  background-color: #dcbb87;
+  background-color: ${theme.base};
   position: relative;
   flex-shrink: 0;
 
@@ -173,8 +173,8 @@ const TabArrow = styled.span`
     pointer-events: none;
     transform-origin: 50% 50%;
 
-    border-top: 3px solid #19232d;
-    border-left: 3px solid #19232d;
+    border-top: 3px solid ${theme.dark};
+    border-left: 3px solid ${theme.dark};
     border-bottom: none;
     border-right: none;
     margin-top: -3px;
@@ -186,8 +186,8 @@ const TabArrow = styled.span`
       css`
         border-top: none;
         border-left: none;
-        border-bottom: 3px solid #19232d;
-        border-right: 3px solid #19232d;
+        border-bottom: 3px solid ${theme.dark};
+        border-right: 3px solid ${theme.dark};
         margin-top: -10px;
       `}
   }
@@ -238,7 +238,7 @@ const BookPlusMinus = styled.div`
 `;
 
 const QtyButton = styled.div`
-  color: ${theme.base || "#dcbb87"};
+  color: ${theme.base};
   font-size: 20px;
   font-weight: 500;
   line-height: 45px;
@@ -278,7 +278,7 @@ const QtyInput = styled.input`
   text-align: center;
   width: 100%;
   outline: none;
-  border: 1px solid ${theme.base || "#dcbb87"};
+  border: 1px solid ${theme.base};
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 3px;
 `;

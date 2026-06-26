@@ -29,7 +29,7 @@ const IconLabel = styled.label`
   transform: translateY(-50%);
   right: 30px;
   background-color: transparent;
-  color: #3d3d3d;
+  color: ${theme.gray};
   font-size: 20px;
   display: flex;
   align-items: center;
@@ -39,10 +39,10 @@ const IconLabel = styled.label`
 
 const StyledInput = styled.input`
   width: 100%;
-  border: 1px solid ${theme?.base || "#dcbb87"};
-  background-color: ${theme?.cream || "#fff8ee"};
-  color: ${theme?.text || "#3d3d3d"};
-  font-family: ${theme?.fonts?.mulish || "Mulish, sans-serif"};
+  border: 1px solid ${theme?.base};
+  background-color: ${theme?.cream};
+  color: ${theme?.text};
+  font-family: ${theme?.fonts?.mulish};
   padding: 10px 60px 10px 25px;
   height: 50px;
   font-weight: 700;
@@ -52,13 +52,13 @@ const StyledInput = styled.input`
   outline: none;
 
   &:focus {
-    border: 1px solid ${theme?.base || "#dcbb87"};
-    background-color: white;
-    color: ${theme?.text || "#3d3d3d"};
+    border: 1px solid ${theme?.base};
+    background-color: ${theme.white};
+    color: ${theme?.text};
   }
 
   &::placeholder {
-    color: rgba(61, 61, 61, 0.7);
+    color: ${theme.gray};
   }
 `;
 

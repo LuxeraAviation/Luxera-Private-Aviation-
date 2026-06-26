@@ -100,7 +100,7 @@ const SidebarContainer = styled.aside`
 `;
 
 const WidgetBox = styled.div`
-  background: #ffffff;
+  background: ${theme.white};
   border-radius: 10px;
   padding: 25px;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
@@ -143,17 +143,17 @@ const SearchForm = styled.form`
 const SearchInput = styled.input`
   width: 100%;
   padding: 10px 40px 10px 15px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid ${theme.lightgray};
   border-radius: 4px;
   font-family: ${theme.fonts.mulish};
   font-size: 15px;
-  color: #3d3d3d;
+  color: ${theme.gray};
   outline: none;
   background-color: transparent;
   transition: all 0.3s ease;
 
   &::placeholder {
-    color: #979797;
+    color: ${theme.lightgray};
   }
 
   &:focus {
@@ -216,7 +216,7 @@ const DateSpan = styled.span`
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 7px;
-  color: #979797;
+  color: ${theme.lightgray};
 `;
 
 const CourseLink = styled(Link)`
@@ -243,7 +243,7 @@ const CategoryList = styled.ul`
 
 const CategoryItem = styled.li`
   font-size: 15px;
-  border-bottom: 1px dashed #e5e5e5;
+  border-bottom: 1px dashed ${theme.soft};
   padding-bottom: 15px;
   margin-bottom: 15px;
   font-weight: 700;
@@ -292,7 +292,7 @@ const TagItem = styled.li`
 
 const TagLink = styled(Link)`
   display: inline-block;
-  border: 1px solid #e5e5e5;
+  border: 1px solid ${theme.soft};
   border-radius: 3px;
   padding: 5px 10px;
   font-size: 14px;

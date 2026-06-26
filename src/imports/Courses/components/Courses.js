@@ -69,7 +69,7 @@ export default function Courses() {
 
 const CourseSection = styled.section`
   padding: 120px 0;
-  background-color: #ffffff;
+  background-color: ${theme.white};
   overflow: hidden;
   position: relative;
 
@@ -136,7 +136,7 @@ const CourseGrid = styled.div`
 `;
 
 const CourseItem = styled.div`
-  background-color: #ffffff;
+  background-color: ${theme.white};
   box-shadow: 0 12px 30px rgba(220, 187, 135, 0.2);
   border-radius: 10px;
   overflow: hidden;

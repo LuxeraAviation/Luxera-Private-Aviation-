@@ -3,7 +3,7 @@ import { theme } from "@/styles/Theme";
 
 const GlobalStyles = createGlobalStyle`
   ::selection {
-    background: #dcbb87 !important;
+    background: ${theme.base} !important;
     color: #fff;
   }
 
@@ -49,15 +49,15 @@ const GlobalStyles = createGlobalStyle`
   }
 
   ::-webkit-scrollbar-track {
-    background: #ffffff;
+    background: ${theme.white};
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #dcbb87;
+    background: ${theme.base};
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #c9a56f;
+    background: ${theme.base};
   }
 `;
 

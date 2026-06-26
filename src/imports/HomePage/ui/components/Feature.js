@@ -68,12 +68,12 @@ const SubTitle = styled.span`
   display: inline-block;
   font-weight: 800;
   font-size: 20px;
-  color: ${theme?.base || "#dcbb87"};
+  color: ${theme.base};
   margin-bottom: 20px;
   font-family: ${theme?.fonts?.mulish};
 
   span {
-    color: ${theme?.dark || "#19232d"};
+    color: ${theme.dark};
   }
 
   @media (max-width: 768px) {
@@ -157,7 +157,7 @@ const FeatureItem = styled(Flex)`
     }
 
     .feature-icon {
-      color: ${theme?.base || "#dcbb87"};
+      color: ${theme?.base};
     }
   }
 `;

@@ -170,7 +170,7 @@ const NavBtn = styled.button`
   &:hover {
     background: ${theme.base};
     border-color: ${theme.base};
-    color: #fff;
+    color: ${theme.white};
   }
 `;
 
@@ -179,8 +179,8 @@ const NavIcon = styled.i`
 `;
 
 const Card = styled.div`
-  background: #fff;
-  border: 1px solid #e8e8e8;
+  background: ${theme.white};
+  border: 1px solid ${theme.lightgray}50;
   border-radius: 14px;
   overflow: hidden;
 `;
@@ -212,7 +212,7 @@ const CardTitle = styled.h3`
 `;
 
 const CardSub = styled.span`
-  color: #979797;
+  color: ${theme.lightgray};
   font-weight: 500;
   font-size: 14px;
   display: block;
@@ -222,7 +222,7 @@ const CardSub = styled.span`
 const CardMeta = styled.div`
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px dashed #ddd;
+  border-bottom: 1px dashed ${theme.lightgray};
   padding-bottom: 16px;
   margin-bottom: 16px;
   font-size: 14px;

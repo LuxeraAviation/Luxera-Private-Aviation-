@@ -15,20 +15,8 @@ export default function Packages() {
 
   return (
     <PackageSection $isPackagePage={isPackagePage}>
-      <BgElementLeft
-        src="/image/element/element-24.png"
-        alt=""
-        width={1152}
-        height={887}
-        aria-hidden="true"
-      />
-      <BgElementRight
-        src="/image/element/element-1.png"
-        alt=""
-        width={1152}
-        height={1080}
-        aria-hidden="true"
-      />
+      <BgElementLeft $isPackagePage={isPackagePage} aria-hidden="true" />
+      <BgElementRight $isPackagePage={isPackagePage} aria-hidden="true" />
 
       <Container>
         <SectionHeader>
@@ -118,31 +106,67 @@ const PackageSection = styled.section`
   overflow: hidden;
   padding: 120px 0;
   background-color: ${({ $isPackagePage }) =>
-    $isPackagePage ? "#ffffff" : theme.dark || "#19232d"};
+    $isPackagePage ? theme.white : theme.dark};
 
   @media (max-width: 768px) {
     padding: 80px 0;
   }
 `;
 
-const BgElementLeft = styled(Image)`
+const BgElementLeft = styled.div`
   position: absolute;
   bottom: 0;
   left: -10%;
   pointer-events: none;
   user-select: none;
+  width: 1152px;
+  max-width: 100%;
+  aspect-ratio: 1152 / 887;
+  background-color: ${({ $isPackagePage }) =>
+    $isPackagePage ? theme.lightgray : theme.white};
+  opacity: 0.5;
+  -webkit-mask:
+    url(/image/element/element-24.png) no-repeat center / contain,
+    url(/image/element/element-24.png) no-repeat center / contain,
+    url(/image/element/element-24.png) no-repeat center / contain,
+    url(/image/element/element-24.png) no-repeat center / contain;
+  -webkit-mask-composite: source-over;
+  mask:
+    url(/image/element/element-24.png) no-repeat center / contain,
+    url(/image/element/element-24.png) no-repeat center / contain,
+    url(/image/element/element-24.png) no-repeat center / contain,
+    url(/image/element/element-24.png) no-repeat center / contain;
+  mask-composite: add;
 
   @media (max-width: 991px) {
     display: none;
   }
 `;
 
-const BgElementRight = styled(Image)`
+const BgElementRight = styled.div`
   position: absolute;
   bottom: 0;
   right: -10%;
   pointer-events: none;
   user-select: none;
+  width: 1152px;
+  max-width: 100%;
+  aspect-ratio: 1152 / 1080;
+  background-color: ${({ $isPackagePage }) =>
+    $isPackagePage ? theme.lightgray : theme.white};
+  opacity: 0.5;
+  -webkit-mask:
+    url(/image/element/element-1.png) no-repeat center / contain,
+    url(/image/element/element-1.png) no-repeat center / contain,
+    url(/image/element/element-1.png) no-repeat center / contain,
+    url(/image/element/element-1.png) no-repeat center / contain;
+  -webkit-mask-composite: source-over;
+  mask:
+    url(/image/element/element-1.png) no-repeat center / contain,
+    url(/image/element/element-1.png) no-repeat center / contain,
+    url(/image/element/element-1.png) no-repeat center / contain,
+    url(/image/element/element-1.png) no-repeat center / contain;
+  mask-composite: add;
 
   @media (max-width: 991px) {
     display: none;
@@ -161,9 +185,9 @@ const ControlBtn = styled.button`
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: 2px solid #dcbb87;
+  border: 2px solid ${theme.base};
   background: transparent;
-  color: #dcbb87;
+  color: ${theme.base};
   font-size: 14px;
   cursor: pointer;
   display: flex;
@@ -172,8 +196,8 @@ const ControlBtn = styled.button`
   transition: all 0.3s ease;
 
   &:hover {
-    background: ${theme.base || "#dcbb87"};
-    border-color: ${theme.base || "#dcbb87"};
+    background: ${theme.base};
+    border-color: ${theme.base};
     color: #19232d;
   }
 `;
@@ -188,12 +212,12 @@ const SubTitle = styled.span`
 
   font-weight: 800;
   font-size: 20px;
-  color: ${theme.base || "#dcbb87"};
+  color: ${theme.base};
   margin-bottom: 20px;
   font-family: ${theme.fonts?.mulish || "var(--font-mulish), sans-serif"};
 
   span {
-    color: ${({ $isPackagePage }) => ($isPackagePage ? "#000000" : "#fff")};
+    color: ${({ $isPackagePage }) => ($isPackagePage ? theme.dark : theme.white)};
   }
   @media (max-width: 768px) {
     font-size: 13px;
@@ -206,7 +230,7 @@ const SectionTitle = styled.h2`
   font-size: 40px;
   font-weight: 700;
   line-height: 1.2;
-  color: ${({ $isPackagePage }) => ($isPackagePage ? "#000000" : "#fff")};
+  color: ${({ $isPackagePage }) => ($isPackagePage ? theme.dark : theme.white)};
   margin: 0;
 
   @media (max-width: 768px) {
@@ -247,9 +271,9 @@ const PackagePrize = styled.div`
 `;
 
 const PriceLabel = styled.span`
-  background-color: #dcbb87;
+  background-color: ${theme.base};
   border-radius: 4px;
-  color: #19232d;
+  color: ${theme.dark};
   font-weight: 800;
   padding: 6px 15px;
   display: inline-block;
@@ -276,7 +300,7 @@ const TitleLink = styled(Link)`
   font-size: 24px;
   font-family: ${theme.fonts?.playfair || "serif"};
   &:hover {
-    color: ${theme.base || "#dcbb87"};
+    color: ${theme.base };
   }
   @media (max-width: 768px) {
     font-size: 18px;
@@ -331,7 +355,7 @@ const CustomBtn = styled(Link)`
   gap: 8px;
 
   &:hover {
-    color: #dcbb87 !important;
+    color: ${theme.base} !important;
 
     ${BtnIcon} {
       margin-right: 5px;

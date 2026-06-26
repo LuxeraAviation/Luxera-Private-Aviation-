@@ -6,16 +6,19 @@ import ScrollTopIcon from "@/imports/core/assets/ScrollTopIcon";
 
 export const theme = {
   base: "#dcbb87",
-  dark: "#19232d",
+  dark: "#000",
   darker: "#000033",
   text: "#3d3d3d",
   soft: "#f5f3f1",
   cream: "#fff8ee",
-  white: "#ffffff",
+  white: "#fff",
+  gray: "#555e67",
+  lightgray: "#979797",
   loaderStroke: "#0099cc",
   fonts: {
     mulish: "var(--font-mulish), sans-serif",
     playfair: "var(--font-playfair-display), serif",
+    nasalization: "var(--font-nasalization), sans-serif",
   },
 };
 

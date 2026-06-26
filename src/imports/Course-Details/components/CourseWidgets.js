@@ -65,7 +65,7 @@ const IconContainer = styled.div`
 `;
 
 const WidgetCard = styled.div`
-  background: #ffffff;
+  background: ${theme.white};
   border-radius: 5px;
   padding: 20px;
   display: flex;
@@ -101,7 +101,7 @@ const WidgetCard = styled.div`
   }
 
   &:hover ${IconContainer} {
-    background-color: #ffffff;
+    background-color: ${theme.white};
   }
 `;
 

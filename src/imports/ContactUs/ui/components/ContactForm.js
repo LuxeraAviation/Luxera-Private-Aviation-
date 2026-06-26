@@ -287,7 +287,7 @@ const Description = styled.p`
   font-size: 16px;
   line-height: 1.6;
   margin: 0;
-  color: #19232d;
+  color: ${theme.dark};
 `;
 
 const SocialList = styled.ul`
@@ -317,7 +317,7 @@ const SocialLink = styled.a`
 
   &:hover {
     background-color: ${theme.base};
-    color: #ffffff;
+    color: ${theme.white};
     border-color: ${theme.base};
   }
 `;
@@ -392,9 +392,9 @@ const TextareaLabel = styled.label`
 
 const FormInput = styled.input`
   width: 100%;
-  border: 1px solid #dcbb87;
-  background-color: #ffffff;
-  color: #3d3d3d;
+  border: 1px solid ${theme.base};
+  background-color: ${theme.white};
+  color: ${theme.dark};
   font-family: ${theme.fonts.mulish};
   padding: 10px 40px 10px 15px;
   height: 50px;
@@ -405,9 +405,9 @@ const FormInput = styled.input`
   outline: none;
 
   &:focus {
-    border-color: #dcbb87;
-    background-color: #ffffff;
-    color: #3d3d3d;
+    border-color: ${theme.base};
+    background-color: ${theme.white};
+    color: ${theme.dark};
   }
 
   &::placeholder {
@@ -417,9 +417,9 @@ const FormInput = styled.input`
 
 const FormTextarea = styled.textarea`
   width: 100%;
-  border: 1px solid #dcbb87;
-  background-color: #ffffff;
-  color: #3d3d3d;
+  border: 1px solid ${theme.base};
+  background-color: ${theme.white};
+  color: ${theme.dark};
   font-family: ${theme.fonts.mulish};
   padding: 10px 40px 10px 15px;
   height: 180px;
@@ -431,9 +431,9 @@ const FormTextarea = styled.textarea`
   resize: none;
 
   &:focus {
-    border-color: #dcbb87;
-    background-color: #ffffff;
-    color: #3d3d3d;
+    border-color: ${theme.base};
+    background-color: ${theme.white};
+    color: ${theme.dark};
   }
 
   &::placeholder {
@@ -448,9 +448,9 @@ const SelectWrapper = styled.div`
 
 const FormSelect = styled.select`
   width: 100%;
-  border: 1px solid #dcbb87;
-  background-color: #ffffff;
-  color: rgba(61, 61, 61, 0.7);
+  border: 1px solid ${theme.base};
+  background-color: ${theme.white};
+  color: ${theme.gray};
   font-family: ${theme.fonts.mulish};
   padding: 10px 40px 10px 15px;
   height: 50px;
@@ -463,19 +463,19 @@ const FormSelect = styled.select`
   cursor: pointer;
 
   &:focus {
-    border-color: #dcbb87;
-    background-color: #ffffff;
-    color: #3d3d3d;
+    border-color: ${theme.base};
+    background-color: ${theme.white};
+    color: ${theme.dark};
   }
 
   &:not([value="1"]) {
-    color: #3d3d3d;
+    color: ${theme.dark};
   }
 `;
 
 const FormOption = styled.option`
-  color: #3d3d3d;
-  background-color: #ffffff;
+  color: ${theme.dark};
+  background-color: ${theme.white};
 `;
 
 const SelectArrow = styled.div`

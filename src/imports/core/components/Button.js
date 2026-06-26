@@ -23,9 +23,9 @@ const buttonStyles = css`
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: ${theme?.base || "#dcbb87"};
-  border: 1.5px solid ${theme?.base || "#dcbb87"};
-  color: ${theme?.dark || "#19232d"};
+  background: ${theme?.base};
+  border: 1.5px solid ${theme?.base};
+  color: ${theme?.dark};
   padding: 12px 30px;
   border-radius: 999px;
   font-size: 16px;
@@ -37,8 +37,8 @@ const buttonStyles = css`
 
   &:hover {
     background: transparent;
-    color: ${theme?.base || "#dcbb87"};
-    border-color: ${theme?.base || "#dcbb87"};
+    color: ${theme?.base};
+    border-color: ${theme?.base};
   }
 
   @media (max-width: 767px) {

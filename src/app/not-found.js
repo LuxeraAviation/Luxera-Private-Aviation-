@@ -5,6 +5,7 @@ import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
 import { useHideChrome } from "@/imports/core/components/ChromeGate";
+import { theme } from "@/styles/Theme";
 
 export default function NotFoundPage() {
   useHideChrome();
@@ -92,7 +93,7 @@ const PageContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #f5f3f1;
+  background-color: ${theme.white};
   padding: 80px 24px;
   overflow-y: auto;
   box-sizing: border-box;
@@ -215,7 +216,7 @@ const Title = styled.h2`
   font-size: 40px;
   font-weight: 700;
   margin-bottom: 20px;
-  color: #19232d;
+  color: ${theme.dark};
   line-height: 1.3;
 
   @media only screen and (max-width: 991px) {
@@ -228,7 +229,7 @@ const Title = styled.h2`
 
 const Description = styled.p`
   font-size: 20px;
-  color: #19232d;
+  color: ${theme.dark};
   font-weight: 700;
   margin-bottom: 30px;
   line-height: 1.5;
@@ -239,11 +240,11 @@ const Description = styled.p`
 `;
 
 const HomeLink = styled(Link)`
-  color: #dcbb87;
+  color: ${theme.base};
   text-decoration: none;
   transition: color 0.15s ease-in-out;
 
   &:hover {
-    color: #c9a56f;
+    color: ${theme.base};
   }
 `;

@@ -138,7 +138,7 @@ export default function Benefits() {
 
 const FeatureSection = styled.section`
   padding: 120px 0;
-  background-color: #ffffff;
+  background-color: ${theme.white};
   overflow: hidden;
   position: relative;
 
@@ -242,7 +242,7 @@ const VideoLink = styled.a`
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  background: #ffffff;
+  background: ${theme.white};
   color: ${theme.base};
   text-decoration: none;
   display: flex;
@@ -253,7 +253,7 @@ const VideoLink = styled.a`
 
   &:hover {
     background: ${theme.base};
-    color: #ffffff;
+    color: ${theme.white};
   }
 `;
 
@@ -323,7 +323,7 @@ const FeatureGrid = styled.div`
 `;
 
 const FeatureItem = styled.div`
-  background-color: #ffffff;
+  background-color: ${theme.white};
   padding: 25px;
   display: flex;
   flex-direction: column;

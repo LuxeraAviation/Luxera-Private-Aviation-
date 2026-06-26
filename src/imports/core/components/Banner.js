@@ -50,7 +50,7 @@ const BannerSection = styled.section`
 
 const Overlay = styled.div`
   position: absolute;
-  background-color: #19232d;
+  background-color: ${theme.dark};
   opacity: 0.9;
   width: 100%;
   height: 100%;
@@ -95,7 +95,7 @@ const BreadcrumbLink = styled(Link)`
   font-size: 20px;
 
   &:hover {
-    color: #dcbb87;
+    color: ${theme.base};
   }
 `;
 
@@ -105,7 +105,7 @@ const Separator = styled.span`
 `;
 
 const ActivePage = styled.span`
-  color: #dcbb87;
+  color: ${theme.base};
   font-size: 20px;
   font-weight: 700;
 `;

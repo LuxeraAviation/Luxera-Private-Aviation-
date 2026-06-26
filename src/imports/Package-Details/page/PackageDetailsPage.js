@@ -240,7 +240,7 @@ export default function PackageDetailsPage() {
 
 const DetailsSection = styled.section`
   padding: 120px 0;
-  background-color: #ffffff;
+  background-color: ${theme.white};
   overflow: hidden;
 
   @media (max-width: 991px) {
@@ -454,7 +454,7 @@ const SliderPrevBtn = styled.button`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  color: #ffffff;
+  color: ${theme.white};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -477,7 +477,7 @@ const SliderNextBtn = styled.button`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  color: #ffffff;
+  color: ${theme.white};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -575,7 +575,7 @@ const ChevronIcon = styled.i`
 
 const FaqContent = styled.div`
   padding: 20px;
-  background: #ffffff;
+  background: ${theme.white};
   border-top: 1px solid #f5f3f1;
 `;
 

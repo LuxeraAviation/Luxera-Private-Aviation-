@@ -233,8 +233,8 @@ const RatingLeftCard = styled(Flex)`
 `;
 
 const RatingRightCard = styled(Flex)`
-  background-color: #f5f3f1;
-  border: 1px solid #e5e5e5;
+  background-color: ${theme.white};
+  border: 1px solid ${theme.soft};
   border-radius: 10px;
   padding: 40px 20px;
   justify-content: center;
@@ -246,7 +246,7 @@ const RatingRightCard = styled(Flex)`
 
 const AverageScore = styled.span`
   font-family: ${theme.fonts.mulish};
-  color: #dcbb87;
+  color: ${theme.base};
   font-size: 80px;
   line-height: 80px;
   font-weight: 900;
@@ -283,16 +283,16 @@ const WriteReviewSpan = styled.span`
 
 const PenIcon = styled.i.attrs({ className: "fas fa-pen" })`
   font-size: 12px;
-  color: #000;
+  color: ${theme.dark};
 `;
 
 const StarIcon = styled.i.attrs({ className: "fas fa-star" })`
-  color: #dcbb87;
+  color: ${theme.base};
   font-size: 16px;
 `;
 
 const StarOutlineIcon = styled.i.attrs({ className: "far fa-star" })`
-  color: #dcbb87;
+  color: ${theme.base};
   font-size: 16px;
 `;
 
@@ -327,7 +327,7 @@ const BarLabel = styled.span`
   flex-shrink: 0;
 
   i {
-    color: #dcbb87;
+    color: ${theme.base};
   }
 `;
 
@@ -336,7 +336,7 @@ const ProgressOuter = styled.div`
   display: block;
   flex: 1;
   height: 10px;
-  background-color: #e5e5e5;
+  background-color: ${theme.soft};
   border-radius: 25px;
 `;
 
@@ -346,7 +346,7 @@ const ProgressInner = styled.div`
   height: 100%;
   top: 0;
   left: 0;
-  background: #dcbb87;
+  background: ${theme.base};
   border-radius: 25px;
   overflow: hidden;
   transition: width 1s ease;
@@ -395,7 +395,7 @@ const StarRatingInput = styled.div`
     cursor: pointer;
     font-size: 200%;
     line-height: 1.2;
-    color: #ddd;
+    color: ${theme.white};
 
     &:before {
       content: "★";
@@ -410,7 +410,7 @@ const StarRatingInput = styled.div`
   }
 
   input:checked ~ label {
-    color: #dcbb87;
+    color: ${theme.base};
   }
 
   label:hover,
@@ -437,7 +437,7 @@ const TextArea = styled.textarea`
   padding: 15px 20px;
   border: 1px solid #e5e5e5;
   background-color: white;
-  color: #3d3d3d;
+  color: ${theme.text};
   font-family: "Mulish", sans-serif;
   font-weight: 700;
   border-radius: 6px;
@@ -445,13 +445,13 @@ const TextArea = styled.textarea`
   transition: border-color 0.3s ease;
 
   &:focus {
-    border: 1px solid #dcbb87;
+    border: 1px solid ${theme.base};
     background-color: white;
-    color: #3d3d3d;
+    color: ${theme.text};
   }
 
   &::placeholder {
-    color: #3d3d3d;
+    color: ${theme.text};
   }
 `;
 
@@ -552,7 +552,7 @@ const CommentStars = styled.div`
 `;
 
 const Badge = styled.span`
-  background-color: #dcbb87;
+  background-color: ${theme.base};
   border-radius: 3px;
   padding: 2px 10px;
   font-size: 14px;

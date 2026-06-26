@@ -85,7 +85,7 @@ const DropdownHeader = styled.div`
   width: 100%;
   height: 45px;
   padding: 0 15px;
-  border: 1px solid ${theme.base || "#dcbb87"};
+  border: 1px solid ${theme.base};
   border-radius: 3px;
   background-color: rgba(255, 255, 255, 0.1);
   color: white;
@@ -112,7 +112,7 @@ const IconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${theme.base || "#dcbb87"};
+  color: ${theme.base};
   font-size: 16px;
 `;
 
@@ -158,7 +158,7 @@ const DropdownList = styled.ul`
 const DropdownItem = styled.li`
   padding: 10px 20px;
   font-size: 14px;
-  color: #19232d;
+  color: ${theme.dark};
   font-family: ${theme.fonts?.mulish || "var(--font-mulish), sans-serif"};
   font-weight: 500;
   cursor: pointer;
@@ -166,14 +166,14 @@ const DropdownItem = styled.li`
   text-align: left;
 
   &:hover {
-    background-color: ${theme.base || "#dcbb87"};
-    color: #19232d;
+    background-color: ${theme.base};
+    color: ${theme.dark};
   }
 
   ${(props) =>
     props.$isSelected &&
     css`
-      background-color: ${theme.base || "#dcbb87"};
-      color: #19232d;
+      background-color: ${theme.base};
+      color: ${theme.dark};
     `}
 `;

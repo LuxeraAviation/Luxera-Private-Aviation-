@@ -176,7 +176,7 @@ const BlogLink = styled(Link)`
   text-decoration: none;
 
   &:hover {
-    color: #dcbb87;
+    color: ${theme.base};
   }
 `;
 
@@ -209,7 +209,7 @@ const BlogPostMetaDate = styled(BlogPostMetaSpan)`
     right: 0;
     width: 1px;
     height: 10px;
-    background-color: #dcbb87;
+    background-color: ${theme.base};
   }
 `;
 
@@ -241,7 +241,7 @@ const ArrowIcon = styled.i`
 `;
 
 const BlogBtnLink = styled(Link)`
-  color: #dcbb87;
+  color: ${theme.base};
   font-size: 16px;
   font-weight: 800;
   text-decoration: none;

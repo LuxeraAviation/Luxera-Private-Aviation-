@@ -103,7 +103,7 @@ const IconContainer = styled.div`
 const SpecSection = styled.section`
   padding: 120px 0 0;
   position: relative;
-  background: #ffffff;
+  background: ${theme.white};
   color: ${theme.text};
   overflow: hidden;
 

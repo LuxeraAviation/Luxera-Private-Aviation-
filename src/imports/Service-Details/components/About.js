@@ -95,7 +95,7 @@ export default function ServiceDetailsAbout() {
 const DetailSection = styled.section`
   padding: 120px 0;
   position: relative;
-  background: #ffffff;
+  background: ${theme.white};
   color: ${theme.text};
   overflow: hidden;
 

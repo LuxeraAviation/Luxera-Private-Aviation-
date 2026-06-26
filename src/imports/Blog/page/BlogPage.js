@@ -116,7 +116,7 @@ export default function BlogPage() {
 
 const BlogSection = styled.section`
   padding: 120px 0;
-  background-color: #ffffff;
+  background-color: ${theme.white};
   overflow: hidden;
 
   @media (max-width: 991px) {
@@ -198,7 +198,7 @@ const BlogPostMeta = styled.div`
 `;
 
 const DateSpan = styled.span`
-  color: #8e8e8e;
+  color: ${theme.lightgray};
   font-family: ${theme.fonts.mulish};
   font-size: 14px;
   position: relative;
@@ -211,7 +211,7 @@ const DateSpan = styled.span`
     right: 0;
     width: 1px;
     height: 10px;
-    background-color: #dcbb87;
+    background-color: ${theme.base};
   }
 
   @media (max-width: 991px) {
@@ -220,7 +220,7 @@ const DateSpan = styled.span`
 `;
 
 const CommentSpan = styled.span`
-  color: #8e8e8e;
+  color: ${theme.lightgray};
   font-family: ${theme.fonts.mulish};
   font-size: 14px;
 
@@ -307,8 +307,8 @@ const PageLink = styled.a`
   height: 40px;
   border-radius: 50%;
   background: transparent;
-  border: 1px solid #e5e5e5;
-  color: #3d3d3d;
+  border: 1px solid ${theme.soft};
+  color: ${theme.dark};
   font-family: ${theme.fonts.mulish};
   font-weight: 700;
   line-height: 38px;

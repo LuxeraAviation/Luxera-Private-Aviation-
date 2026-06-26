@@ -117,7 +117,7 @@ const StyledContainer = styled(Container)`
 
 const BookFormArea = styled.div`
   background:
-    linear-gradient(rgba(25, 35, 45, 0.9), rgba(25, 35, 45, 0.9)),
+    linear-gradient(rgba(0, 0, 0, 0.9), rgba(4, 5, 5, 0.9)),
     url("/image/bg/bg-3.png") center/cover no-repeat;
   padding: 100px 180px;
   border-radius: 10px;
@@ -139,7 +139,7 @@ const SubTitle = styled.span`
   letter-spacing: 2px;
   font-weight: 800;
   font-size: 14px;
-  color: ${theme.base || "#dcbb87"};
+  color: ${theme.base};
   margin-bottom: 12px;
   font-family: ${theme.fonts?.mulish || "var(--font-mulish), sans-serif"};
 
@@ -212,7 +212,7 @@ const BookPlusMinus = styled.div`
 `;
 
 const QtyButton = styled.div`
-  color: ${theme.base || "#dcbb87"};
+  color: ${theme.base};
   font-size: 20px;
   font-weight: 500;
   line-height: 45px;
@@ -252,7 +252,7 @@ const QtyInput = styled.input`
   text-align: center;
   width: 100%;
   outline: none;
-  border: 1px solid ${theme.base || "#dcbb87"};
+  border: 1px solid ${theme.base };
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 3px;
 `;
@@ -282,8 +282,8 @@ const SubmitBtn = styled.button`
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  background-color: ${theme.base || "#dcbb87"};
-  border: 1px solid ${theme.base || "#dcbb87"};
+  background-color: ${theme.base};
+  border: 1px solid ${theme.base};
   color: #19232d;
   font-size: 16px;
   font-weight: 700;
@@ -295,7 +295,7 @@ const SubmitBtn = styled.button`
 
   &:hover {
     background-color: transparent;
-    color: ${theme.base || "#dcbb87"};
+    color: ${theme.base};
 
     ${BtnIcon} {
       transform: rotate(0deg);

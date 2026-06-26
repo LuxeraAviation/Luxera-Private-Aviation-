@@ -204,7 +204,7 @@ const PaginationDot = styled.span`
 `;
 
 const TeamSection = styled(Section)`
-  background: #ffffff;
+  background: ${theme.white};
   overflow: hidden;
 
   .slider-viewport {
@@ -219,7 +219,7 @@ const TeamSection = styled(Section)`
 `;
 
 const TeamThumb = styled.div`
-  background-color: #dde6ef;
+  background-color: ${theme.soft};
   text-align: center;
   aspect-ratio: 370 / 360;
   overflow: hidden;
@@ -234,7 +234,7 @@ const TeamThumb = styled.div`
 `;
 
 const TeamContent = styled.div`
-  background-color: #f5f3f1;
+  background-color: ${theme.soft};
   padding: 20px;
   text-align: center;
   display: flex;
@@ -274,7 +274,7 @@ const TeamSocialArea = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-  background-color: #f5f3f1;
+  background-color: ${theme.soft};
   width: 15%;
   height: 100%;
   display: flex;

@@ -29,7 +29,7 @@ export const metadata = {
   title: "Luxera — Book a Private Jet Instantly",
   description:
     "Luxera private airline & charter services — luxury and corporate private jet charter, instant booking.",
-  icons: { icon: "/image/fav.png" },
+  icons: { icon: "/image/luxera-icon.svg" },
 };
 
 export default function RootLayout({ children }) {

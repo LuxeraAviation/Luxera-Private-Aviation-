@@ -79,7 +79,8 @@ const StyledReveal = styled(Reveal)`
 const FaqSectionKey = styled.section`
   padding: 120px 0;
   position: relative;
-  background-color: ${(props) => (props.$isGray ? theme.soft : "#ffffff")};
+  background-color: ${(props) =>
+    props.$isGray ? theme.soft : "${theme.white}"};
   overflow: hidden;
 
   @media (max-width: 991px) {
@@ -128,6 +129,7 @@ const ColumnTitle = styled.h3`
   line-height: 1.3;
   color: ${theme.dark};
   margin: 0 0 15px;
+  margin-top: 15px;
 `;
 
 const FaqWrapper = styled.div`

@@ -283,7 +283,7 @@ const SubTitle = styled.span`
   }
 
   span {
-    color: ${theme?.base || "#dcbb87"};
+    color: ${theme?.base};
   }
 `;
 
@@ -319,7 +319,7 @@ const NavLink = styled.button`
   border: none;
   border-top: 1px dashed rgba(255, 255, 255, 0.3);
   border-radius: 0;
-  color: ${(props) => (props.$active ? theme?.base || "#dcbb87" : "#fff")};
+  color: ${(props) => (props.$active ? theme.base : theme.white)};
   font-family: ${theme?.fonts?.playfair ||
   "var(--font-playfair-display), serif"};
   font-size: 24px;
@@ -488,7 +488,7 @@ const OverviewBtn = styled.div`
 `;
 
 const BookNowBtn = styled(Link)`
-  color: ${theme?.base || "#dcbb87"};
+  color: ${theme?.base};
   font-weight: 800;
   text-decoration: none;
   display: inline-flex;
@@ -520,7 +520,7 @@ const BtnText = styled.span`
 `;
 
 const Icon = styled.i`
-  color: ${theme?.base || "#dcbb87"};
+  color: ${theme?.base};
   margin-right: 15px;
   font-size: 18px;
 `;

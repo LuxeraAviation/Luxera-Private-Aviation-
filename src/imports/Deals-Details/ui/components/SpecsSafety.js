@@ -75,7 +75,7 @@ export default function SpecsSafety() {
 const SafetySection = styled.section`
   padding: 120px 0;
   position: relative;
-  background-color: #ffffff;
+  background-color: ${theme.white};
   overflow: hidden;
 
   @media (max-width: 991px) {

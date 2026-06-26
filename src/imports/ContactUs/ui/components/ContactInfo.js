@@ -97,7 +97,7 @@ export default function ContactInfo() {
 const InfoSection = styled.section`
   padding: 120px 0;
   position: relative;
-  background-color: #ffffff;
+  background-color: ${theme.white};
   overflow: hidden;
 
   @media (max-width: 991px) {
@@ -237,7 +237,7 @@ const ItemList = styled.ul`
 const ItemCardWrapper = styled.li`
   margin-top: 30px;
   padding-top: 30px;
-  border-top: 1px dashed #e5e5e5;
+  border-top: 1px dashed ${theme.soft};
 
   &:first-child {
     border: none;
@@ -256,7 +256,7 @@ const ItemCard = styled.a`
 const IconBox = styled.div`
   width: 60px;
   height: 60px;
-  background-color: #f5f3f1;
+  background-color: ${theme.soft};
   border-radius: 50%;
   color: ${theme.base};
   display: flex;

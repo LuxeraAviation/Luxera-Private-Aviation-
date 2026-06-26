@@ -42,10 +42,10 @@ export default function Header() {
         <HeaderInner $alignitems="center" $justifycontent="space-between">
           <LogoLink href="/">
             <Image
-              src="/image/logo.png"
-              alt="Luxera"
+              src="/image/luxera-logo.svg"
+              alt="Luxera — Private Aviation"
               width={185}
-              height={55}
+              height={91}
               priority
               style={{ width: "100%", height: "auto" }}
             />
@@ -153,7 +153,7 @@ const HeaderEl = styled.header`
 
   @media (max-width: 991px) {
     padding: 15px 0 15px 0;
-    background: ${theme?.dark || "#19232d"};
+    background: ${theme.dark};
   }
 `;
 
@@ -226,7 +226,8 @@ const MainMenu = styled.ul`
     width: 100%;
     max-height: calc(100dvh - 74px);
     overflow-y: auto;
-    background: #0d1b2a;
+    background: ${theme.dark};
+  box-shadow: 0 5px 100px rgba(255, 255, 255, 0.25);
     padding: 0 0 20px;
     gap: 0;
     margin-left: 0;
@@ -263,15 +264,15 @@ const SubMenuLink = styled(Link)`
     color: rgba(255, 255, 255, 0.8);
 
     &:hover {
-      color: #fff;
+      color: ${theme.white};
       background: transparent;
       padding-left: 4px;
     }
   }
 
   &:hover {
-    background: ${theme?.base || "#dcbb87"};
-    color: #19232d;
+    background: ${theme?.base};
+    color: ${theme.dark};
     padding-left: 20px;
   }
 `;
@@ -286,8 +287,8 @@ const SubMenuItem = styled.li`
 
   &.active > a,
   &.active > a:hover {
-    background: ${theme?.base || "#dcbb87"};
-    color: #19232d;
+    background: ${theme?.base};
+    color: ${theme.dark};
     border-left: none;
     padding-left: 20px;
   }
@@ -308,7 +309,7 @@ const SubMenu = styled.ul`
   top: calc(100% + 14px);
   left: 0;
   min-width: 230px;
-  background: #0f1c28;
+  background: ${theme?.dark};
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
   border-radius: 0;
   padding: 0;
@@ -378,6 +379,7 @@ const MobileChevron = styled.span`
 `;
 const MobileBookWrap = styled.li`
   display: none;
+  background: ${theme.dark};
 
   @media (max-width: 991px) {
     display: flex;
@@ -397,7 +399,7 @@ const DesktopOnlyBook = styled.div`
 `;
 
 const menuLinkStyles = css`
-  color: #fff;
+  color: ${theme.white};
   font-weight: 700;
   font-size: 16px;
   padding: 8px 0;
@@ -411,7 +413,7 @@ const menuLinkStyles = css`
   cursor: pointer;
 
   &:hover {
-    color: ${theme?.base || "#dcbb87"};
+    color: ${theme?.base};
   }
 
   @media (max-width: 991px) {
@@ -421,9 +423,9 @@ const menuLinkStyles = css`
     font-size: 16px;
     font-weight: 600;
     border: none;
-    background: none;
+    background: ${theme?.dark};
     color: ${({ $submenuOpen }) =>
-      $submenuOpen ? theme?.base || "#dcbb87" : "#fff"};
+      $submenuOpen ? theme?.base : theme.white};
     text-align: left;
     transition: color 0.3s ease;
   }
@@ -446,7 +448,7 @@ const HeaderRight = styled(Flex)`
 `;
 
 const SearchBar = styled.div`
-  color: ${({ $active }) => ($active ? theme?.base || "#dcbb87" : "#fff")};
+  color: ${({ $active }) => ($active ? theme?.base : theme.white)};
   font-size: 16px;
   cursor: pointer;
   transition: color 0.3s ease;
@@ -454,7 +456,7 @@ const SearchBar = styled.div`
   z-index: 1000;
 
   &:hover {
-    color: ${theme?.base || "#dcbb87"};
+    color: ${theme?.base};
   }
 
   @media (max-width: 991px) {
@@ -498,24 +500,24 @@ const SearchForm = styled.form`
 
 const SearchInput = styled.input`
   flex: 1;
-  background: #fff;
+  background: ${theme.white};
   border: none;
   outline: none;
   padding: 0 20px;
   height: 52px;
   font-size: 15px;
   font-weight: 500;
-  color: #19232d;
+  color: ${theme.dark};
   font-family: ${theme?.fonts?.mulish || "Mulish, sans-serif"};
 
   &::placeholder {
-    color: #9a8a74;
+    color: ${theme.base};
     font-weight: 400;
   }
 `;
 
 const SearchSubmit = styled.button`
-  background: ${theme?.base || "#dcbb87"};
+  background: ${theme?.base};
   border: none;
   width: 56px;
   height: 52px;
@@ -524,12 +526,12 @@ const SearchSubmit = styled.button`
   justify-content: center;
   cursor: pointer;
   font-size: 16px;
-  color: #19232d;
+  color: ${theme.dark};
   flex-shrink: 0;
   transition: background 0.25s ease;
 
   &:hover {
-    background: #c9a96e;
+    background: ${theme.dark};
   }
 `;
 
@@ -537,13 +539,13 @@ const NavbarToggler = styled.button`
   display: none;
   background: transparent;
   border: none;
-  color: #fff;
+  color: ${theme.white};
   font-size: 22px;
   cursor: pointer;
   transition: color 0.3s ease;
 
   &:hover {
-    color: #fff;
+    color: ${theme.white};
   }
 
   @media (max-width: 991px) {

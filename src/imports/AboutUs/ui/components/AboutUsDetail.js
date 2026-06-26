@@ -138,7 +138,7 @@ export default function AboutUsDetail() {
 const DetailSection = styled.section`
   padding: 120px 0;
   position: relative;
-  background: #ffffff;
+  background: ${theme.white};
   color: ${theme.text};
   overflow: hidden;
 
@@ -235,7 +235,7 @@ const PlayButton = styled.button`
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: #ffffff;
+  background: ${theme.white};
   color: ${theme.base};
   border: none;
   display: flex;
@@ -539,7 +539,7 @@ const ModalContent = styled.div`
   width: 100%;
   max-width: 800px;
   aspect-ratio: 16 / 9;
-  background: #000;
+  background: ${theme.dark};
   border-radius: 8px;
   overflow: hidden;
 
@@ -556,7 +556,7 @@ const CloseBtn = styled.button`
   right: 15px;
   background: none;
   border: none;
-  color: #fff;
+  color: ${theme.white};
   font-size: 36px;
   line-height: 1;
   cursor: pointer;

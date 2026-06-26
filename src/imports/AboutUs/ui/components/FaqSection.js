@@ -82,7 +82,7 @@ const Section = styled.section`
 `;
 
 const FaqWrapperSection = styled(Section)`
-  background: #ffffff;
+  background:  ${theme.white};
   color: ${theme.text};
 `;
 
@@ -178,7 +178,7 @@ const FaqServiceList = styled.ul`
 
 const FaqServiceItem = styled.li`
   display: inline-block;
-  color: #555e67;
+  color:  ${theme.gray};
   font-weight: 800;
   font-size: 16px;
 
@@ -191,7 +191,7 @@ const FaqServiceItem = styled.li`
     width: 26px;
     height: 26px;
     padding: 7px;
-    background-color: #555e67;
+    background-color: ${theme.gray};
     color: white;
     border-radius: 3px;
     margin-right: 5px;
@@ -246,8 +246,8 @@ const FaqItemIcon = styled.span`
   position: relative;
 
   &::after {
-    border-bottom: 3px solid #3d3d3d;
-    border-right: 3px solid #3d3d3d;
+    border-bottom: 3px solid ${theme.gray};
+    border-right: 3px solid ${theme.gray};
     content: "";
     display: block;
     height: 10px;

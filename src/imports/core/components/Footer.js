@@ -8,7 +8,7 @@ import EnvelopeIcon from "@/imports/core/assets/envelopeIcon";
 import PlaneIcon from "@/imports/core/assets/PlaneIcon";
 import Container from "@/imports/core/atom/Container";
 
-const logoImg = "/image/logo.png";
+const logoImg = "/image/luxera-logo.svg";
 const elementImg = "/image/element/element-1.png";
 
 import {
@@ -21,14 +21,14 @@ export default function Footer() {
   return (
     <FooterEl>
       <FooterElement variant="fade-left" duration={1200}>
-        <Image src={elementImg} alt="element" width={1152} height={1080} />
+        <ElementShape />
       </FooterElement>
       <StyledContainer>
         <FooterTopArea>
           <FooterTopRow>
             <Col $xl={4} $lg={3} $md={6}>
               <FooterLogo>
-                <Image src={logoImg} alt="Luxera" width={185} height={55} />
+                <Image src={logoImg} alt="Luxera — Private Aviation" width={185} height={91} />
               </FooterLogo>
               <FooterText>
                 Luxera was founded in 1991 by a group of safety-focused
@@ -151,7 +151,7 @@ const FooterEl = styled.footer`
   font-size: 16px;
   font-weight: 500;
   line-height: 1.5em;
-  color: #dfdfdf;
+  color: ${theme.soft};
   margin-top: auto;
 
   @media only screen and (max-width: 991px) {
@@ -169,15 +169,27 @@ const FooterElement = styled(Reveal)`
   z-index: -1;
   pointer-events: none;
 
-  img {
-    width: 1152px !important;
-    height: 1080px !important;
-    max-width: none !important;
-  }
-
   @media only screen and (max-width: 991px) {
     display: none;
   }
+`;
+
+const ElementShape = styled.div`
+  width: 1152px;
+  height: 1080px;
+  max-width: none;
+  background-color: ${theme.white};
+  opacity: 0.5;
+  -webkit-mask: url(${elementImg}) no-repeat center / contain,
+    url(${elementImg}) no-repeat center / contain,
+    url(${elementImg}) no-repeat center / contain,
+    url(${elementImg}) no-repeat center / contain;
+  -webkit-mask-composite: source-over;
+  mask: url(${elementImg}) no-repeat center / contain,
+    url(${elementImg}) no-repeat center / contain,
+    url(${elementImg}) no-repeat center / contain,
+    url(${elementImg}) no-repeat center / contain;
+  mask-composite: add;
 `;
 
 const FooterTopArea = styled.div`
@@ -384,7 +396,7 @@ const SubscribeInput = styled.input`
   }
 
   &::placeholder {
-    color: #bfbfbf;
+    color: ${theme.lightgray};
   }
 `;
 
@@ -473,7 +485,7 @@ const SocialLink = styled.a`
   background: ${({ $active }) => ($active ? theme.base : "transparent")};
   border: 1px solid
     ${({ $active }) => ($active ? theme.base : "rgba(220, 187, 135, 0.3)")};
-  color: ${({ $active }) => ($active ? "#fff" : theme.base)};
+  color: ${({ $active }) => ($active ? theme.white : theme.base)};
   font-size: 12px;
   text-decoration: none;
   transition: all 0.3s;
@@ -489,7 +501,7 @@ const CopyrightText = styled.p`
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 0;
-  color: #dfdfdf;
+  color: ${theme.soft};
   font-family: ${theme.fonts.mulish};
 
   @media only screen and (max-width: 991px) {

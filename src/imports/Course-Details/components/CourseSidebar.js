@@ -182,7 +182,7 @@ const WidgetTitle = styled.h4`
   font-family: ${theme.fonts.mulish};
   font-size: 18px;
   font-weight: 800;
-  color: ${(props) => (props.$white ? "#ffffff" : theme.dark)};
+  color: ${(props) => (props.$white ? "${theme.white}" : theme.dark)};
   margin: 0 0 20px 0;
   position: relative;
   padding-left: 0;
@@ -244,9 +244,9 @@ const Input = styled.input`
   width: 100%;
   padding: 11px 40px 11px 15px;
   background: rgba(255, 255, 255, 0.1);
-  border: 1px solid #dcbb87;
+  border: 1px solid ${theme.base};
   border-radius: 4px;
-  color: #ffffff;
+  color: ${theme.white};
   font-family: ${theme.fonts.mulish};
   font-size: 15px;
   font-weight: 500;
@@ -298,7 +298,7 @@ const BookSubmitBtn = styled.button`
 `;
 
 const WidgetBox = styled.div`
-  background: #ffffff;
+  background: ${theme.white};
   border-radius: 10px;
   padding: 25px;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
