@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import Image from "next/image";
+import { theme } from "@/styles/Theme";
 import Banner from "@/imports/core/components/Banner";
 import { COURSE_DETAILS_BANNER } from "@/imports/core/constants/banner";
 import Container from "@/imports/core/atom/Container";
