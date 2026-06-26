@@ -55,35 +55,35 @@ export const FEATURES = [
 
 export const PACKAGES = [
   {
-    img: "/image/package/package-9.png",
+    img: "/image/demo/package.webp",
     title: "Island of the Goods",
     price: "$115.00",
     date: "Thursday, Nov 4, 2024",
     person: "2 Adults",
   },
   {
-    img: "/image/package/package-10.png",
+    img: "/image/demo/package.webp",
     title: "City of the Goods",
     price: "$110.00",
     date: "Friday, Dec 7, 2024",
     person: "3 Adults",
   },
   {
-    img: "/image/package/package-11.png",
+    img: "/image/demo/package.webp",
     title: "Desert of the Goods",
     price: "$120.00",
     date: "Sunday, Sep 3, 2024",
     person: "4 Adults",
   },
   {
-    img: "/image/package/package-11.png",
+    img: "/image/demo/package.webp",
     title: "Desert of the Goods",
     price: "$120.00",
     date: "Sunday, Sep 3, 2024",
     person: "4 Adults",
   },
   {
-    img: "/image/package/package-11.png",
+    img: "/image/demo/package.webp",
     title: "Desert of the Goods",
     price: "$120.00",
     date: "Sunday, Sep 3, 2024",
@@ -117,21 +117,21 @@ export const BANNER_BUTTONS = [
 
 export const BLOGS = [
   {
-    img: "/image/blog/blog-1.png",
+    img: "/image/demo/blog.webp",
     date: "20 March 2024",
     comment: "3 Comment",
     title: "Charter flight of the Death Penalty in America",
     text: "With a vast array of popular private planes to choose from, travelling by private jet charter is the most efficient.",
   },
   {
-    img: "/image/blog/blog-2.png",
+    img: "/image/demo/blog.webp",
     date: "23 February 2024",
     comment: "4 Comment",
     title: "Our technology consistently deliver",
     text: "Private jet hire for leisure purposes allows yourself, your family and friends to travel in luxury and privacy.",
   },
   {
-    img: "/image/blog/blog-3.png",
+    img: "/image/demo/blog.webp",
     date: "18 June 2024",
     comment: "6 Comment",
     title: "Search the world with ease and transparency",
@@ -148,22 +148,22 @@ export const STATS = [
 
 export const Home_Luxery_deals_cards = [
   {
-    img: "/image/charter/charter-1.png",
+    img: "/image/demo/charter.webp",
     title: "Private Jet Charter",
     sub: "Legacy 600",
   },
   {
-    img: "/image/charter/charter-2.png",
+    img: "/image/demo/charter.webp",
     title: "Business Jet Charter",
     sub: "Beech BE300 Super King",
   },
   {
-    img: "/image/charter/charter-3.png",
+    img: "/image/demo/charter.webp",
     title: "Private Helicopter",
     sub: "Charter a A500",
   },
   {
-    img: "/image/charter/charter-4.png",
+    img: "/image/demo/charter.webp",
     title: "Air Ambulance",
     sub: "Beech BE300 Super King",
   },

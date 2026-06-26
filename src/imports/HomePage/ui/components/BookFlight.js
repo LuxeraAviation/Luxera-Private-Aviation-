@@ -117,8 +117,8 @@ const StyledContainer = styled(Container)`
 
 const BookFormArea = styled.div`
   background:
-    linear-gradient(rgba(0, 0, 0, 0.9), rgba(4, 5, 5, 0.9)),
-    url("/image/bg/bg-3.png") center/cover no-repeat;
+    linear-gradient(rgba(0, 0, 0, 0.9), rgba(66, 69, 69, 0.9)),
+    url("/image/demo/12.webp") center/cover no-repeat;
   padding: 100px 180px;
   border-radius: 10px;
   overflow: hidden;

@@ -156,7 +156,7 @@ const AboutSection = styled(Section)`
       rgba(20, 30, 40, 0.25) 80%,
       rgba(20, 30, 40, 0.15) 100%
     ),
-    url("/image/bg/bg-1.png") center/cover no-repeat;
+    url("/image/demo/plane.webp") center/cover no-repeat;
   color: #fff;
 `;
 

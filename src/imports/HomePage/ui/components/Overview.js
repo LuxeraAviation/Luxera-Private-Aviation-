@@ -24,7 +24,7 @@ export default function Overview() {
           <OverviewTab>
             <OverviewTabThumb>
               <TabThumbImage
-                src="/image/overview/overview-2.png"
+                src="/image/demo/1.webp"
                 alt="overview"
                 fill
                 priority
@@ -67,7 +67,7 @@ export default function Overview() {
                   <OverviewItem>
                     <OverviewThumb>
                       <OverviewThumbImage
-                        src="/image/overview/overview-1.png"
+                        src="/image/demo/2.webp"
                         alt="overview"
                         fill
                       />

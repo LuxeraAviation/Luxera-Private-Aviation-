@@ -7,13 +7,13 @@ import Slider from "@/imports/core/components/Slider";
 
 const CLIENTS = [
   {
-    img: "/image/client/client-3.png",
+    img: "/image/demo/1111.webp",
     name: "Randall Schwartz",
     role: "Sr. Consultant",
     text: "We teach martial arts because we love it — not because we want to make money on you.",
   },
   {
-    img: "/image/client/client-4.png",
+    img: "/image/demo/1111.webp",
     name: "Andru Smith",
     role: "Marketing Manager",
     text: "We teach martial arts because we love it — not because we want to make money on you.",
@@ -72,7 +72,7 @@ export default function Clients() {
           <VideoReveal variant="fade-left" duration={1200}>
             <ClientRightThumb>
               <Image
-                src="/image/client/client-big.png"
+                src="/image/demo/plane2.webp"
                 alt="client"
                 fill
                 sizes="(max-width: 767px) 100vw, 33vw"

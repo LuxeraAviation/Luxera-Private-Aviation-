@@ -2,7 +2,6 @@
 
 import styled from "styled-components";
 import Image from "next/image";
-import { theme } from "@/styles/Theme";
 import Banner from "@/imports/core/components/Banner";
 import { COURSE_DETAILS_BANNER } from "@/imports/core/constants/banner";
 import Container from "@/imports/core/atom/Container";
@@ -11,6 +10,7 @@ import { COURSE_DETAILS_DATA } from "@/imports/core/constants/courseData";
 import CourseWidgets from "@/imports/Course-Details/components/CourseWidgets";
 import CourseMainContent from "@/imports/Course-Details/components/CourseMainContent";
 import CourseSidebar from "@/imports/Course-Details/components/CourseSidebar";
+import {theme} from "@/styles/Theme";
 
 export default function CourseDetailsPage() {
   const data = COURSE_DETAILS_DATA;
