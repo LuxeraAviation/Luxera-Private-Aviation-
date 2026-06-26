@@ -438,7 +438,7 @@ const TextArea = styled.textarea`
   border: 1px solid #e5e5e5;
   background-color: white;
   color: ${theme.text};
-  font-family: "Mulish", sans-serif;
+  font-family: var(--font-mulish), serif;
   font-weight: 700;
   border-radius: 6px;
   outline: none;
@@ -532,7 +532,7 @@ const CommentContentHeader = styled.div`
 const AuthorName = styled.h4`
   margin: 0;
   margin-right: 30px;
-  font-family: "Mulish", sans-serif;
+  font-family: var(--font-mulish), serif;
   font-weight: 800;
   font-size: 18px;
 

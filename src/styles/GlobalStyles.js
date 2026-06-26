@@ -36,7 +36,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    font-family: 'Mulish', var(--font-mulish), sans-serif;
+    font-family: var(--font-mulish), serif;
     min-height: 100vh;
     background: #fff;
     font-weight: normal;

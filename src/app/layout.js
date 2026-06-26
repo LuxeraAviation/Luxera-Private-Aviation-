@@ -1,5 +1,4 @@
 import StyledComponentsRegistry from "@/lib/Registry";
-import { Mulish, Playfair_Display } from "next/font/google";
 import localFont from "next/font/local";
 import { ScrollToTop } from "@/styles/Theme";
 import Preloader from "@/imports/core/components/Preloader";
@@ -9,15 +8,32 @@ import CallWidget from "@/imports/core/components/CallWidget";
 import GlobalStyles from "@/styles/GlobalStyles";
 import { ChromeProvider, Chrome } from "@/imports/core/components/ChromeGate";
 
-const mulish = Mulish({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+// Merriweather replaces the old body & heading fonts everywhere. It's exposed
+// under the existing CSS variable names so every component picks it up unchanged.
+// (The LUXERA title uses --font-nasalization and is intentionally left alone.)
+const mulish = localFont({
+  src: [
+    { path: "../../public/fonts/merriweather/Merriweather-Light.ttf", weight: "300", style: "normal" },
+    { path: "../../public/fonts/merriweather/Merriweather-Regular.ttf", weight: "400", style: "normal" },
+    { path: "../../public/fonts/merriweather/Merriweather-Italic.ttf", weight: "400", style: "italic" },
+    { path: "../../public/fonts/merriweather/Merriweather-Bold.ttf", weight: "700", style: "normal" },
+    { path: "../../public/fonts/merriweather/Merriweather-BoldIt.ttf", weight: "700", style: "italic" },
+    { path: "../../public/fonts/merriweather/Merriweather-UltraBold.ttf", weight: "900", style: "normal" },
+  ],
   variable: "--font-mulish",
+  display: "swap",
 });
-const playfairDisplay = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+const playfairDisplay = localFont({
+  src: [
+    { path: "../../public/fonts/merriweather/Merriweather-Light.ttf", weight: "300", style: "normal" },
+    { path: "../../public/fonts/merriweather/Merriweather-Regular.ttf", weight: "400", style: "normal" },
+    { path: "../../public/fonts/merriweather/Merriweather-Italic.ttf", weight: "400", style: "italic" },
+    { path: "../../public/fonts/merriweather/Merriweather-Bold.ttf", weight: "700", style: "normal" },
+    { path: "../../public/fonts/merriweather/Merriweather-BoldIt.ttf", weight: "700", style: "italic" },
+    { path: "../../public/fonts/merriweather/Merriweather-UltraBold.ttf", weight: "900", style: "normal" },
+  ],
   variable: "--font-playfair-display",
+  display: "swap",
 });
 const nasalization = localFont({
   src: "../../public/fonts/nasalization.otf",
