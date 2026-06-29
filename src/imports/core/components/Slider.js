@@ -56,6 +56,7 @@ function Slider({
   bottomControls: BottomControls,
   resolvePerView,
   viewportPadding,
+  slideGap = 30,
   loop = true,
 }) {
   const getPerView = useCallback(
@@ -178,15 +179,15 @@ function Slider({
   const slides = useMemo(
     () =>
       renderedItems.map((item, index) => (
-        <SliderItem key={index} $basis={basis} className="slider-item">
+        <SliderItem key={index} $basis={basis} $pad={slideGap / 2} className="slider-item">
           {renderItem(item, items.length ? index % items.length : index)}
         </SliderItem>
       )),
-    [renderedItems, items.length, basis, renderItem],
+    [renderedItems, items.length, basis, renderItem, slideGap],
   );
 
   return (
-    <>
+    <SliderRoot className="slider-root">
       {Controls && <Controls {...controlProps} />}
 
       <SliderViewport
@@ -198,11 +199,15 @@ function Slider({
       </SliderViewport>
 
       {BottomControls && <BottomControls {...controlProps} />}
-    </>
+    </SliderRoot>
   );
 }
 
 export default memo(Slider);
+
+const SliderRoot = styled.div`
+  position: relative;
+`;
 
 const SliderViewport = styled.div`
   overflow: hidden;
@@ -222,5 +227,5 @@ const SliderItem = styled.div`
   max-width: ${({ $basis }) => $basis}%;
   min-width: 0;
   box-sizing: border-box;
-  padding: 0 15px;
+  padding: 0 ${({ $pad }) => $pad ?? 15}px;
 `;

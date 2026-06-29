@@ -4,23 +4,50 @@ import { useEffect, useRef, useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 import ScrollTopIcon from "@/imports/core/assets/ScrollTopIcon";
 
-export const theme = {
-  base: "#dcbb87",
-  dark: "#000",
-  darker: "#000033",
-  text: "#3d3d3d",
-  soft: "#f5f3f1",
-  cream: "#fff8ee",
-  white: "#fff",
-  gray: "#555e67",
-  lightgray: "#979797",
+const brand = {
+  base: "#aa8453", 
+  baseDark: "#96703f",
   loaderStroke: "#0099cc",
   fonts: {
-    mulish: "var(--font-mulish), sans-serif",
-    playfair: "var(--font-playfair-display), serif",
+    mulish: "var(--font-mulish), sans-serif", 
+    playfair: "var(--font-playfair-display), serif", 
     nasalization: "var(--font-nasalization), sans-serif",
   },
 };
+
+export const lightTheme = {
+  ...brand,
+  mode: "light",
+  bg: "#fff", 
+  heading: "#1b1b1b", 
+  text: "#7d7e7c", 
+  ternary: "#d8d8d7", 
+  soft: "#f7f7f5", 
+  border: "#eaeaea",
+  white: "#fff",
+  dark: "#1b1b1b",
+  footerBg: "#1b1b1b",
+  cream: "#fff8ee",
+  overlay: "rgba(27, 27, 27, 0.5)",
+};
+
+export const darkTheme = {
+  ...brand,
+  mode: "dark",
+  bg: "#1b1b1b", 
+  heading: "#fff", 
+  text: "#d8d8d7",
+  ternary: "#3b3b3b", 
+  soft: "#181818", 
+  border: "#3c3c3c", 
+  white: "#fff",
+  dark: "#1b1b1b",
+  footerBg: "#121212",
+  cream: "#181818",
+  overlay: "rgba(0, 0, 0, 0.6)",
+};
+
+export const theme = lightTheme;
 
 export {
   dashAnim,
@@ -59,9 +86,10 @@ const RevealBox = styled.div`
   }
 `;
 
-export function useInView(options = { threshold: 0.15 }) {
+export function useInView(options = {}) {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
+  const threshold = options.threshold ?? 0.15;
 
   useEffect(() => {
     const el = ref.current;
@@ -71,10 +99,10 @@ export function useInView(options = { threshold: 0.15 }) {
         setInView(true);
         observer.unobserve(entry.target);
       }
-    }, options);
+    }, { threshold });
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [threshold]);
   return [ref, inView];
 }
 
@@ -130,76 +158,4 @@ export function Odometer({ to = 0, duration = 2000 }) {
   }, [inView, targetNumber, duration]);
 
   return <span ref={ref}>{value.toLocaleString("en-US")}</span>;
-}
-
-const ScrollBtn = styled.button`
-  position: fixed;
-  right: 40px;
-  font-size: 12px;
-  bottom: 40px;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  width: 34px;
-  padding: 10px 6px;
-  height: 68px;
-  background: ${theme.base};
-  border: 1px solid ${theme.base};
-  border-radius: 999px;
-  color: #fff;
-  cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease-in-out;
-  opacity: ${({ $show }) => ($show ? 1 : 0)};
-  visibility: ${({ $show }) => ($show ? "visible" : "hidden")};
-  transform: translateY(${({ $show }) => ($show ? "0" : "20px")});
-`;
-
-const IconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: float 2s ease-in-out infinite;
-
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-3px);
-    }
-  }
-`;
-
-const ScrollText = styled.span`
-  font-family: var(--font-mulish), sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-`;
-
-export function ScrollToTop() {
-  const [show, setShow] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setShow(window.scrollY > 300);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-  return (
-    <ScrollBtn
-      $show={show}
-      aria-label="Scroll to top"
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-    >
-      <IconWrapper>
-        <ScrollTopIcon width="16" height="16" />
-      </IconWrapper>
-      <ScrollText>Top</ScrollText>
-    </ScrollBtn>
-  );
 }

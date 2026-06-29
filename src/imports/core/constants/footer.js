@@ -1,77 +1,35 @@
-export const OFFICE_LOCATIONS = [
-  {
-    title: "EUROPE",
-    details: [
-      "Europe 45 Gloucester Road",
-      "London DT1M 3BF",
-      "+44 (0)20 3671 5709",
-    ],
-  },
-  {
-    title: "ASIA & PACIFIC",
-    details: ["2473 Red Road Ste 98", "Singapore SG", "+ 1 623 211 6319"],
-  },
-  {
-    title: "NORTH AMERICA",
-    details: [
-      "Europe 45 Gloucester Road",
-      "London DT1M 3BF",
-      "+44 (0)20 3671 5709",
-    ],
-  },
-];
+export const FOOTER_CONTACT = {
+  title: "Contact Us",
+  phone: { label: "+1 (888) 247-7359", href: "tel:+18882477359" },
+  email: { label: "charter@luxera.aero", href: "mailto:charter@luxera.aero" },
+  note: "On call 24/7 — wheels up in as little as 4 hours",
+};
 
-export const NAVIGATION_COLUMNS = [
-  {
-    title: "Get started",
-    links: [
-      { text: "Private jet", url: "/private-jet" },
-      { text: "Register", url: "/register" },
-      { text: "Current Jet Deals", url: "/deals" },
-      { text: "Luxera mobile app", url: "/mobile-app" },
-    ],
-  },
-  {
-    title: "How it works",
-    links: [
-      { text: "How it works", url: "/how-it-works" },
-      { text: "Ways to fly", url: "/ways-to-fly" },
-      { text: "Ways to buy", url: "/ways-to-buy" },
-      { text: "Private charter", url: "/private-charter" },
-      { text: "Private Jet Cost", url: "/private-jet-cost" },
-    ],
-  },
-  {
-    title: "About us",
-    links: [
-      { text: "About us", url: "/about" },
-      { text: "News & press", url: "/news-press" },
-      { text: "Blog", url: "/blog" },
-      { text: "FAQs", url: "/faq" },
-      { text: "Careers", url: "/careers" },
-    ],
-  },
-];
+export const FOOTER_ADDRESS = {
+  title: "Operations",
+  lines: ["Hangar 7, Signature FBO,", "Teterboro Airport, NJ 07608, USA"],
+};
+
+export const FOOTER_LINKS = {
+  title: "Links",
+  links: [
+    { text: "Home", url: "/" },
+    { text: "About Us", url: "/" },
+    { text: "Charter a Jet", url: "/" },
+    { text: "Our Fleet", url: "/" },
+    { text: "Services", url: "/" },
+    { text: "Journal", url: "/" },
+  ],
+};
+
+export const FOOTER_MAP =
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d96652.27317354927!2d-74.33557928194516!3d40.79756494697628!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c3a82f1352d0dd%3A0x81d4f72c4435aab5!2sTeterboro!5e0!3m2!1sen!2sus!4v1563075599994!5m2!1sen!2sus";
 
 export const SOCIAL_LINKS = [
-  {
-    iconClass: "fab fa-facebook-f",
-    url: "https://www.facebook.com/Luxeraflights",
-    active: false,
-  },
-  {
-    iconClass: "fab fa-twitter",
-    url: "https://twitter.com/Luxeraflights",
-    active: false,
-  },
-  {
-    iconClass: "fab fa-youtube",
-    url: "https://www.youtube.com/channel/UC57eJ8-0-i5Jj2e74oY6oQA",
-    active: false,
-  },
-  {
-    iconClass: "fab fa-instagram",
-    url: "https://www.instagram.com/Luxeraflights",
-    active: false,
-  },
+  { iconClass: "fa-brands fa-linkedin-in", url: "#" },
+  { iconClass: "fa-brands fa-instagram", url: "#" },
+  { iconClass: "fa-brands fa-youtube", url: "#" },
+  { iconClass: "fa-brands fa-facebook-f", url: "#" },
 ];
+
+export const COPYRIGHT = "Luxera Private Aviation";

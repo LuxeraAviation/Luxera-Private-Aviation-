@@ -1,6 +1,5 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { theme } from "@/styles/Theme";
 import Link from "next/link";
 
 export default function Button({ href, children, className, ...props }) {
@@ -23,11 +22,11 @@ const buttonStyles = css`
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: ${theme?.base};
-  border: 1.5px solid ${theme?.base};
-  color: ${theme?.dark};
-  padding: 14px 32px;
-  border-radius: 999px;
+  background: ${({ theme }) => theme.base};
+  border: 1.5px solid ${({ theme }) => theme.base};
+  color: ${({ theme }) => theme.white};
+  padding: 13px 32px;
+  border-radius: 5px;
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 1.5px;
@@ -35,12 +34,12 @@ const buttonStyles = css`
   cursor: pointer;
   transition: all 0.4s ease-in-out;
   text-decoration: none;
-  font-family: inherit;
+  font-family: ${({ theme }) => theme.fonts.mulish};
 
   &:hover {
-    background: transparent;
-    color: ${theme?.base};
-    border-color: ${theme?.base};
+    background: ${({ theme }) => theme.heading};
+    color: ${({ theme }) => theme.bg};
+    border-color: ${({ theme }) => theme.heading};
   }
 
   @media (max-width: 767px) {

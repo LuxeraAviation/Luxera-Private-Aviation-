@@ -1,27 +1,33 @@
 export const NAV_ITEMS = [
   { label: "Home", url: "/" },
-  { label: "About Us", url: "/about" },
+  { label: "About Us", url: "/" },
   {
-    label: "Pages",
-    url: "#",
+    label: "Fleet",
+    url: "/",
     submenu: [
-      { text: "Service", url: "/service" },
-      { text: "Service Details", url: "/service-details" },
-      { text: "Deals", url: "/deals" },
-      { text: "Deal Details", url: "/deals-details" },
-      { text: "Package", url: "/package" },
-      { text: "Package Details", url: "/package-details" },
-      { text: "Our Course", url: "/courses" },
-      { text: "Course Details", url: "/course-details" },
-      { text: "Our Team", url: "/team" },
-      { text: "Team Details", url: "/team-details" },
-      { text: "FAQ", url: "/faq" },
-      { text: "Sign In", url: "/login" },
-      { text: "Sign Up", url: "/register" },
-      { text: "404 Page", url: "/404" },
+      { text: "Our Fleet", url: "/" },
+      { text: "Aircraft Details", url: "/" },
     ],
   },
-  { label: "Blog", url: "/blog" },
-  { label: "FAQ", url: "/faq" },
-  { label: "Contact Us", url: "/contact" },
+  { label: "Services", url: "/" },
+  { label: "Gallery", url: "/" },
+  { label: "Crew", url: "/" },
+  {
+    label: "Journal",
+    url: "/",
+    submenu: [
+      { text: "Journal", url: "/" },
+      { text: "Article", url: "/" },
+    ],
+  },
+  { label: "FAQ", url: "/" },
+  { label: "Contact", url: "/" },
 ];
+
+export const RESERVATION = { label: "Book a Jet", url: "/" };
+
+export const BRAND = {
+  name: "Luxera",
+  logoLight: "/image/luxera-logo-light.svg",
+  logoDark: "/image/luxera-logo-dark.svg",
+};
