@@ -15,8 +15,31 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [pastHero, setPastHero] = useState(false);
   const [open, setOpen] = useState(false);
+  const [menuActive, setMenuActive] = useState(false);
   const [openIdx, setOpenIdx] = useState(null);
   const headerRef = useRef(null);
+  const closeTimer = useRef(null);
+
+  const openMenu = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setMenuActive(true);
+    setOpen(true);
+  };
+
+  const closeMenu = () => {
+    setOpen(false);
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setMenuActive(false), 400);
+  };
+
+  const toggleMenu = () => (open ? closeMenu() : openMenu());
+
+  useEffect(
+    () => () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    },
+    [],
+  );
 
   useEffect(() => {
     const onScroll = () => {
@@ -47,10 +70,17 @@ export default function Header() {
     setOpenIdx((prev) => (prev === idx ? null : idx));
 
   const overHero = !pastHero;
-  const logoSrc = pastHero && mode === "light" ? BRAND.logoDark : BRAND.logoLight;
+  const logoSrc =
+    pastHero && mode === "light" ? BRAND.logoDark : BRAND.logoLight;
 
   return (
-    <HeaderEl ref={headerRef} $scrolled={scrolled} $pastHero={pastHero} $mode={mode}>
+    <HeaderEl
+      ref={headerRef}
+      $scrolled={scrolled}
+      $pastHero={pastHero}
+      $menuOpen={menuActive}
+      $mode={mode}
+    >
       <Container>
         <Inner>
           <LogoLink href="/" aria-label={BRAND.name}>
@@ -70,7 +100,7 @@ export default function Header() {
                   <NavLink
                     href={item.url}
                     $transparent={overHero}
-                    onClick={() => setOpen(false)}
+                    onClick={closeMenu}
                   >
                     {item.label}
                     {item.submenu && (
@@ -89,7 +119,7 @@ export default function Header() {
                     <SubMenu $open={openIdx === idx}>
                       {item.submenu.map((sub) => (
                         <li key={sub.url + sub.text}>
-                          <SubLink href={sub.url} onClick={() => setOpen(false)}>
+                          <SubLink href={sub.url} onClick={closeMenu}>
                             {sub.text}
                           </SubLink>
                         </li>
@@ -135,9 +165,10 @@ export default function Header() {
               {RESERVATION.label}
             </ReserveBtn>
             <Hamburger
-              onClick={() => setOpen((o) => !o)}
+              onClick={toggleMenu}
               aria-label="Toggle menu"
               type="button"
+              $open={open}
               $transparent={overHero && !open}
             >
               <i className={open ? "fas fa-times" : "fas fa-bars"} />
@@ -145,7 +176,7 @@ export default function Header() {
           </Right>
         </Inner>
       </Container>
-      <Backdrop $open={open} onClick={() => setOpen(false)} />
+      <Backdrop $open={open} onClick={closeMenu} />
     </HeaderEl>
   );
 }
@@ -155,12 +186,20 @@ const HeaderEl = styled.header`
   inset: 0 0 auto 0;
   z-index: 1000;
   padding: ${({ $scrolled }) => ($scrolled ? "0" : "10px 0")};
-  transition: all 0.4s ease;
+  /* Note: do NOT transition backdrop-filter. While it animates to "none" it
+     stays a non-none value and keeps acting as a containing block for the
+     fixed mobile drawer, clipping it to the header height ("half open" bug).
+     Toggle it instantly by transitioning only the visual properties. */
+  transition:
+    background 0.4s ease,
+    padding 0.4s ease,
+    box-shadow 0.4s ease;
   background: ${({ $pastHero, theme }) =>
     $pastHero ? theme.bg : "transparent"};
-  backdrop-filter: ${({ $scrolled }) => ($scrolled ? "blur(10px)" : "none")};
-  -webkit-backdrop-filter: ${({ $scrolled }) =>
-    $scrolled ? "blur(10px)" : "none"};
+  backdrop-filter: ${({ $scrolled, $menuOpen }) =>
+    $scrolled && !$menuOpen ? "blur(10px)" : "none"};
+  -webkit-backdrop-filter: ${({ $scrolled, $menuOpen }) =>
+    $scrolled && !$menuOpen ? "blur(10px)" : "none"};
   box-shadow: ${({ $pastHero }) =>
     $pastHero ? "0 6px 24px rgba(0, 0, 0, 0.06)" : "none"};
 `;
@@ -180,7 +219,7 @@ const LogoLink = styled(Link)`
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
-  padding:5px 15px;
+  padding: 5px 15px;
 
   img {
     width: 180px;
@@ -202,7 +241,7 @@ const Nav = styled.nav`
     bottom: 0;
     width: 320px;
     max-width: 85vw;
-    padding: 90px 30px 30px;
+    padding: 72px 30px 30px;
     overflow-y: auto;
     background: ${({ theme }) => theme.bg};
     box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
@@ -328,8 +367,8 @@ const NavLink = styled(Link)`
 
   @media (min-width: 992px) {
     ${({ $transparent }) =>
-    $transparent &&
-    css`
+      $transparent &&
+      css`
         color: ${({ theme }) => theme.white};
       `}
   }
@@ -404,9 +443,10 @@ const ThemeToggle = styled.button`
   border-radius: 50%;
   border: 1px solid
     ${({ theme, $transparent }) =>
-    $transparent ? "rgba(255,255,255,0.5)" : theme.border};
+      $transparent ? "rgba(255,255,255,0.5)" : theme.border};
   background: transparent;
-  color: ${({ theme, $transparent }) => ($transparent ? theme.white : theme.heading)};
+  color: ${({ theme, $transparent }) =>
+    $transparent ? theme.white : theme.heading};
   cursor: pointer;
   transition: all 0.3s ease;
 
@@ -422,7 +462,7 @@ const ThemeToggle = styled.button`
 `;
 
 const ReserveBtn = styled(Button)`
-  padding: 11px 26px;
+  padding: 5px 25px;
   border-radius: 20px;
 
   ${({ $transparent }) =>
@@ -454,6 +494,14 @@ const Hamburger = styled.button`
 
   @media (max-width: 991px) {
     display: inline-flex;
+
+    ${({ $open }) =>
+      $open &&
+      css`
+        position: fixed;
+        top: 18px;
+        right: 22px;
+      `}
   }
 `;
 

@@ -59,15 +59,7 @@ function Slider({
   slideGap = 30,
   loop = true,
 }) {
-  const getPerView = useCallback(
-    () =>
-      typeof window === "undefined"
-        ? perView
-        : computePerView(window.innerWidth, perView, resolvePerView),
-    [perView, resolvePerView],
-  );
-
-  const [currentPerView, setCurrentPerView] = useState(getPerView);
+  const [currentPerView, setCurrentPerView] = useState(perView);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const plugins = useMemo(() => {
@@ -179,7 +171,12 @@ function Slider({
   const slides = useMemo(
     () =>
       renderedItems.map((item, index) => (
-        <SliderItem key={index} $basis={basis} $pad={slideGap / 2} className="slider-item">
+        <SliderItem
+          key={index}
+          $basis={basis}
+          $pad={slideGap / 2}
+          className="slider-item"
+        >
           {renderItem(item, items.length ? index % items.length : index)}
         </SliderItem>
       )),

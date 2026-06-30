@@ -64,7 +64,7 @@ export default function Footer() {
               <Title>{FOOTER_LINKS.title}</Title>
               <Menu>
                 {FOOTER_LINKS.links.map((l) => (
-                  <MenuItem key={l.url}>
+                  <MenuItem key={l.text}>
                     <NavLink href={l.url}>{l.text}</NavLink>
                   </MenuItem>
                 ))}

@@ -20,7 +20,7 @@ export const HOME_ABOUT = {
   subtitle: "WHY FLY WITH US",
   title:
     "Tailored to your itinerary and preferences, our charter service pairs an elite global fleet, vetted crews, and white-glove concierge for travel without compromise",
-  href: "/about",
+  href: "/",
 };
 
 export const HOME_SECTIONS = {

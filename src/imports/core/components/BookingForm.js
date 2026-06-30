@@ -42,7 +42,7 @@ export default function BookingForm() {
     dateRange.start && dateRange.end
       ? `${formatDate(dateRange.start)}  →  ${formatDate(dateRange.end)}`
       : dateRange.start
-      ? `${formatDate(dateRange.start)}  →  ?`
+      ? formatDate(dateRange.start)
       : "Select dates";
 
   return (

@@ -13,6 +13,7 @@ const brand = {
     playfair: "var(--font-playfair-display), serif", 
     nasalization: "var(--font-nasalization), sans-serif",
   },
+  gold: "#d1b745",
 };
 
 export const lightTheme = {

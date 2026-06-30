@@ -71,7 +71,8 @@ function MonthGrid({ year, month, startDate, endDate, hoverDate, onDayClick, onD
       <DayGrid>
         {days.map(({ date, outside }, idx) => {
           const isStart = isSameDay(date, startDate);
-          const isEnd = isSameDay(date, endDate);
+          const isEnd = isSameDay(date, endDate || hoverDate);
+          const hasRange = startDate && (endDate || hoverDate) && (endDate || hoverDate).getTime() > startDate.getTime();
           const effectiveEnd = endDate || hoverDate;
           const inRange = isBetween(date, startDate, effectiveEnd);
           const disabled = isBeforeToday(date);
@@ -82,6 +83,7 @@ function MonthGrid({ year, month, startDate, endDate, hoverDate, onDayClick, onD
               $outside={outside}
               $isStart={isStart}
               $isEnd={isEnd}
+              $hasRange={hasRange}
               $inRange={inRange}
               $disabled={disabled}
               onClick={() => !disabled && !outside && onDayClick(date)}
@@ -110,6 +112,20 @@ export default function DatePickerPopover({ value, onChange, onClose }) {
   const [hoverDate, setHoverDate] = useState(null);
 
   function handleDayClick(date) {
+    if (startDate && isSameDay(date, startDate)) {
+      if (endDate) {
+        setStartDate(null);
+        setEndDate(null);
+      } else {
+        setStartDate(null);
+      }
+      return;
+    }
+    if (endDate && isSameDay(date, endDate)) {
+      setEndDate(null);
+      return;
+    }
+
     if (!startDate || (startDate && endDate)) {
       setStartDate(date);
       setEndDate(null);
@@ -147,48 +163,67 @@ export default function DatePickerPopover({ value, onChange, onClose }) {
   }
 
   return (
-    <Popover>
-      <Header>
-        <NavBtn onClick={goLeft} aria-label="Previous month">
-          <i className="fa-solid fa-chevron-left" />
-        </NavBtn>
-        <MonthsRow>
-          <MonthGrid
-            year={leftYear}
-            month={leftMonth}
-            startDate={startDate}
-            endDate={endDate}
-            hoverDate={hoverDate}
-            onDayClick={handleDayClick}
-            onDayHover={setHoverDate}
-          />
-          <Divider />
-          <MonthGrid
-            year={rightYear}
-            month={rightMonth}
-            startDate={startDate}
-            endDate={endDate}
-            hoverDate={hoverDate}
-            onDayClick={handleDayClick}
-            onDayHover={setHoverDate}
-          />
-        </MonthsRow>
-        <NavBtn onClick={goRight} aria-label="Next month">
-          <i className="fa-solid fa-chevron-right" />
-        </NavBtn>
-      </Header>
+    <>
+      <Backdrop onClick={onClose} />
+      <Popover>
+        <Header>
+          <NavBtn onClick={goLeft} aria-label="Previous month">
+            <i className="fa-solid fa-chevron-left" />
+          </NavBtn>
+          <MonthsRow>
+            <MonthGrid
+              year={leftYear}
+              month={leftMonth}
+              startDate={startDate}
+              endDate={endDate}
+              hoverDate={hoverDate}
+              onDayClick={handleDayClick}
+              onDayHover={setHoverDate}
+            />
+            <Divider />
+            <MonthGrid
+              year={rightYear}
+              month={rightMonth}
+              startDate={startDate}
+              endDate={endDate}
+              hoverDate={hoverDate}
+              onDayClick={handleDayClick}
+              onDayHover={setHoverDate}
+            />
+          </MonthsRow>
+          <NavBtn onClick={goRight} aria-label="Next month">
+            <i className="fa-solid fa-chevron-right" />
+          </NavBtn>
+        </Header>
 
-      <Footer>
-        <CancelBtn type="button" onClick={onClose}>
-          Cancel
-        </CancelBtn>
-        <ApplyBtn type="button" onClick={handleApply} disabled={!startDate}>
-          Apply
-        </ApplyBtn>
-      </Footer>
-    </Popover>
+        <Footer>
+          <CancelBtn type="button" onClick={onClose}>
+            Cancel
+          </CancelBtn>
+          <ApplyBtn type="button" onClick={handleApply} disabled={!startDate}>
+            Apply
+          </ApplyBtn>
+        </Footer>
+      </Popover>
+    </>
   );
 }
+
+const Backdrop = styled.div`
+  display: none;
+
+  @media (max-width: 767px) {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 199;
+  }
+`;
 
 const Popover = styled.div`
   position: absolute;
@@ -203,10 +238,21 @@ const Popover = styled.div`
   width: max-content;
 
   @media (max-width: 767px) {
-    width: calc(100vw - 32px);
+    position: fixed;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
-    padding: 20px 12px 14px;
+    transform: translate(-50%, -50%);
+    width: calc(100vw - 20px);
+    max-width: 520px;
+    padding: 16px 10px 12px;
+    z-index: 200;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+  }
+
+  @media (max-width: 575px) {
+    width: calc(100vw - 32px);
+    max-width: 320px;
+    padding: 12px 10px 8px;
   }
 `;
 
@@ -214,15 +260,26 @@ const Header = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 12px;
+  position: relative;
+
+  @media (max-width: 767px) {
+    gap: 6px;
+  }
 `;
 
 const MonthsRow = styled.div`
   display: flex;
   gap: 24px;
+  flex: 1;
 
   @media (max-width: 767px) {
+    gap: 8px;
+  }
+
+  @media (max-width: 575px) {
     flex-direction: column;
-    gap: 16px;
+    gap: 8px;
+    width: 100%;
   }
 `;
 
@@ -241,6 +298,28 @@ const NavBtn = styled.button`
   &:hover {
     opacity: 1;
   }
+
+  @media (max-width: 767px) {
+    padding: 4px 2px;
+    font-size: 11px;
+  }
+
+  @media (max-width: 575px) {
+    position: absolute;
+    top: 0;
+    margin-top: 0;
+    z-index: 10;
+    padding: 4px 6px;
+    font-size: 13px;
+
+    &:first-of-type {
+      left: 0;
+    }
+
+    &:last-of-type {
+      right: 0;
+    }
+  }
 `;
 
 const Divider = styled.div`
@@ -248,14 +327,24 @@ const Divider = styled.div`
   background: rgba(0, 0, 0, 0.08);
   align-self: stretch;
 
-  @media (max-width: 767px) {
+  @media (max-width: 575px) {
     width: 100%;
     height: 1px;
+    margin: 4px 0;
   }
 `;
 
 const MonthWrap = styled.div`
   min-width: 220px;
+  flex: 1;
+
+  @media (max-width: 767px) {
+    min-width: 0;
+  }
+
+  @media (max-width: 575px) {
+    width: 100%;
+  }
 `;
 
 const MonthTitle = styled.div`
@@ -265,6 +354,16 @@ const MonthTitle = styled.div`
   color: #1b1b1b;
   margin-bottom: 14px;
   letter-spacing: 0.3px;
+
+  @media (max-width: 767px) {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 575px) {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
 `;
 
 const WeekRow = styled.div`
@@ -279,6 +378,16 @@ const WeekDay = styled.div`
   font-weight: 600;
   color: #999;
   padding: 4px 0;
+
+  @media (max-width: 767px) {
+    font-size: 10px;
+    padding: 2px 0;
+  }
+
+  @media (max-width: 575px) {
+    font-size: 9px;
+    padding: 1px 0;
+  }
 `;
 
 const DayGrid = styled.div`
@@ -305,8 +414,14 @@ const DayCell = styled.div`
       : $inRange
       ? "rgba(170, 132, 83, 0.12)"
       : "transparent"};
-  border-radius: ${({ $isStart, $isEnd }) =>
-    $isStart ? "50% 0 0 50%" : $isEnd ? "0 50% 50% 0" : "0"};
+  border-radius: ${({ $isStart, $isEnd, $hasRange }) =>
+    $isStart && $isEnd
+      ? "50%"
+      : $isStart
+      ? ($hasRange ? "50% 0 0 50%" : "50%")
+      : $isEnd
+      ? ($hasRange ? "0 50% 50% 0" : "50%")
+      : "0"};
   font-style: ${({ $outside, $disabled }) =>
     $outside || $disabled ? "italic" : "normal"};
   transition: background 0.15s ease;
@@ -319,6 +434,16 @@ const DayCell = styled.div`
     border-radius: ${({ $outside, $disabled, $isStart, $isEnd }) =>
       $outside || $disabled || $isStart || $isEnd ? undefined : "50%"};
   }
+
+  @media (max-width: 767px) {
+    font-size: 11px;
+    padding: 4px 1px;
+  }
+
+  @media (max-width: 575px) {
+    font-size: 10px;
+    padding: 4px 1px;
+  }
 `;
 
 const Footer = styled.div`
@@ -329,6 +454,12 @@ const Footer = styled.div`
   margin-top: 16px;
   padding-top: 14px;
   border-top: 1px solid rgba(0, 0, 0, 0.07);
+
+  @media (max-width: 575px) {
+    margin-top: 8px;
+    padding-top: 8px;
+    gap: 8px;
+  }
 `;
 
 const CancelBtn = styled.button`
@@ -345,6 +476,11 @@ const CancelBtn = styled.button`
   &:hover {
     color: #1b1b1b;
     background: rgba(0, 0, 0, 0.05);
+  }
+
+  @media (max-width: 575px) {
+    font-size: 12px;
+    padding: 6px 14px;
   }
 `;
 
@@ -366,5 +502,10 @@ const ApplyBtn = styled.button`
   &:disabled {
     opacity: 0.5;
     cursor: default;
+  }
+
+  @media (max-width: 575px) {
+    font-size: 12px;
+    padding: 6px 16px;
   }
 `;
