@@ -1,261 +1,131 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
-import DatePickerPopover from "./DatePickerPopover";
-import AirportAutocomplete from "./AirportAutocomplete";
 
 export default function BookingForm() {
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
-  const [dateRange, setDateRange] = useState({ start: null, end: null });
-  const [isDateOpen, setIsDateOpen] = useState(false);
-  const [passengers, setPassengers] = useState(4);
-  const [isPaxOpen, setIsPaxOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [notes, setNotes] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
-  const dateRef = useRef(null);
-  const paxRef = useRef(null);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
 
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (dateRef.current && !dateRef.current.contains(e.target)) {
-        setIsDateOpen(false);
-      }
-      if (paxRef.current && !paxRef.current.contains(e.target)) {
-        setIsPaxOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  function formatDate(date) {
-    if (!date) return "";
-    return date.toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
+  if (submitted) {
+    return (
+      <SuccessCard>
+        <SuccessIconWrapper>
+          <i className="fa-solid fa-check" />
+        </SuccessIconWrapper>
+        <SuccessTitle>Request Submitted Successfully</SuccessTitle>
+        <SuccessText>
+          Thank you for requesting a quote. Our 24/7 VIP concierge will contact
+          you shortly at <EmailHighlight>{email}</EmailHighlight>.
+        </SuccessText>
+        <ResetButton
+          type="button"
+          onClick={() => {
+            setSubmitted(false);
+            setName("");
+            setEmail("");
+            setNotes("");
+          }}
+        >
+          Request Another Quote
+        </ResetButton>
+      </SuccessCard>
+    );
   }
 
-  const displayDate =
-    dateRange.start && dateRange.end
-      ? `${formatDate(dateRange.start)}  →  ${formatDate(dateRange.end)}`
-      : dateRange.start
-      ? formatDate(dateRange.start)
-      : "Select dates";
-
   return (
-    <Form onSubmit={(e) => e.preventDefault()}>
-      <AirportAutocomplete
-        label="From :"
-        value={from}
-        onSelect={(airport) =>
-          setFrom(`${airport.airport_name} (${airport.iata_code})`)
-        }
-        placeholder="City / airport"
-        ariaLabel="From"
+    <Form onSubmit={handleSubmit}>
+      <Input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Name"
+        required
       />
 
-      <AirportAutocomplete
-        label="To :"
-        value={to}
-        onSelect={(airport) =>
-          setTo(`${airport.airport_name} (${airport.iata_code})`)
-        }
-        placeholder="City / airport"
-        ariaLabel="To"
+      <Input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Email address"
+        required
       />
 
-      <FieldContainer ref={dateRef}>
-        <Field onClick={() => setIsDateOpen((o) => !o)}>
-          <Content>{displayDate}</Content>
-          <Chevron>
-            <i className={`fa-solid fa-chevron-${isDateOpen ? "up" : "down"}`} />
-          </Chevron>
-        </Field>
-        {isDateOpen && (
-          <DatePickerPopover
-            value={dateRange}
-            onChange={(range) => setDateRange(range)}
-            onClose={() => setIsDateOpen(false)}
-          />
-        )}
-      </FieldContainer>
+      <Input
+        type="text"
+        value={notes}
+        onChange={(e) => setNotes(e.target.value)}
+        placeholder="Message / Special requests"
+      />
 
-      <FieldContainer ref={paxRef}>
-        <Field onClick={() => setIsPaxOpen((o) => !o)}>
-          <Content>Passengers : {String(passengers).padStart(2, "0")}</Content>
-          <Chevron>
-            <i className={`fa-solid fa-chevron-${isPaxOpen ? "up" : "down"}`} />
-          </Chevron>
-        </Field>
-        {isPaxOpen && (
-          <DropdownMenu>
-            <DropdownItem>
-              <DropdownLabel>Passengers :</DropdownLabel>
-              <CounterContainer>
-                <CounterButton
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setPassengers(Math.max(1, passengers - 1));
-                  }}
-                  aria-label="Decrease passengers"
-                >
-                  <i className="fa-solid fa-minus" />
-                </CounterButton>
-                <CounterValue>{String(passengers).padStart(2, "0")}</CounterValue>
-                <CounterButton
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setPassengers(Math.min(50, passengers + 1));
-                  }}
-                  aria-label="Increase passengers"
-                >
-                  <i className="fa-solid fa-plus" />
-                </CounterButton>
-              </CounterContainer>
-            </DropdownItem>
-          </DropdownMenu>
-        )}
-      </FieldContainer>
-
-      <Submit type="submit">Search Jets</Submit>
+      <Submit type="submit">Request Quote</Submit>
     </Form>
   );
 }
 
 const Form = styled.form`
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+  grid-template-columns: 1fr 1fr 1.5fr auto;
   align-items: center;
   gap: 14px;
   background: ${({ theme }) => theme.base};
-  border-radius: 5px;
-  padding: 22px;
-
-  @media (max-width: 1199px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  @media (max-width: 575px) {
-    grid-template-columns: minmax(0, 1fr);
-  }
-`;
-
-const FieldContainer = styled.div`
-  position: relative;
-  width: 100%;
-`;
-
-const Field = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px;
-  padding: 12px 16px;
-  min-height: 48px;
-  cursor: pointer;
-  background: transparent;
-  transition: border-color 0.3s ease;
+  padding: 22px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
 
-  &:hover {
-    border-color: rgba(255, 255, 255, 0.8);
+  @media (max-width: 991px) {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
   }
 `;
 
-const Content = styled.span`
-  color: ${({ theme }) => theme.white};
+const Input = styled.input`
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
   font-family: ${({ theme }) => theme.fonts.mulish};
   font-size: 14px;
   font-weight: 500;
-  white-space: nowrap;
-  pointer-events: none;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
+  padding: 14px 18px;
+  min-height: 48px;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
 
-const Chevron = styled.span`
-  color: ${({ theme }) => theme.white};
-  opacity: 0.85;
-  font-size: 10px;
-  display: inline-flex;
-  align-items: center;
-  margin-left: 8px;
-  pointer-events: none;
-  flex-shrink: 0;
-`;
-
-const DropdownMenu = styled.div`
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  width: 100%;
-  min-width: 260px;
-  max-width: calc(100vw - 32px);
-  background: ${({ theme }) => theme.white};
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 6px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  padding: 16px 20px;
-  z-index: 100;
-
-  @media (max-width: 1199px) {
-    right: auto;
-    left: 0;
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.65);
   }
-`;
 
-const DropdownItem = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-`;
-
-const DropdownLabel = styled.span`
-  color: #1b1b1b;
-  font-family: ${({ theme }) => theme.fonts.mulish};
-  font-size: 15px;
-  font-weight: 600;
-  white-space: nowrap;
-`;
-
-const CounterContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-`;
-
-const CounterButton = styled.button`
-  background: transparent;
-  border: none;
-  color: #1b1b1b;
-  font-size: 14px;
-  cursor: pointer;
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.2s ease;
-
-  &:hover {
-    opacity: 0.7;
+  &:focus {
+    border-color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.08);
   }
-`;
 
-const CounterValue = styled.span`
-  color: #1b1b1b;
-  font-family: ${({ theme }) => theme.fonts.mulish};
-  font-size: 15px;
-  font-weight: 600;
-  min-width: 24px;
-  text-align: center;
-  user-select: none;
+  @media (max-width: 991px) {
+    &:nth-of-type(3) {
+      grid-column: span 2;
+    }
+  }
+  @media (max-width: 767px) {
+    &:nth-of-type(3) {
+      grid-column: span 1;
+    }
+  }
 `;
 
 const Submit = styled.button`
@@ -270,14 +140,139 @@ const Submit = styled.button`
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
+  box-sizing: border-box;
   transition: all 0.3s ease;
 
-  @media (max-width: 1199px) {
-    grid-column: 1 / -1;
+  @media (max-width: 991px) {
+    grid-column: span 2;
+  }
+  @media (max-width: 767px) {
+    grid-column: span 1;
   }
 
   &:hover {
     background: ${({ theme }) => theme.white};
     color: ${({ theme }) => theme.base};
+  }
+`;
+
+const SuccessCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  background: rgba(27, 27, 27, 0.85);
+  border: 1px solid rgba(170, 132, 83, 0.3);
+  border-radius: 8px;
+  padding: 24px 24px;
+  color: #fff;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.3),
+    inset 0 0 20px rgba(170, 132, 83, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+`;
+
+const SuccessIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(170, 132, 83, 0.15);
+  border: 2px solid #aa8453;
+  margin-bottom: 2px;
+  box-shadow: 0 0 15px rgba(170, 132, 83, 0.3);
+  animation: pulseGold 2s infinite ease-in-out;
+
+  i {
+    font-size: 18px;
+    color: #aa8453;
+  }
+
+  @keyframes pulseGold {
+    0%,
+    100% {
+      box-shadow:
+        0 0 15px rgba(170, 132, 83, 0.3),
+        inset 0 0 5px rgba(170, 132, 83, 0.2);
+    }
+    50% {
+      box-shadow:
+        0 0 25px rgba(170, 132, 83, 0.6),
+        inset 0 0 15px rgba(170, 132, 83, 0.4);
+    }
+  }
+`;
+
+const SuccessTitle = styled.h3`
+  font-family: ${({ theme }) => theme.fonts.playfair};
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin: 0;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #ffffff 40%, #e5c090 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+`;
+
+const SuccessText = styled.p`
+  font-family: ${({ theme }) => theme.fonts.mulish};
+  font-size: 14px;
+  max-width: 520px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.5;
+  letter-spacing: 0.2px;
+`;
+
+const EmailHighlight = styled.span`
+  color: #e5c090;
+  font-weight: 600;
+`;
+
+const ResetButton = styled.button`
+  margin-top: 10px;
+  background: transparent;
+  color: #aa8453;
+  border: 1px solid #aa8453;
+  border-radius: 4px;
+  padding: 8px 20px;
+  font-family: ${({ theme }) => theme.fonts.mulish};
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:hover {
+    background: #aa8453;
+    color: #1b1b1b;
+    box-shadow: 0 0 15px rgba(170, 132, 83, 0.4);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 `;
