@@ -130,7 +130,7 @@ const Input = styled.input`
   border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.04);
-  color: #fff;
+  color: ${({ theme }) => theme.white};
   font-family: ${({ theme }) => theme.fonts.mulish};
   font-size: 14px;
   font-weight: 500;
@@ -145,7 +145,7 @@ const Input = styled.input`
   }
 
   &:focus {
-    border-color: #fff;
+    border-color: ${({ theme }) => theme.white};
     background: rgba(255, 255, 255, 0.1);
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.08);
   }
@@ -198,15 +198,15 @@ const SuccessCard = styled.div`
   text-align: center;
   gap: 12px;
   background: rgba(27, 27, 27, 0.85);
-  border: 1px solid rgba(170, 132, 83, 0.3);
+  border: 1px solid ${({ theme }) => theme.base}4d;
   border-radius: 8px;
   padding: 24px 24px;
-  color: #fff;
+  color: ${({ theme }) => theme.white};
   width: 100%;
   box-sizing: border-box;
   box-shadow:
     0 15px 35px rgba(0, 0, 0, 0.3),
-    inset 0 0 20px rgba(170, 132, 83, 0.1);
+    inset 0 0 20px ${({ theme }) => theme.base}1a;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -230,28 +230,28 @@ const SuccessIconWrapper = styled.div`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: rgba(170, 132, 83, 0.15);
-  border: 2px solid #aa8453;
+  background: ${({ theme }) => theme.base}26;
+  border: 2px solid ${({ theme }) => theme.base};
   margin-bottom: 2px;
-  box-shadow: 0 0 15px rgba(170, 132, 83, 0.3);
+  box-shadow: 0 0 15px ${({ theme }) => theme.base}4d;
   animation: pulseGold 2s infinite ease-in-out;
 
   i {
     font-size: 18px;
-    color: #aa8453;
+    color: ${({ theme }) => theme.base};
   }
 
   @keyframes pulseGold {
     0%,
     100% {
       box-shadow:
-        0 0 15px rgba(170, 132, 83, 0.3),
-        inset 0 0 5px rgba(170, 132, 83, 0.2);
+        0 0 15px ${({ theme }) => theme.base}4d,
+        inset 0 0 5px ${({ theme }) => theme.base}33;
     }
     50% {
       box-shadow:
-        0 0 25px rgba(170, 132, 83, 0.6),
-        inset 0 0 15px rgba(170, 132, 83, 0.4);
+        0 0 25px ${({ theme }) => theme.base}99,
+        inset 0 0 15px ${({ theme }) => theme.base}66;
     }
   }
 `;
@@ -263,7 +263,7 @@ const SuccessTitle = styled.h3`
   letter-spacing: 1px;
   margin: 0;
   text-transform: uppercase;
-  background: linear-gradient(135deg, #ffffff 40%, #e5c090 100%);
+  background: linear-gradient(135deg, ${({ theme }) => theme.white} 40%, ${({ theme }) => theme.base} 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;
@@ -279,15 +279,15 @@ const SuccessText = styled.p`
 `;
 
 const EmailHighlight = styled.span`
-  color: #e5c090;
+  color: ${({ theme }) => theme.base};
   font-weight: 600;
 `;
 
 const ResetButton = styled.button`
   margin-top: 10px;
   background: transparent;
-  color: #aa8453;
-  border: 1px solid #aa8453;
+  color: ${({ theme }) => theme.base};
+  border: 1px solid ${({ theme }) => theme.base};
   border-radius: 4px;
   padding: 8px 20px;
   font-family: ${({ theme }) => theme.fonts.mulish};
@@ -300,9 +300,9 @@ const ResetButton = styled.button`
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
   &:hover {
-    background: #aa8453;
+    background: ${({ theme }) => theme.base};
     color: #1b1b1b;
-    box-shadow: 0 0 15px rgba(170, 132, 83, 0.4);
+    box-shadow: 0 0 15px ${({ theme }) => theme.base}66;
     transform: translateY(-2px);
   }
 
