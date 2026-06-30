@@ -1,59 +1,116 @@
-/**
- * GET /api/airports?q=london
- *
- * Proxies AviationStack /airports endpoint server-side so the API key
- * is never exposed to the browser.
- *
- * Returns up to 10 matching international airports shaped as:
- *   { iata_code, airport_name, city_name, country_name }
- */
+import { AIRPORTS } from "@/imports/core/constants/airports";
+
+function mapApiAirport(apiAirport, included = []) {
+  const attr = apiAirport.attributes;
+  const iata = attr.iata_code?.toUpperCase();
+  if (!iata || iata.length !== 3) return null;
+
+  const localMatch = AIRPORTS.find(
+    (a) => a.iata_code.toUpperCase() === iata
+  );
+
+  if (localMatch) {
+    return localMatch;
+  }
+
+  const countryId = apiAirport.relationships?.country?.data?.id;
+  const regionId = apiAirport.relationships?.region?.data?.id;
+
+  const countryObj = included.find(
+    (item) => item.type === "countries" && item.id === countryId
+  );
+  const regionObj = included.find(
+    (item) => item.type === "regions" && item.id === regionId
+  );
+
+  const countryName = countryObj?.attributes?.name || "";
+  const cityName = regionObj?.attributes?.name || attr.local_code || iata;
+
+  return {
+    iata_code: iata,
+    airport_name: attr.name || "",
+    city_name: cityName,
+    country_name: countryName,
+  };
+}
+
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
-  const q = searchParams.get("q")?.trim();
+  const q = searchParams.get("q")?.trim() || "";
 
-  if (!q || q.length < 2) {
+  if (q.length < 2) {
     return Response.json([]);
   }
 
-  const apiKey = process.env.AVIATIONSTACK_API_KEY;
-  if (!apiKey || apiKey === "your_api_key_here") {
-    return Response.json(
-      { error: "AVIATIONSTACK_API_KEY is not configured in .env.local" },
-      { status: 500 }
-    );
+  const results = [];
+  const seen = new Set();
+
+  const queryLower = q.toLowerCase();
+  const localMatches = AIRPORTS.filter(
+    (a) =>
+      a.iata_code.toLowerCase().startsWith(queryLower) ||
+      a.airport_name.toLowerCase().includes(queryLower) ||
+      a.city_name.toLowerCase().includes(queryLower) ||
+      a.country_name.toLowerCase().includes(queryLower)
+  );
+
+  for (const item of localMatches) {
+    results.push(item);
+    seen.add(item.iata_code.toUpperCase());
   }
 
   try {
-    const url = new URL("https://api.aviationstack.com/v1/airports");
-    url.searchParams.set("access_key", apiKey);
-    url.searchParams.set("search", q);
-    url.searchParams.set("limit", "20");
+    const listRes = await fetch(
+      `https://airportsapi.com/api/airports?filter[name]=${encodeURIComponent(q)}&include=country,region`,
+      { next: { revalidate: 86400 } }
+    );
 
-    const res = await fetch(url.toString(), { next: { revalidate: 3600 } });
-    if (!res.ok) {
-      return Response.json({ error: "AviationStack error" }, { status: res.status });
+    if (listRes.ok) {
+      const json = await listRes.json();
+      const listData = json?.data ?? [];
+      const included = json?.included ?? [];
+
+      for (const item of listData) {
+        if (item && item.attributes) {
+          const mapped = mapApiAirport(item, included);
+          if (mapped && !seen.has(mapped.iata_code)) {
+            results.push(mapped);
+            seen.add(mapped.iata_code);
+          }
+        }
+      }
     }
-
-    const json = await res.json();
-    const data = (json?.data ?? [])
-      .filter(
-        (a) =>
-          a.iata_code &&
-          a.iata_code !== "N/A" &&
-          a.airport_name &&
-          a.country_name
-      )
-      .slice(0, 10)
-      .map((a) => ({
-        iata_code: a.iata_code,
-        airport_name: a.airport_name,
-        city_name: a.city_iata_code || a.iata_code,
-        country_name: a.country_name,
-      }));
-
-    return Response.json(data);
   } catch (err) {
-    console.error("[airports API]", err);
-    return Response.json({ error: "Internal error" }, { status: 500 });
+    console.warn("[airportsapi list fetch failed]", err);
   }
+
+  if (q.length === 3) {
+    const iataQuery = q.toUpperCase();
+    if (!seen.has(iataQuery)) {
+      try {
+        const singleRes = await fetch(
+          `https://airportsapi.com/api/airports/${iataQuery}?include=country,region`,
+          { next: { revalidate: 86400 } }
+        );
+
+        if (singleRes.ok) {
+          const json = await singleRes.json();
+          const apiAirport = json?.data;
+          const included = json?.included ?? [];
+
+          if (apiAirport && apiAirport.attributes) {
+            const mapped = mapApiAirport(apiAirport, included);
+            if (mapped && !seen.has(mapped.iata_code)) {
+              results.push(mapped);
+              seen.add(mapped.iata_code);
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("[airportsapi single fetch failed]", err);
+      }
+    }
+  }
+
+  return Response.json(results.slice(0, 10));
 }

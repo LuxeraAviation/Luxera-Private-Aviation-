@@ -13,6 +13,13 @@ import {
 } from "@/imports/core/constants/footer";
 
 export default function Footer() {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <FooterEl>
       <Main>
@@ -86,6 +93,16 @@ export default function Footer() {
               {COPYRIGHT} Copyright © {new Date().getFullYear()}{" "}
               <CopyrightLink href="#">Laralink</CopyrightLink>
             </Copyright>
+            <ScrollUp onClick={scrollToTop} aria-label="Scroll to top">
+              <ArrowSvg width="15" height="7" viewBox="0 0 15 7" fill="none">
+                <path d="M15 6.18793L14.1169 7L7.93687 1.31723C7.81958 1.20941 7.66053 1.14885 7.49468 1.14885C7.32884 1.14885 7.16978 1.20941 7.0525 1.31723L0.884376 6.99022L0 6.177L6.16812 0.505163C6.51998 0.181708 6.99715 0 7.49468 0C7.99222 0 8.46938 0.181708 8.82125 0.505163L15 6.18793Z" fill="white"/>
+              </ArrowSvg>
+              <BgDotted>
+                <DottedSvg width="56" height="56" viewBox="0 0 56 56" fill="none">
+                  <circle cx="28" cy="28" r="27.5" stroke="currentColor" strokeDasharray="5 5"/>
+                </DottedSvg>
+              </BgDotted>
+            </ScrollUp>
             <BottomLinks>
               <BottomLink href="#">Privacy &amp; Cookie Policy</BottomLink>
             </BottomLinks>
@@ -219,6 +236,87 @@ const BottomInner = styled.div`
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
+  position: relative;
+`;
+
+const ArrowSvg = styled.svg`
+  position: relative;
+  z-index: 2;
+`;
+
+const DottedSvg = styled.svg``;
+
+const BgDotted = styled.span`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  animation: rotate 15s linear infinite;
+  animation-play-state: paused;
+  color: ${({ theme }) => theme.base};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+`;
+
+const ScrollUp = styled.button`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 46px;
+  width: 46px;
+  top: -49px;
+  background-color: #181818;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  z-index: 10;
+  color: #fff;
+  transition: all 0.3s ease;
+
+  &::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    border-radius: 50%;
+    background-color: ${({ theme }) => theme.base};
+    opacity: 0.5;
+    transition: transform 0.3s ease;
+    z-index: 1;
+  }
+
+  &:hover::before {
+    transform: scale(1.1);
+  }
+
+  &:hover ${BgDotted} {
+    animation-play-state: running;
+  }
+
+  @keyframes rotate {
+    from {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  @media (max-width: 767px) {
+    top: auto;
+    position: relative;
+    left: auto;
+    transform: none;
+    margin: 10px auto 0;
+  }
 `;
 
 const Copyright = styled.div``;

@@ -82,8 +82,6 @@ export default function Hero() {
 
 const Wrap = styled.section`
   position: relative;
-  /* Matches the section that follows the hero, so the form's lower half (and
-     the area beside it below the seam) sits on a clean light background. */
   background: ${({ theme }) => theme.soft};
 `;
 
@@ -182,8 +180,6 @@ const EdgeArrow = styled.button`
 `;
 
 const FormZone = styled.div`
-  /* Centre the form on the hero's bottom edge so it straddles the hero and the
-     next section (top half over the hero, bottom half on the light section). */
   position: absolute;
   left: 0;
   right: 0;

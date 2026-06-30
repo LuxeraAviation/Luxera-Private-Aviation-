@@ -168,14 +168,6 @@ const Field = styled.div`
   }
 `;
 
-const Label = styled.span`
-  color: ${({ theme }) => theme.white};
-  font-family: ${({ theme }) => theme.fonts.mulish};
-  font-size: 14px;
-  font-weight: 500;
-  white-space: nowrap;
-`;
-
 const Content = styled.span`
   color: ${({ theme }) => theme.white};
   font-family: ${({ theme }) => theme.fonts.mulish};
@@ -185,24 +177,6 @@ const Content = styled.span`
   pointer-events: none;
   overflow: hidden;
   text-overflow: ellipsis;
-`;
-
-const TextField = styled.input`
-  flex: 1;
-  min-width: 0;
-  border: none;
-  background: transparent;
-  color: ${({ theme }) => theme.white};
-  font-family: ${({ theme }) => theme.fonts.mulish};
-  font-size: 14px;
-  font-weight: 500;
-  padding: 0;
-  outline: none;
-
-  &::placeholder {
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 400;
-  }
 `;
 
 const Chevron = styled.span`

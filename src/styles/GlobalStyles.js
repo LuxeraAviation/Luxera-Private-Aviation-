@@ -8,14 +8,6 @@ const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.white};
   }
 
-  :root {
-    --web-wash: ${({ theme }) => theme.bg};
-    --primary: ${({ theme }) => theme.heading};
-    --secondary: ${({ theme }) => theme.text};
-    --accent: ${({ theme }) => theme.base};
-    --border: ${({ theme }) => theme.border};
-  }
-
   *,
   *::before,
   *::after {

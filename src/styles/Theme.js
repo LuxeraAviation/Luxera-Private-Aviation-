@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import styled, { keyframes, css } from "styled-components";
+import styled from "styled-components";
 import ScrollTopIcon from "@/imports/core/assets/ScrollTopIcon";
 
 const brand = {
@@ -29,6 +29,7 @@ export const lightTheme = {
   footerBg: "#1b1b1b",
   cream: "#fff8ee",
   overlay: "rgba(27, 27, 27, 0.5)",
+  headerBlur: "rgba(255, 255, 255, 0.6)",
 };
 
 export const darkTheme = {
@@ -45,20 +46,8 @@ export const darkTheme = {
   footerBg: "#121212",
   cream: "#181818",
   overlay: "rgba(0, 0, 0, 0.6)",
+  headerBlur: "rgba(27, 27, 27, 0.55)",
 };
-
-export const theme = lightTheme;
-
-export {
-  dashAnim,
-  scale,
-  planeFloat,
-  floatY,
-  floatX,
-  spinSlow,
-  imgAnimate,
-  waves,
-} from "./animations";
 
 const variants = {
   "fade-up": { x: 0, y: 60 },
@@ -86,7 +75,7 @@ const RevealBox = styled.div`
   }
 `;
 
-export function useInView(options = {}) {
+function useInView(options = {}) {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
   const threshold = options.threshold ?? 0.15;

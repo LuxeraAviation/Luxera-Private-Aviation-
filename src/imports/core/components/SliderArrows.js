@@ -42,21 +42,18 @@ const Arrow = styled.button`
     color: ${({ theme }) => theme.base};
   }
 
-  /* 992–1199: container 960 */
   @media (min-width: 992px) {
     ${({ $side }) =>
       $side === "left"
         ? "left: calc((960px - 100vw) / 4 - 28px);"
         : "right: calc((960px - 100vw) / 4 - 28px);"}
   }
-  /* 1200–1399: container 1140 */
   @media (min-width: 1200px) {
     ${({ $side }) =>
       $side === "left"
         ? "left: calc((1140px - 100vw) / 4 - 28px);"
         : "right: calc((1140px - 100vw) / 4 - 28px);"}
   }
-  /* >=1400: container 1320 */
   @media (min-width: 1400px) {
     ${({ $side }) =>
       $side === "left"

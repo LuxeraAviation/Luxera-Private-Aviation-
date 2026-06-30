@@ -2,19 +2,6 @@
 
 import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import { AIRPORTS } from "@/imports/core/constants/airports";
-
-function searchAirports(query) {
-  const q = query.trim().toLowerCase();
-  if (q.length < 2) return [];
-  return AIRPORTS.filter(
-    (a) =>
-      a.iata_code.toLowerCase().startsWith(q) ||
-      a.airport_name.toLowerCase().includes(q) ||
-      a.city_name.toLowerCase().includes(q) ||
-      a.country_name.toLowerCase().includes(q),
-  ).slice(0, 8);
-}
 
 export default function AirportAutocomplete({
   label,
@@ -34,6 +21,8 @@ export default function AirportAutocomplete({
   if (value !== prevValue) {
     setPrevValue(value);
     setQuery(value || "");
+    setResults([]);
+    setIsOpen(false);
   }
 
   useEffect(() => {
@@ -46,13 +35,35 @@ export default function AirportAutocomplete({
     return () => document.removeEventListener("mousedown", handleOutside);
   }, []);
 
+  useEffect(() => {
+    if (query === value || query.trim().length < 2) {
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/airports?q=${encodeURIComponent(query)}`);
+        if (res.ok) {
+          const data = await res.json();
+          setResults(data);
+          setIsOpen(data.length > 0);
+        }
+      } catch (err) {
+        console.error("Failed to fetch airports:", err);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [query, value]);
+
   function handleChange(e) {
     const q = e.target.value;
     setQuery(q);
     setActiveIndex(-1);
-    const found = searchAirports(q);
-    setResults(found);
-    setIsOpen(found.length > 0);
+    if (q.trim().length < 2) {
+      setResults([]);
+      setIsOpen(false);
+    }
   }
 
   function handleSelect(airport) {
@@ -115,7 +126,9 @@ export default function AirportAutocomplete({
               <ItemCode>{airport.iata_code}</ItemCode>
               <ItemInfo>
                 <ItemName>{airport.airport_name}</ItemName>
-                <ItemSub>{airport.country_name}</ItemSub>
+                <ItemSub>
+                  {airport.city_name ? `${airport.city_name}, ` : ""}{airport.country_name}
+                </ItemSub>
               </ItemInfo>
             </DropdownItem>
           ))}
@@ -170,22 +183,6 @@ const Input = styled.input`
   &::placeholder {
     color: rgba(255, 255, 255, 0.6);
     font-weight: 400;
-  }
-`;
-
-const Spinner = styled.span`
-  width: 14px;
-  height: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.35);
-  border-top-color: #fff;
-  border-radius: 50%;
-  flex-shrink: 0;
-  animation: spin 0.7s linear infinite;
-
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
   }
 `;
 

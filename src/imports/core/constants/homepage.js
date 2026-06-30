@@ -7,7 +7,7 @@ export const HERO_SLIDES = [
   {
     subtitle: "A global fleet at your command",
     titleLines: ["Your Journey,", "Elevated Beyond First Class"],
-    bg: "/image/av/jet-sunset-water.jpg",
+    bg: "/image/av/new-plane.jpg",
   },
   {
     subtitle: "Seamless, discreet, uncompromising",

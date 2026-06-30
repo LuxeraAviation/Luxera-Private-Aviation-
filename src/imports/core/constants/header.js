@@ -10,6 +10,6 @@ export const RESERVATION = { label: "Book a Jet", url: "/" };
 
 export const BRAND = {
   name: "Luxera",
-  logoLight: "/image/luxera-logo-gold.svg",
-  logoDark: "/image/luxera-logo-gold.svg",
+  logoLight: "/image/logo-gold.svg",
+  logoDark: "/image/logo-gold.svg",
 };

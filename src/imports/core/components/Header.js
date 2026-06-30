@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Container from "@/imports/core/atom/Container";
 import Button from "@/imports/core/components/Button";
@@ -13,14 +13,27 @@ import { DUBAI_MAP } from "@/imports/core/constants/footer";
 export default function Header() {
   const { mode, toggle } = useThemeMode();
   const [scrolled, setScrolled] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
   const [open, setOpen] = useState(false);
   const [openIdx, setOpenIdx] = useState(null);
+  const headerRef = useRef(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 10);
+      const hero = document.querySelector("main")?.firstElementChild;
+      const headerH = headerRef.current?.offsetHeight ?? 90;
+      const threshold = hero ? hero.offsetHeight - headerH : 10;
+      setPastHero(y > threshold);
+    };
     onScroll();
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -33,11 +46,11 @@ export default function Header() {
   const toggleSubmenu = (idx) =>
     setOpenIdx((prev) => (prev === idx ? null : idx));
 
-  const atTop = !scrolled;
-  const logoSrc = scrolled && mode === "light" ? BRAND.logoDark : BRAND.logoLight;
+  const overHero = !pastHero;
+  const logoSrc = pastHero && mode === "light" ? BRAND.logoDark : BRAND.logoLight;
 
   return (
-    <HeaderEl $scrolled={scrolled} $mode={mode}>
+    <HeaderEl ref={headerRef} $scrolled={scrolled} $pastHero={pastHero} $mode={mode}>
       <Container>
         <Inner>
           <LogoLink href="/" aria-label={BRAND.name}>
@@ -45,7 +58,7 @@ export default function Header() {
               src={logoSrc}
               alt={BRAND.name}
               width={161}
-              height={80}
+              height={30}
               priority
             />
           </LogoLink>
@@ -56,7 +69,7 @@ export default function Header() {
                 <NavItem key={item.label} $hasChildren={!!item.submenu}>
                   <NavLink
                     href={item.url}
-                    $transparent={atTop}
+                    $transparent={overHero}
                     onClick={() => setOpen(false)}
                   >
                     {item.label}
@@ -87,6 +100,17 @@ export default function Header() {
               ))}
             </NavList>
 
+            <MobileTools>
+              <MobileToggle
+                onClick={toggle}
+                aria-label="Toggle dark mode"
+                type="button"
+              >
+                <i className={mode === "dark" ? "fas fa-sun" : "fas fa-moon"} />
+                <span>{mode === "dark" ? "Light Mode" : "Dark Mode"}</span>
+              </MobileToggle>
+            </MobileTools>
+
             <MobileMap>
               <MapLabel>Dubai</MapLabel>
               <MapFrame
@@ -103,18 +127,18 @@ export default function Header() {
               onClick={toggle}
               aria-label="Toggle dark mode"
               type="button"
-              $transparent={atTop}
+              $transparent={overHero}
             >
               <i className={mode === "dark" ? "fas fa-sun" : "fas fa-moon"} />
             </ThemeToggle>
-            <ReserveBtn href={RESERVATION.url} $transparent={atTop}>
+            <ReserveBtn href={RESERVATION.url} $transparent={overHero}>
               {RESERVATION.label}
             </ReserveBtn>
             <Hamburger
               onClick={() => setOpen((o) => !o)}
               aria-label="Toggle menu"
               type="button"
-              $transparent={atTop && !open}
+              $transparent={overHero && !open}
             >
               <i className={open ? "fas fa-times" : "fas fa-bars"} />
             </Hamburger>
@@ -132,10 +156,13 @@ const HeaderEl = styled.header`
   z-index: 1000;
   padding: ${({ $scrolled }) => ($scrolled ? "0" : "10px 0")};
   transition: all 0.4s ease;
-  background: ${({ $scrolled, theme }) =>
-    $scrolled ? theme.bg : "transparent"};
-  box-shadow: ${({ $scrolled }) =>
-    $scrolled ? "0 6px 24px rgba(0, 0, 0, 0.08)" : "none"};
+  background: ${({ $pastHero, theme }) =>
+    $pastHero ? theme.bg : "transparent"};
+  backdrop-filter: ${({ $scrolled }) => ($scrolled ? "blur(10px)" : "none")};
+  -webkit-backdrop-filter: ${({ $scrolled }) =>
+    $scrolled ? "blur(10px)" : "none"};
+  box-shadow: ${({ $pastHero }) =>
+    $pastHero ? "0 6px 24px rgba(0, 0, 0, 0.06)" : "none"};
 `;
 
 const Inner = styled.div`
@@ -144,7 +171,6 @@ const Inner = styled.div`
   justify-content: space-between;
   gap: 20px;
   height: 90px;
-
   @media (max-width: 991px) {
     height: 76px;
   }
@@ -154,9 +180,10 @@ const LogoLink = styled(Link)`
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
+  padding:5px 15px;
 
   img {
-    width: 140px;
+    width: 180px;
     height: auto;
   }
 `;
@@ -197,6 +224,46 @@ const NavList = styled.ul`
     flex-direction: column;
     align-items: stretch;
     gap: 0;
+  }
+`;
+
+const MobileTools = styled.div`
+  @media (min-width: 992px) {
+    display: none;
+  }
+
+  padding: 18px 0;
+  border-bottom: 1px solid ${({ theme }) => theme.border};
+`;
+
+const MobileToggle = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: ${({ theme }) => theme.fonts.mulish};
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.heading};
+
+  i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid ${({ theme }) => theme.border};
+    font-size: 16px;
+  }
+
+  &:hover {
+    color: ${({ theme }) => theme.base};
   }
 `;
 
@@ -261,8 +328,8 @@ const NavLink = styled(Link)`
 
   @media (min-width: 992px) {
     ${({ $transparent }) =>
-      $transparent &&
-      css`
+    $transparent &&
+    css`
         color: ${({ theme }) => theme.white};
       `}
   }
@@ -337,7 +404,7 @@ const ThemeToggle = styled.button`
   border-radius: 50%;
   border: 1px solid
     ${({ theme, $transparent }) =>
-      $transparent ? "rgba(255,255,255,0.5)" : theme.border};
+    $transparent ? "rgba(255,255,255,0.5)" : theme.border};
   background: transparent;
   color: ${({ theme, $transparent }) => ($transparent ? theme.white : theme.heading)};
   cursor: pointer;
@@ -347,6 +414,10 @@ const ThemeToggle = styled.button`
     background: ${({ theme }) => theme.base};
     border-color: ${({ theme }) => theme.base};
     color: ${({ theme }) => theme.white};
+  }
+
+  @media (max-width: 991px) {
+    display: none;
   }
 `;
 
