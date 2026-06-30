@@ -17,6 +17,8 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [menuActive, setMenuActive] = useState(false);
   const [openIdx, setOpenIdx] = useState(null);
+  const [visible, setVisible] = useState(true);
+  const lastScrollY = useRef(0);
   const headerRef = useRef(null);
   const closeTimer = useRef(null);
 
@@ -24,6 +26,7 @@ export default function Header() {
     if (closeTimer.current) clearTimeout(closeTimer.current);
     setMenuActive(true);
     setOpen(true);
+    setVisible(true);
   };
 
   const closeMenu = () => {
@@ -34,12 +37,9 @@ export default function Header() {
 
   const toggleMenu = () => (open ? closeMenu() : openMenu());
 
-  useEffect(
-    () => () => {
-      if (closeTimer.current) clearTimeout(closeTimer.current);
-    },
-    [],
-  );
+  useEffect(() => () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -49,6 +49,19 @@ export default function Header() {
       const headerH = headerRef.current?.offsetHeight ?? 90;
       const threshold = hero ? hero.offsetHeight - headerH : 10;
       setPastHero(y > threshold);
+
+      if (open) {
+        setVisible(true);
+      } else if (y > 150) {
+        if (y > lastScrollY.current) {
+          setVisible(false);
+        } else {
+          setVisible(true);
+        }
+      } else {
+        setVisible(true);
+      }
+      lastScrollY.current = y;
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -57,7 +70,7 @@ export default function Header() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, []);
+  }, [open]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -70,8 +83,7 @@ export default function Header() {
     setOpenIdx((prev) => (prev === idx ? null : idx));
 
   const overHero = !pastHero;
-  const logoSrc =
-    pastHero && mode === "light" ? BRAND.logoDark : BRAND.logoLight;
+  const logoSrc = pastHero && mode === "light" ? BRAND.logoDark : BRAND.logoLight;
 
   return (
     <HeaderEl
@@ -80,6 +92,7 @@ export default function Header() {
       $pastHero={pastHero}
       $menuOpen={menuActive}
       $mode={mode}
+      $visible={visible}
     >
       <Container>
         <Inner>
@@ -183,17 +196,12 @@ export default function Header() {
 
 const HeaderEl = styled.header`
   position: fixed;
-  inset: 0 0 auto 0;
+  left: 0;
+  right: 0;
+  top: ${({ $visible }) => ($visible ? "0" : "-120px")};
   z-index: 1000;
   padding: ${({ $scrolled }) => ($scrolled ? "0" : "10px 0")};
-  /* Note: do NOT transition backdrop-filter. While it animates to "none" it
-     stays a non-none value and keeps acting as a containing block for the
-     fixed mobile drawer, clipping it to the header height ("half open" bug).
-     Toggle it instantly by transitioning only the visual properties. */
-  transition:
-    background 0.4s ease,
-    padding 0.4s ease,
-    box-shadow 0.4s ease;
+  transition: top 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), background 0.5s ease, padding 0.5s ease, box-shadow 0.5s ease;
   background: ${({ $pastHero, theme }) =>
     $pastHero ? theme.bg : "transparent"};
   backdrop-filter: ${({ $scrolled, $menuOpen }) =>
@@ -219,7 +227,7 @@ const LogoLink = styled(Link)`
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
-  padding: 5px 15px;
+  padding:5px 15px;
 
   img {
     width: 180px;
@@ -367,8 +375,8 @@ const NavLink = styled(Link)`
 
   @media (min-width: 992px) {
     ${({ $transparent }) =>
-      $transparent &&
-      css`
+    $transparent &&
+    css`
         color: ${({ theme }) => theme.white};
       `}
   }
@@ -443,10 +451,9 @@ const ThemeToggle = styled.button`
   border-radius: 50%;
   border: 1px solid
     ${({ theme, $transparent }) =>
-      $transparent ? "rgba(255,255,255,0.5)" : theme.border};
+    $transparent ? "rgba(255,255,255,0.5)" : theme.border};
   background: transparent;
-  color: ${({ theme, $transparent }) =>
-    $transparent ? theme.white : theme.heading};
+  color: ${({ theme, $transparent }) => ($transparent ? theme.white : theme.heading)};
   cursor: pointer;
   transition: all 0.3s ease;
 

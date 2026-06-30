@@ -91,7 +91,6 @@ export default function Footer() {
           <BottomInner>
             <Copyright>
               {COPYRIGHT} Copyright © {new Date().getFullYear()}{" "}
-              <CopyrightLink href="#">Laralink</CopyrightLink>
             </Copyright>
             <ScrollUp onClick={scrollToTop} aria-label="Scroll to top">
               <ArrowSvg width="15" height="7" viewBox="0 0 15 7" fill="none">
@@ -320,10 +319,6 @@ const ScrollUp = styled.button`
 `;
 
 const Copyright = styled.div``;
-
-const CopyrightLink = styled.a`
-  color: ${({ theme }) => theme.base};
-`;
 
 const BottomLinks = styled.div``;
 

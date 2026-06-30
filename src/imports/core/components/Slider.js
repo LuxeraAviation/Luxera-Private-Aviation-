@@ -171,12 +171,7 @@ function Slider({
   const slides = useMemo(
     () =>
       renderedItems.map((item, index) => (
-        <SliderItem
-          key={index}
-          $basis={basis}
-          $pad={slideGap / 2}
-          className="slider-item"
-        >
+        <SliderItem key={index} $basis={basis} $pad={slideGap / 2} className="slider-item">
           {renderItem(item, items.length ? index % items.length : index)}
         </SliderItem>
       )),

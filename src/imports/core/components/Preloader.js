@@ -182,7 +182,6 @@ const Spinner = styled.div`
     z-index: 2;
   }
 
-  /* Outer Ring */
   &::before {
     content: "";
     position: absolute;
@@ -196,7 +195,6 @@ const Spinner = styled.div`
     z-index: 1;
   }
 
-  /* Inner Ring */
   &::after {
     content: "";
     position: absolute;
