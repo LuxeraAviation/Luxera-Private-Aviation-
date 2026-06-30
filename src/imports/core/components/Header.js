@@ -8,6 +8,7 @@ import Container from "@/imports/core/atom/Container";
 import Button from "@/imports/core/components/Button";
 import { useThemeMode } from "@/imports/core/components/ThemeMode";
 import { NAV_ITEMS, RESERVATION, BRAND } from "@/imports/core/constants/header";
+import { DUBAI_MAP } from "@/imports/core/constants/footer";
 
 export default function Header() {
   const { mode, toggle } = useThemeMode();
@@ -85,6 +86,16 @@ export default function Header() {
                 </NavItem>
               ))}
             </NavList>
+
+            <MobileMap>
+              <MapLabel>Dubai</MapLabel>
+              <MapFrame
+                src={DUBAI_MAP}
+                title="Dubai location"
+                allowFullScreen
+                loading="lazy"
+              />
+            </MobileMap>
           </Nav>
 
           <Right>
@@ -103,7 +114,7 @@ export default function Header() {
               onClick={() => setOpen((o) => !o)}
               aria-label="Toggle menu"
               type="button"
-              $transparent={atTop}
+              $transparent={atTop && !open}
             >
               <i className={open ? "fas fa-times" : "fas fa-bars"} />
             </Hamburger>
@@ -187,6 +198,32 @@ const NavList = styled.ul`
     align-items: stretch;
     gap: 0;
   }
+`;
+
+const MobileMap = styled.div`
+  @media (min-width: 992px) {
+    display: none;
+  }
+
+  margin-top: 28px;
+`;
+
+const MapLabel = styled.h2`
+  font-family: ${({ theme }) => theme.fonts.mulish};
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.heading};
+  margin: 0 0 12px;
+`;
+
+const MapFrame = styled.iframe`
+  width: 100%;
+  height: 200px;
+  border: 0;
+  border-radius: 6px;
+  filter: grayscale(100%);
 `;
 
 const NavItem = styled.li`

@@ -7,7 +7,7 @@ import {
   FOOTER_CONTACT,
   FOOTER_ADDRESS,
   FOOTER_LINKS,
-  FOOTER_MAP,
+  DUBAI_MAP,
   SOCIAL_LINKS,
   COPYRIGHT,
 } from "@/imports/core/constants/footer";
@@ -68,7 +68,7 @@ export default function Footer() {
               <Title>Map Location</Title>
               <MapWrap>
                 <Map
-                  src={FOOTER_MAP}
+                  src={DUBAI_MAP}
                   title="Map location"
                   allowFullScreen
                   loading="lazy"

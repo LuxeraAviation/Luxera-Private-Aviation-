@@ -24,21 +24,9 @@ export const HOME_ABOUT = {
 };
 
 export const HOME_SECTIONS = {
-  rooms: {
-    subtitle: "Our Fleet",
-    title: "A Private Fleet Matched to Every Mission",
-  },
-  features: {
+  offerings: {
     subtitle: "WHAT WE OFFER",
     title: "Charter Services Built Around You",
-  },
-  gallery: {
-    subtitle: "INSIDE THE EXPERIENCE",
-    title: "Step Aboard a Private Cabin",
-  },
-  blog: {
-    subtitle: "NEWS & INSIGHTS",
-    title: "From the Luxera Journal",
   },
 };
 

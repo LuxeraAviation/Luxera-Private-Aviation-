@@ -1,4 +1,4 @@
-export const FEATURES = [
+export const OFFERINGS = [
   {
     title: "On-Demand Charter",
     desc: "Book a private jet anywhere in the world, any time. Transparent hourly pricing and wheels up in as little as four hours.",
@@ -60,7 +60,7 @@ export const SERVICES = [
   },
 ];
 
-export const FEATURE_HERO = {
+export const SERVICE_INTRO = {
   subtitle: "PREMIUM SERVICE",
   title: "Every Detail of Your Flight, Handled by One Team.",
   image1: "/image/av/jet-sunset.webp",

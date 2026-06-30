@@ -8,7 +8,7 @@ import Container from "@/imports/core/atom/Container";
 import SectionHeading from "@/imports/core/components/SectionHeading";
 import { Reveal } from "@/styles/Theme";
 import ContactForm from "@/imports/Contact/ui/components/ContactForm";
-import { FOOTER_MAP } from "@/imports/core/constants/footer";
+import { DUBAI_MAP } from "@/imports/core/constants/footer";
 
 export default function ContactPage() {
   return (
@@ -41,7 +41,7 @@ export default function ContactPage() {
         </Container>
       </Section>
       <Map>
-        <iframe src={FOOTER_MAP} title="Luxera location" allowFullScreen loading="lazy" />
+        <iframe src={DUBAI_MAP} title="Luxera location" allowFullScreen loading="lazy" />
       </Map>
     </main>
   );

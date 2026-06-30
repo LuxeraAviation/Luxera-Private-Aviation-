@@ -7,7 +7,7 @@ import Container from "@/imports/core/atom/Container";
 import ArrowButton from "@/imports/core/components/ArrowButton";
 import SectionHeading from "@/imports/core/components/SectionHeading";
 import { Reveal } from "@/styles/Theme";
-import { FEATURE_HERO, SERVICE_LIST } from "@/imports/core/constants/services";
+import { SERVICE_INTRO, SERVICE_LIST } from "@/imports/core/constants/services";
 
 export default function ServicesIntro() {
   return (
@@ -17,7 +17,7 @@ export default function ServicesIntro() {
           <ImageCol as={Reveal} variant="fade-right">
             <Back>
               <Image
-                src={FEATURE_HERO.image1}
+                src={SERVICE_INTRO.image1}
                 alt="Service"
                 width={520}
                 height={620}
@@ -25,7 +25,7 @@ export default function ServicesIntro() {
             </Back>
             <Front>
               <Image
-                src={FEATURE_HERO.image2}
+                src={SERVICE_INTRO.image2}
                 alt="Service"
                 width={300}
                 height={360}
@@ -35,8 +35,8 @@ export default function ServicesIntro() {
 
           <TextCol>
             <SectionHeading
-              subtitle={FEATURE_HERO.subtitle}
-              title={FEATURE_HERO.title}
+              subtitle={SERVICE_INTRO.subtitle}
+              title={SERVICE_INTRO.title}
             />
             <List>
               {SERVICE_LIST.map((item) => (
