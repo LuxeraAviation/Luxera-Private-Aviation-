@@ -2,10 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import ScrollTopIcon from "@/imports/core/assets/ScrollTopIcon";
 
 const brand = {
-  base: "#aa8453", 
+  base: "#a58559", 
   baseDark: "#96703f",
   loaderStroke: "#0099cc",
   fonts: {

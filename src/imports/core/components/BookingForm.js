@@ -8,10 +8,35 @@ export default function BookingForm() {
   const [email, setEmail] = useState("");
   const [notes, setNotes] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    try {
+      await fetch("https://formsubmit.co/ajax/claudia@luxeraaviation.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          _replyto: email,
+          quote: notes,
+          message: notes,
+          _subject: `New Quote Request from ${name}`,
+          _captcha: "false",
+        }),
+      });
+      setSubmitted(true);
+    } catch (error) {
+      console.error("FormSubmit error:", error);
+      setSubmitted(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (submitted) {
@@ -41,9 +66,14 @@ export default function BookingForm() {
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form
+      onSubmit={handleSubmit}
+      action="https://formsubmit.co/claudia@luxeraaviation.com"
+      method="POST"
+    >
       <Input
         type="text"
+        name="name"
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="Name"
@@ -52,6 +82,7 @@ export default function BookingForm() {
 
       <Input
         type="email"
+        name="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email address"
@@ -60,12 +91,15 @@ export default function BookingForm() {
 
       <Input
         type="text"
+        name="message"
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
         placeholder="Message / Special requests"
       />
 
-      <Submit type="submit">Request Quote</Submit>
+      <Submit type="submit" disabled={loading}>
+        {loading ? "Sending..." : "Request Quote"}
+      </Submit>
     </Form>
   );
 }
@@ -129,8 +163,8 @@ const Input = styled.input`
 `;
 
 const Submit = styled.button`
-  background: ${({ theme }) => theme.heading};
-  color: ${({ theme }) => theme.bg};
+  background: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.heading};
   border: none;
   border-radius: 6px;
   padding: 14px 28px;
