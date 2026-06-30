@@ -18,7 +18,7 @@ export default function BookingForm() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json",
+          Accept: "application/json",
         },
         body: JSON.stringify({
           name: name,
@@ -164,7 +164,6 @@ const Input = styled.input`
 
 const Submit = styled.button`
   background: ${({ theme }) => theme.white};
-  color: ${({ theme }) => theme.heading};
   border: none;
   border-radius: 6px;
   padding: 14px 28px;
@@ -263,7 +262,11 @@ const SuccessTitle = styled.h3`
   letter-spacing: 1px;
   margin: 0;
   text-transform: uppercase;
-  background: linear-gradient(135deg, ${({ theme }) => theme.white} 40%, ${({ theme }) => theme.base} 100%);
+  background: linear-gradient(
+    135deg,
+    ${({ theme }) => theme.white} 40%,
+    ${({ theme }) => theme.base} 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;

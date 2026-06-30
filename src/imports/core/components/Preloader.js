@@ -194,17 +194,4 @@ const Spinner = styled.div`
     animation: ${spinClockwise} 3s cubic-bezier(0.77, 0, 0.175, 1) infinite;
     z-index: 1;
   }
-
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 12px;
-    border-radius: 50%;
-    border: 1px solid ${({ theme }) => theme.border};
-    border-left-color: ${({ theme }) => theme.gold};
-    border-right-color: ${({ theme }) => theme.gold};
-    box-shadow: inset 0 0 8px rgba(170, 132, 83, 0.05);
-    animation: ${spinCounterClockwise} 2.5s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-    z-index: 1;
-  }
 `;
