@@ -102,7 +102,9 @@ const PreloaderWrap = styled.div`
   align-items: center;
   justify-content: center;
   background: ${({ theme }) => theme.bg};
-  transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  transition:
+    opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+    visibility 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 
   ${({ $hidden }) =>
     $hidden &&
@@ -117,7 +119,7 @@ const AmbientGlow = styled.div`
   width: 350px;
   height: 350px;
   border-radius: 50%;
-  background: ${({ theme }) => theme.gold};
+  background: ${({ theme }) => theme.base};
   opacity: 0.04;
   filter: blur(75px);
   pointer-events: none;
@@ -129,9 +131,9 @@ const Sparkle = styled.div`
   position: absolute;
   width: 3px;
   height: 3px;
-  background: ${({ theme }) => theme.gold};
+  background: ${({ theme }) => theme.base};
   border-radius: 50%;
-  box-shadow: 0 0 6px ${({ theme }) => theme.gold};
+  box-shadow: 0 0 6px ${({ theme }) => theme.base};
   animation: ${floatSpark} ${({ $duration }) => $duration}s ease-in-out infinite;
   animation-delay: ${({ $delay }) => $delay}s;
   top: ${({ $top }) => $top};
@@ -156,7 +158,7 @@ const Letter = styled.span`
   font-family: ${({ theme }) => theme.fonts.nasalization};
   font-size: 20px;
   font-weight: 500;
-  color: ${({ theme }) => theme.gold};
+  color: ${({ theme }) => theme.base};
   letter-spacing: 2px;
   opacity: 0;
   animation: ${letterEntrance} 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
@@ -176,7 +178,7 @@ const Spinner = styled.div`
     display: inline-block;
     font-family: ${({ theme }) => theme.fonts.nasalization};
     font-size: 78px;
-    color: ${({ theme }) => theme.gold};
+    color: ${({ theme }) => theme.base};
     letter-spacing: 1px;
     animation: ${pulse} 2s ease-in-out infinite;
     z-index: 2;
@@ -188,10 +190,11 @@ const Spinner = styled.div`
     inset: 0;
     border-radius: 50%;
     border: 1px solid ${({ theme }) => theme.border};
-    border-top-color: ${({ theme }) => theme.gold};
-    border-bottom-color: ${({ theme }) => theme.gold};
+    border-top-color: ${({ theme }) => theme.base};
+    border-bottom-color: ${({ theme }) => theme.base};
     box-shadow: 0 0 8px rgba(170, 132, 83, 0.08);
     animation: ${spinClockwise} 3s cubic-bezier(0.77, 0, 0.175, 1) infinite;
     z-index: 1;
   }
+
 `;

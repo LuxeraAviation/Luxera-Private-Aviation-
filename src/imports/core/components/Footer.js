@@ -89,9 +89,7 @@ export default function Footer() {
       <Bottom>
         <Container>
           <BottomInner>
-            <Copyright>
-              {COPYRIGHT} Copyright © {new Date().getFullYear()}{" "}
-            </Copyright>
+            <Copyright>{COPYRIGHT} Copyright © {new Date().getFullYear()}</Copyright>
             <ScrollUp onClick={scrollToTop} aria-label="Scroll to top">
               <ArrowSvg width="15" height="7" viewBox="0 0 15 7" fill="none">
                 <path d="M15 6.18793L14.1169 7L7.93687 1.31723C7.81958 1.20941 7.66053 1.14885 7.49468 1.14885C7.32884 1.14885 7.16978 1.20941 7.0525 1.31723L0.884376 6.99022L0 6.177L6.16812 0.505163C6.51998 0.181708 6.99715 0 7.49468 0C7.99222 0 8.46938 0.181708 8.82125 0.505163L15 6.18793Z" fill="white"/>
