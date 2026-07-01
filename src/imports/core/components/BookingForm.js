@@ -163,7 +163,8 @@ const Input = styled.input`
 `;
 
 const Submit = styled.button`
-  background: ${({ theme }) => theme.white};
+  background: ${({ theme }) => theme.dark};
+  color: ${({ theme }) => theme.white};
   border: none;
   border-radius: 6px;
   padding: 14px 28px;
@@ -185,7 +186,7 @@ const Submit = styled.button`
 
   &:hover {
     background: ${({ theme }) => theme.white};
-    color: ${({ theme }) => theme.base};
+    color: ${({ theme }) => theme.dark};
   }
 `;
 
