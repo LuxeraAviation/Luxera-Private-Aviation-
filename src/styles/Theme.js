@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 const brand = {
-  base: "#a58559", 
+  base: "#aa8453", 
   baseDark: "#96703f",
   loaderStroke: "#0099cc",
   fonts: {
