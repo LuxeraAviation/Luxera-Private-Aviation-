@@ -96,7 +96,7 @@ export default function Header() {
     >
       <Container>
         <Inner>
-          <LogoLink href="/" aria-label={BRAND.name}>
+          <LogoLink href="/" aria-label={BRAND.name} $transparent={overHero}>
             <Image
               src={logoSrc}
               alt={BRAND.name}
@@ -232,6 +232,9 @@ const LogoLink = styled(Link)`
   img {
     width: 180px;
     height: auto;
+    transition: filter 0.5s ease;
+    filter: ${({ $transparent }) =>
+      $transparent ? "brightness(0) invert(1)" : "none"};
   }
 `;
 
