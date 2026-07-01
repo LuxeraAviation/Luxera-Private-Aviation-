@@ -12,10 +12,20 @@ import { HERO_SLIDES } from "@/imports/core/constants/homepage";
 function HeroArrows({ prev, next }) {
   return (
     <>
-      <EdgeArrow $side="left" onClick={prev} aria-label="Previous slide" type="button">
+      <EdgeArrow
+        $side="left"
+        onClick={prev}
+        aria-label="Previous slide"
+        type="button"
+      >
         <SliderArrowIcon direction="left" />
       </EdgeArrow>
-      <EdgeArrow $side="right" onClick={next} aria-label="Next slide" type="button">
+      <EdgeArrow
+        $side="right"
+        onClick={next}
+        aria-label="Next slide"
+        type="button"
+      >
         <SliderArrowIcon direction="right" />
       </EdgeArrow>
     </>
@@ -72,13 +82,22 @@ export default function Hero() {
       </SliderShell>
 
       <FormZone>
-        <Container>
+        <WideContainer>
           <BookingForm />
-        </Container>
+        </WideContainer>
       </FormZone>
     </Wrap>
   );
 }
+
+const WideContainer = styled(Container)`
+  @media (min-width: 1200px) {
+    max-width: 1240px;
+  }
+  @media (min-width: 1400px) {
+    max-width: 1380px;
+  }
+`;
 
 const Wrap = styled.section`
   position: relative;
@@ -175,7 +194,9 @@ const EdgeArrow = styled.button`
 
   @media (max-width: 991px) {
     ${({ $side }) => ($side === "left" ? "left: 12px;" : "right: 12px;")}
-    svg { width: 40px; }
+    svg {
+      width: 40px;
+    }
   }
 `;
 

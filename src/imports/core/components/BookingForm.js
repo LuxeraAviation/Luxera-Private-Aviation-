@@ -1,184 +1,333 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import DatePickerPopover from "@/imports/core/components/DatePickerPopover";
+import AirportAutocomplete from "@/imports/core/components/AirportAutocomplete";
 
 export default function BookingForm() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [notes, setNotes] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [dateRange, setDateRange] = useState({ start: null, end: null });
+  const [passengers, setPassengers] = useState(4);
 
-  const handleSubmit = async (e) => {
+  const dateRef = useRef(null);
+  const paxRef = useRef(null);
+
+  const [isDateOpen, setIsDateOpen] = useState(false);
+  const [isPaxOpen, setIsPaxOpen] = useState(false);
+
+  const handleSearch = (e) => {
     e.preventDefault();
-    setLoading(true);
-    try {
-      await fetch("https://formsubmit.co/ajax/claudia@luxeraaviation.com", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          _replyto: email,
-          quote: notes,
-          message: notes,
-          _subject: `New Quote Request from ${name}`,
-          _captcha: "false",
-        }),
-      });
-      setSubmitted(true);
-    } catch (error) {
-      console.error("FormSubmit error:", error);
-      setSubmitted(true);
-    } finally {
-      setLoading(false);
-    }
+    setFrom("");
+    setTo("");
+    setDateRange({ start: null, end: null });
+    setPassengers(4);
   };
 
-  if (submitted) {
-    return (
-      <SuccessCard>
-        <SuccessIconWrapper>
-          <i className="fa-solid fa-check" />
-        </SuccessIconWrapper>
-        <SuccessTitle>Request Submitted Successfully</SuccessTitle>
-        <SuccessText>
-          Thank you for requesting a quote. Our 24/7 VIP concierge will contact
-          you shortly at <EmailHighlight>{email}</EmailHighlight>.
-        </SuccessText>
-        <ResetButton
-          type="button"
-          onClick={() => {
-            setSubmitted(false);
-            setName("");
-            setEmail("");
-            setNotes("");
-          }}
-        >
-          Request Another Quote
-        </ResetButton>
-      </SuccessCard>
-    );
+  useEffect(() => {
+    function clickOutside(e) {
+      if (dateRef.current && !dateRef.current.contains(e.target)) {
+        setIsDateOpen(false);
+      }
+      if (paxRef.current && !paxRef.current.contains(e.target)) {
+        setIsPaxOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", clickOutside);
+    return () => document.removeEventListener("mousedown", clickOutside);
+  }, []);
+
+  function formatDate(date) {
+    if (!date) return "";
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
   }
 
+  const displayDate =
+    dateRange.start && dateRange.end
+      ? `${formatDate(dateRange.start)}  →  ${formatDate(dateRange.end)}`
+      : dateRange.start
+      ? formatDate(dateRange.start)
+      : "Select dates";
+
   return (
-    <Form
-      onSubmit={handleSubmit}
-      action="https://formsubmit.co/claudia@luxeraaviation.com"
-      method="POST"
-    >
-      <Input
-        type="text"
-        name="name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Name"
-        required
-      />
+    <Form onSubmit={handleSearch}>
+      <AirportAutocompleteWrapper>
+        <AirportAutocomplete
+          label="From :"
+          value={from}
+          onSelect={(airport) =>
+            setFrom(`${airport.airport_name} (${airport.iata_code})`)
+          }
+          placeholder="City / airport"
+          ariaLabel="From"
+        />
+      </AirportAutocompleteWrapper>
 
-      <Input
-        type="email"
-        name="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email address"
-        required
-      />
+      <AirportAutocompleteWrapper>
+        <AirportAutocomplete
+          label="To :"
+          value={to}
+          onSelect={(airport) =>
+            setTo(`${airport.airport_name} (${airport.iata_code})`)
+          }
+          placeholder="City / airport"
+          ariaLabel="To"
+        />
+      </AirportAutocompleteWrapper>
 
-      <Input
-        type="text"
-        name="message"
-        value={notes}
-        onChange={(e) => setNotes(e.target.value)}
-        placeholder="Message / Special requests"
-      />
+      <FieldContainer ref={dateRef}>
+        <Field onClick={() => setIsDateOpen((o) => !o)}>
+          <Content>{displayDate}</Content>
+          <Chevron>
+            <i
+              className={`fa-solid fa-chevron-${isDateOpen ? "up" : "down"}`}
+            />
+          </Chevron>
+        </Field>
+        {isDateOpen && (
+          <DatePickerPopover
+            value={dateRange}
+            onChange={(range) => setDateRange(range)}
+            onClose={() => setIsDateOpen(false)}
+          />
+        )}
+      </FieldContainer>
 
-      <Submit type="submit" disabled={loading}>
-        {loading ? "Sending..." : "Request Quote"}
-      </Submit>
+      <FieldContainer ref={paxRef}>
+        <Field onClick={() => setIsPaxOpen((o) => !o)}>
+          <Content>Passengers : {String(passengers).padStart(2, "0")}</Content>
+          <Chevron>
+            <i className={`fa-solid fa-chevron-${isPaxOpen ? "up" : "down"}`} />
+          </Chevron>
+        </Field>
+        {isPaxOpen && (
+          <DropdownMenu>
+            <DropdownItem>
+              <DropdownLabel>Passengers :</DropdownLabel>
+              <CounterContainer>
+                <CounterButton
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPassengers(Math.max(1, passengers - 1));
+                  }}
+                  aria-label="Decrease passengers"
+                >
+                  <i className="fa-solid fa-minus" />
+                </CounterButton>
+                <CounterValue>
+                  {String(passengers).padStart(2, "0")}
+                </CounterValue>
+                <CounterButton
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPassengers(Math.min(50, passengers + 1));
+                  }}
+                  aria-label="Increase passengers"
+                >
+                  <i className="fa-solid fa-plus" />
+                </CounterButton>
+              </CounterContainer>
+            </DropdownItem>
+          </DropdownMenu>
+        )}
+      </FieldContainer>
+
+      <SearchButton type="submit">
+        Search Jets
+      </SearchButton>
     </Form>
   );
 }
 
 const Form = styled.form`
   display: grid;
-  grid-template-columns: 1fr 1fr 1.5fr auto;
+  grid-template-columns: 1.1fr 1.1fr 1fr 1fr 150px;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   background: ${({ theme }) => theme.base};
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px;
-  padding: 22px;
+  padding: 16px;
   width: 100%;
   box-sizing: border-box;
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
 
   @media (max-width: 991px) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    padding: 22px;
   }
   @media (max-width: 767px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 `;
 
-const Input = styled.input`
+const AirportAutocompleteWrapper = styled.div`
+  grid-column: span 1;
+  min-width: 0;
   width: 100%;
+`;
+
+const FieldContainer = styled.div`
+  position: relative;
+  grid-column: span 1;
+  min-width: 0;
+  width: 100%;
+`;
+
+const Field = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
   border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.04);
-  color: ${({ theme }) => theme.white};
-  font-family: ${({ theme }) => theme.fonts.mulish};
-  font-size: 14px;
-  font-weight: 500;
-  padding: 14px 18px;
+  padding: 12px 10px;
   min-height: 48px;
-  outline: none;
-  box-sizing: border-box;
-  transition: all 0.3s ease;
+  cursor: pointer;
+  background: transparent;
+  transition: border-color 0.3s ease;
 
-  &::placeholder {
-    color: rgba(255, 255, 255, 0.65);
-  }
-
-  &:focus {
-    border-color: ${({ theme }) => theme.white};
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.08);
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.8);
   }
 
   @media (max-width: 991px) {
-    &:nth-of-type(3) {
-      grid-column: span 2;
-    }
-  }
-  @media (max-width: 767px) {
-    &:nth-of-type(3) {
-      grid-column: span 1;
-    }
+    padding: 12px 16px;
   }
 `;
 
-const Submit = styled.button`
+const Content = styled.span`
+  color: #fff;
+  font-family: ${({ theme }) => theme.fonts.mulish};
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media (max-width: 991px) {
+    font-size: 14px;
+  }
+`;
+
+const Chevron = styled.span`
+  color: #fff;
+  opacity: 0.85;
+  font-size: 10px;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 4px;
+  pointer-events: none;
+  flex-shrink: 0;
+
+  @media (max-width: 991px) {
+    margin-left: 8px;
+  }
+`;
+
+const DropdownMenu = styled.div`
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: auto;
+  min-width: 320px;
+  max-width: calc(100vw - 32px);
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 16px 20px;
+  z-index: 100;
+
+  @media (max-width: 1199px) {
+    right: auto;
+    left: 0;
+  }
+`;
+
+const DropdownItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+`;
+
+const DropdownLabel = styled.span`
+  color: #1b1b1b;
+  font-family: ${({ theme }) => theme.fonts.mulish};
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+`;
+
+const CounterContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+const CounterButton = styled.button`
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  color: #1b1b1b;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(170, 132, 83, 0.1);
+    border-color: #aa8453;
+    color: #aa8453;
+  }
+`;
+
+const CounterValue = styled.span`
+  color: #1b1b1b;
+  font-family: ${({ theme }) => theme.fonts.mulish};
+  font-size: 14px;
+  font-weight: 700;
+  min-width: 24px;
+  text-align: center;
+`;
+
+const SearchButton = styled.button`
   background: ${({ theme }) => theme.dark};
   color: ${({ theme }) => theme.white};
   border: none;
   border-radius: 6px;
-  padding: 14px 28px;
+  padding: 12px 10px;
   min-height: 48px;
   font-family: ${({ theme }) => theme.fonts.mulish};
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
   box-sizing: border-box;
   transition: all 0.3s ease;
+  width: 100%;
+  text-align: center;
+
+  grid-column: span 1;
 
   @media (max-width: 991px) {
     grid-column: span 2;
+    padding: 14px 28px;
+    font-size: 15px;
   }
   @media (max-width: 767px) {
     grid-column: span 1;
@@ -187,130 +336,5 @@ const Submit = styled.button`
   &:hover {
     background: ${({ theme }) => theme.white};
     color: ${({ theme }) => theme.dark};
-  }
-`;
-
-const SuccessCard = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 12px;
-  background: rgba(27, 27, 27, 0.85);
-  border: 1px solid ${({ theme }) => theme.base}4d;
-  border-radius: 8px;
-  padding: 24px 24px;
-  color: ${({ theme }) => theme.white};
-  width: 100%;
-  box-sizing: border-box;
-  box-shadow:
-    0 15px 35px rgba(0, 0, 0, 0.3),
-    inset 0 0 20px ${({ theme }) => theme.base}1a;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-
-  @keyframes fadeInScale {
-    from {
-      opacity: 0;
-      transform: scale(0.96);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-`;
-
-const SuccessIconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: ${({ theme }) => theme.base}26;
-  border: 2px solid ${({ theme }) => theme.base};
-  margin-bottom: 2px;
-  box-shadow: 0 0 15px ${({ theme }) => theme.base}4d;
-  animation: pulseGold 2s infinite ease-in-out;
-
-  i {
-    font-size: 18px;
-    color: ${({ theme }) => theme.base};
-  }
-
-  @keyframes pulseGold {
-    0%,
-    100% {
-      box-shadow:
-        0 0 15px ${({ theme }) => theme.base}4d,
-        inset 0 0 5px ${({ theme }) => theme.base}33;
-    }
-    50% {
-      box-shadow:
-        0 0 25px ${({ theme }) => theme.base}99,
-        inset 0 0 15px ${({ theme }) => theme.base}66;
-    }
-  }
-`;
-
-const SuccessTitle = styled.h3`
-  font-family: ${({ theme }) => theme.fonts.playfair};
-  font-size: 20px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  margin: 0;
-  text-transform: uppercase;
-  background: linear-gradient(
-    135deg,
-    ${({ theme }) => theme.white} 40%,
-    ${({ theme }) => theme.base} 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-`;
-
-const SuccessText = styled.p`
-  font-family: ${({ theme }) => theme.fonts.mulish};
-  font-size: 14px;
-  max-width: 520px;
-  margin: 0;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.5;
-  letter-spacing: 0.2px;
-`;
-
-const EmailHighlight = styled.span`
-  color: ${({ theme }) => theme.base};
-  font-weight: 600;
-`;
-
-const ResetButton = styled.button`
-  margin-top: 10px;
-  background: transparent;
-  color: ${({ theme }) => theme.base};
-  border: 1px solid ${({ theme }) => theme.base};
-  border-radius: 4px;
-  padding: 8px 20px;
-  font-family: ${({ theme }) => theme.fonts.mulish};
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  box-sizing: border-box;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-
-  &:hover {
-    background: ${({ theme }) => theme.base};
-    color: #1b1b1b;
-    box-shadow: 0 0 15px ${({ theme }) => theme.base}66;
-    transform: translateY(-2px);
-  }
-
-  &:active {
-    transform: translateY(0);
   }
 `;
