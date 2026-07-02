@@ -143,6 +143,9 @@ const Subtitle = styled.p`
   margin: 0 0 25px;
   font-size: 16px;
   font-weight: 500;
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 const Title = styled.h1`

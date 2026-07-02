@@ -449,7 +449,7 @@ const TimeColumns = styled.div`
   display: flex;
   gap: 12px;
   justify-content: center;
-  height: 180px;
+  height: 250px;
   margin-bottom: 4px;
 `;
 

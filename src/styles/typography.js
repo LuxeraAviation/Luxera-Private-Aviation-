@@ -18,10 +18,10 @@ export const fs150 = css`
 
 export const fs89 = css`
   ${headingFont}
-  font-size: 89px;
+  font-size: 80px;
   line-height: 1.124em;
   @media (max-width: 1400px) {
-    font-size: 78px;
+    font-size: 68px;
   }
   @media (max-width: 991px) {
     font-size: 60px;
