@@ -2,105 +2,147 @@
 
 import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import DatePickerPopover from "@/imports/core/components/DatePickerPopover";
+import DateTimePickerPopover from "@/imports/core/components/DatePickerPopover";
 import AirportAutocomplete from "@/imports/core/components/AirportAutocomplete";
+
+const AIRCRAFT_CATEGORIES = [
+  "Light Jet",
+  "Midsize Jet",
+  "Super Midsize",
+  "Heavy Jet",
+  "Ultra Long Range",
+  "VIP Airliner",
+];
 
 export default function BookingForm() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
-  const [dateRange, setDateRange] = useState({ start: null, end: null });
+  const [depDateTime, setDepDateTime] = useState(() => {
+    const d = new Date();
+    d.setHours(12, 0, 0, 0);
+    return d;
+  });
+  const [retDateTime, setRetDateTime] = useState(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    d.setHours(12, 0, 0, 0);
+    return d;
+  });
   const [passengers, setPassengers] = useState(4);
+  const [aircraftCategory, setAircraftCategory] = useState("Light Jet");
+  const [specialRequests, setSpecialRequests] = useState("");
 
-  const dateRef = useRef(null);
+  const depDateTimeRef = useRef(null);
+  const retDateTimeRef = useRef(null);
   const paxRef = useRef(null);
+  const categoryRef = useRef(null);
 
-  const [isDateOpen, setIsDateOpen] = useState(false);
+  const [isDepOpen, setIsDepOpen] = useState(false);
+  const [isRetOpen, setIsRetOpen] = useState(false);
   const [isPaxOpen, setIsPaxOpen] = useState(false);
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
 
   const handleSearch = (e) => {
     e.preventDefault();
+
     setFrom("");
     setTo("");
-    setDateRange({ start: null, end: null });
+    setDepDateTime(() => {
+      const d = new Date();
+      d.setHours(12, 0, 0, 0);
+      return d;
+    });
+    setRetDateTime(() => {
+      const d = new Date();
+      d.setDate(d.getDate() + 1);
+      d.setHours(12, 0, 0, 0);
+      return d;
+    });
     setPassengers(4);
+    setAircraftCategory("Light Jet");
+    setSpecialRequests("");
   };
 
   useEffect(() => {
     function clickOutside(e) {
-      if (dateRef.current && !dateRef.current.contains(e.target)) {
-        setIsDateOpen(false);
+      if (depDateTimeRef.current && !depDateTimeRef.current.contains(e.target)) {
+        setIsDepOpen(false);
+      }
+      if (retDateTimeRef.current && !retDateTimeRef.current.contains(e.target)) {
+        setIsRetOpen(false);
       }
       if (paxRef.current && !paxRef.current.contains(e.target)) {
         setIsPaxOpen(false);
+      }
+      if (categoryRef.current && !categoryRef.current.contains(e.target)) {
+        setIsCategoryOpen(false);
       }
     }
     document.addEventListener("mousedown", clickOutside);
     return () => document.removeEventListener("mousedown", clickOutside);
   }, []);
 
-  function formatDate(date) {
-    if (!date) return "";
-    return date.toLocaleDateString("en-GB", {
+  function formatDateTime(date) {
+    if (!date) return "Select date & time";
+    const dateStr = date.toLocaleDateString("en-GB", {
       day: "2-digit",
       month: "short",
       year: "numeric",
     });
+    const h = date.getHours();
+    const m = date.getMinutes();
+    const ampm = h >= 12 ? "PM" : "AM";
+    const h12 = h % 12 || 12;
+    const timeStr = `${h12.toString().padStart(2, "0")}:${m
+      .toString()
+      .padStart(2, "0")} ${ampm}`;
+    return `${dateStr}, ${timeStr}`;
   }
-
-  const displayDate =
-    dateRange.start && dateRange.end
-      ? `${formatDate(dateRange.start)}  →  ${formatDate(dateRange.end)}`
-      : dateRange.start
-      ? formatDate(dateRange.start)
-      : "Select dates";
 
   return (
     <Form onSubmit={handleSearch}>
+      {/* --- ROW 1 --- */}
+      {/* 1. Departure Airport */}
       <AirportAutocompleteWrapper>
         <AirportAutocomplete
-          label="From :"
+          label={
+            <>
+              <i className="fa-solid fa-plane-departure" /> From
+            </>
+          }
           value={from}
           onSelect={(airport) =>
             setFrom(`${airport.airport_name} (${airport.iata_code})`)
           }
-          placeholder="City / airport"
-          ariaLabel="From"
+          placeholder="Departure Airport"
+          ariaLabel="Departure Airport"
         />
       </AirportAutocompleteWrapper>
 
+      {/* 2. Arrival Airport */}
       <AirportAutocompleteWrapper>
         <AirportAutocomplete
-          label="To :"
+          label={
+            <>
+              <i className="fa-solid fa-plane-arrival" /> To
+            </>
+          }
           value={to}
           onSelect={(airport) =>
             setTo(`${airport.airport_name} (${airport.iata_code})`)
           }
-          placeholder="City / airport"
-          ariaLabel="To"
+          placeholder="Arrival Airport"
+          ariaLabel="Arrival Airport"
         />
       </AirportAutocompleteWrapper>
 
-      <FieldContainer ref={dateRef}>
-        <Field onClick={() => setIsDateOpen((o) => !o)}>
-          <Content>{displayDate}</Content>
-          <Chevron>
-            <i
-              className={`fa-solid fa-chevron-${isDateOpen ? "up" : "down"}`}
-            />
-          </Chevron>
-        </Field>
-        {isDateOpen && (
-          <DatePickerPopover
-            value={dateRange}
-            onChange={(range) => setDateRange(range)}
-            onClose={() => setIsDateOpen(false)}
-          />
-        )}
-      </FieldContainer>
-
-      <FieldContainer ref={paxRef}>
+      {/* 3. Number of Passengers */}
+      <PassengersContainer ref={paxRef}>
         <Field onClick={() => setIsPaxOpen((o) => !o)}>
-          <Content>Passengers : {String(passengers).padStart(2, "0")}</Content>
+          <Label>
+            <i className="fa-solid fa-users" /> Pax
+          </Label>
+          <Content>{String(passengers).padStart(2, "0")}</Content>
           <Chevron>
             <i className={`fa-solid fa-chevron-${isPaxOpen ? "up" : "down"}`} />
           </Chevron>
@@ -108,7 +150,7 @@ export default function BookingForm() {
         {isPaxOpen && (
           <DropdownMenu>
             <DropdownItem>
-              <DropdownLabel>Passengers :</DropdownLabel>
+              <DropdownLabel>Passengers:</DropdownLabel>
               <CounterContainer>
                 <CounterButton
                   type="button"
@@ -137,18 +179,113 @@ export default function BookingForm() {
             </DropdownItem>
           </DropdownMenu>
         )}
-      </FieldContainer>
+      </PassengersContainer>
 
-      <SearchButton type="submit">
-        Search Jets
-      </SearchButton>
+      {/* 4. Preferred Aircraft Category */}
+      <CategoryContainer ref={categoryRef}>
+        <Field onClick={() => setIsCategoryOpen((o) => !o)}>
+          <Label>
+            <i className="fa-solid fa-plane" /> Class
+          </Label>
+          <Content>{aircraftCategory}</Content>
+          <Chevron>
+            <i
+              className={`fa-solid fa-chevron-${isCategoryOpen ? "up" : "down"}`}
+            />
+          </Chevron>
+        </Field>
+        {isCategoryOpen && (
+          <SelectDropdownMenu>
+            {AIRCRAFT_CATEGORIES.map((cat) => (
+              <DropdownItemSelect
+                key={cat}
+                $active={cat === aircraftCategory}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setAircraftCategory(cat);
+                  setIsCategoryOpen(false);
+                }}
+              >
+                {cat}
+              </DropdownItemSelect>
+            ))}
+          </SelectDropdownMenu>
+        )}
+      </CategoryContainer>
+
+      {/* --- ROW 2 --- */}
+      {/* 5. Departure Date & Time */}
+      <DateContainer ref={depDateTimeRef}>
+        <Field onClick={() => setIsDepOpen((o) => !o)}>
+          <Label>
+            <i className="fa-solid fa-calendar-days" /> Departure
+          </Label>
+          <Content>
+            {depDateTime ? formatDateTime(depDateTime) : "Select date & time"}
+          </Content>
+          <Chevron>
+            <i className={`fa-solid fa-chevron-${isDepOpen ? "up" : "down"}`} />
+          </Chevron>
+        </Field>
+        {isDepOpen && (
+          <DateTimePickerPopover
+            value={depDateTime}
+            onChange={(date) => setDepDateTime(date)}
+            onClose={() => setIsDepOpen(false)}
+            align="left"
+          />
+        )}
+      </DateContainer>
+
+      {/* 6. Return Date & Time */}
+      <DateContainer ref={retDateTimeRef}>
+        <Field onClick={() => setIsRetOpen((o) => !o)}>
+          <Label>
+            <i className="fa-solid fa-calendar-days" /> Return
+          </Label>
+          <Content>
+            {retDateTime ? formatDateTime(retDateTime) : "Select date & time"}
+          </Content>
+          <Chevron>
+            <i className={`fa-solid fa-chevron-${isRetOpen ? "up" : "down"}`} />
+          </Chevron>
+        </Field>
+        {isRetOpen && (
+          <DateTimePickerPopover
+            value={retDateTime}
+            onChange={(date) => setRetDateTime(date)}
+            onClose={() => setIsRetOpen(false)}
+            align="left"
+          />
+        )}
+      </DateContainer>
+
+      {/* 7. Special Requests */}
+      <RequestsContainer>
+        <Field as="label" htmlFor="special-requests-input" style={{ cursor: "text" }}>
+          <Label style={{ cursor: "pointer" }}>
+            <i className="fa-solid fa-clipboard-list" /> Requests
+          </Label>
+          <RequestsInput
+            id="special-requests-input"
+            type="text"
+            placeholder="e.g. pets, catering"
+            value={specialRequests}
+            onChange={(e) => setSpecialRequests(e.target.value)}
+            autoComplete="off"
+          />
+        </Field>
+      </RequestsContainer>
+
+      {/* 8. Search Button */}
+      <SearchButton type="submit">Request Quotation</SearchButton>
     </Form>
   );
 }
 
 const Form = styled.form`
   display: grid;
-  grid-template-columns: 1.1fr 1.1fr 1fr 1fr 150px;
+  grid-template-columns: repeat(12, 1fr);
   align-items: center;
   gap: 12px;
   background: ${({ theme }) => theme.base};
@@ -160,26 +297,73 @@ const Form = styled.form`
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
 
   @media (max-width: 991px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(12, 1fr);
     gap: 16px;
     padding: 22px;
   }
   @media (max-width: 767px) {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 `;
 
 const AirportAutocompleteWrapper = styled.div`
-  grid-column: span 1;
+  grid-column: span 3;
   min-width: 0;
   width: 100%;
+
+  @media (max-width: 991px) {
+    grid-column: span 6;
+  }
+  @media (max-width: 767px) {
+    grid-column: span 1;
+  }
 `;
 
 const FieldContainer = styled.div`
   position: relative;
-  grid-column: span 1;
   min-width: 0;
   width: 100%;
+`;
+
+const CategoryContainer = styled(FieldContainer)`
+  grid-column: span 3;
+  @media (max-width: 991px) {
+    grid-column: span 6;
+  }
+  @media (max-width: 767px) {
+    grid-column: span 1;
+  }
+`;
+
+const DateContainer = styled(FieldContainer)`
+  grid-column: span 3;
+  @media (max-width: 991px) {
+    grid-column: span 6;
+  }
+  @media (max-width: 767px) {
+    grid-column: span 1;
+  }
+`;
+
+const PassengersContainer = styled(FieldContainer)`
+  grid-column: span 3;
+  @media (max-width: 991px) {
+    grid-column: span 6;
+  }
+  @media (max-width: 767px) {
+    grid-column: span 1;
+  }
+`;
+
+const RequestsContainer = styled(FieldContainer)`
+  grid-column: span 3;
+  @media (max-width: 991px) {
+    grid-column: span 6;
+  }
+  @media (max-width: 767px) {
+    grid-column: span 1;
+  }
 `;
 
 const Field = styled.div`
@@ -187,36 +371,84 @@ const Field = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: 6px;
-  padding: 12px 10px;
-  min-height: 48px;
+  padding: 10px 14px;
+  min-height: 44px;
   cursor: pointer;
   background: transparent;
   transition: border-color 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
 
   &:hover {
-    border-color: rgba(255, 255, 255, 0.8);
+    border-color: rgba(255, 255, 255, 0.85);
   }
 
   @media (max-width: 991px) {
-    padding: 12px 16px;
+    padding: 10px 14px;
   }
+`;
+
+const Label = styled.span`
+  position: absolute;
+  top: 0;
+  left: 10px;
+  transform: translateY(-50%);
+  background: ${({ theme }) => theme.base};
+  padding: 0 6px;
+  color: #fff;
+  font-family: ${({ theme }) => theme.fonts.mulish};
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.85;
+  pointer-events: none;
 `;
 
 const Content = styled.span`
   color: #fff;
   font-family: ${({ theme }) => theme.fonts.mulish};
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   white-space: nowrap;
   pointer-events: none;
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 100%;
+`;
 
-  @media (max-width: 991px) {
-    font-size: 14px;
+const RequestsInput = styled.input`
+  border: none !important;
+  background: transparent !important;
+  color: #fff !important;
+  font-family: ${({ theme }) => theme.fonts.mulish} !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  outline: none !important;
+  width: 100% !important;
+  padding: 0 !important;
+  text-align: left !important;
+  box-shadow: none !important;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+  }
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover, 
+  &:-webkit-autofill:focus, 
+  &:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #aa8453 inset !important;
+    -webkit-text-fill-color: #fff !important;
+    transition: background-color 5000s ease-in-out 0s !important;
   }
 `;
 
@@ -226,12 +458,12 @@ const Chevron = styled.span`
   font-size: 10px;
   display: inline-flex;
   align-items: center;
-  margin-left: 4px;
+  margin-left: 2px;
   pointer-events: none;
   flex-shrink: 0;
 
   @media (max-width: 991px) {
-    margin-left: 8px;
+    margin-left: 6px;
   }
 `;
 
@@ -252,6 +484,50 @@ const DropdownMenu = styled.div`
   @media (max-width: 1199px) {
     right: auto;
     left: 0;
+  }
+`;
+
+const SelectDropdownMenu = styled.div`
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  min-width: 180px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 6px 0;
+  z-index: 100;
+  max-height: 240px;
+  overflow-y: auto;
+
+  /* styling scrollbar */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+  }
+`;
+
+const DropdownItemSelect = styled.div`
+  padding: 10px 16px;
+  font-family: ${({ theme }) => theme.fonts.mulish};
+  font-size: 13px;
+  font-weight: 500;
+  color: ${({ $active }) => ($active ? "#aa8453" : "#1b1b1b")};
+  background: ${({ $active }) => ($active ? "rgba(170, 132, 83, 0.08)" : "transparent")};
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(170, 132, 83, 0.1);
+    color: #aa8453;
   }
 `;
 
@@ -311,7 +587,7 @@ const SearchButton = styled.button`
   border: none;
   border-radius: 6px;
   padding: 12px 10px;
-  min-height: 48px;
+  min-height: 44px;
   font-family: ${({ theme }) => theme.fonts.mulish};
   font-size: 13px;
   font-weight: 600;
@@ -322,10 +598,10 @@ const SearchButton = styled.button`
   width: 100%;
   text-align: center;
 
-  grid-column: span 1;
+  grid-column: span 3;
 
   @media (max-width: 991px) {
-    grid-column: span 2;
+    grid-column: span 6;
     padding: 14px 28px;
     font-size: 15px;
   }

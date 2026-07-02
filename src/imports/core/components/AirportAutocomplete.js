@@ -101,7 +101,7 @@ export default function AirportAutocomplete({
           onKeyDown={handleKeyDown}
           onFocus={() => results.length > 0 && setIsOpen(true)}
           placeholder={placeholder}
-          aria-label={ariaLabel || label}
+          aria-label={ariaLabel || (typeof label === "string" ? label : "Airport")}
           aria-autocomplete="list"
           aria-expanded={isOpen}
           autoComplete="off"
@@ -144,15 +144,17 @@ const Wrap = styled.div`
 `;
 
 const FieldInner = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
   border: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: 6px;
-  padding: 12px 16px;
-  min-height: 48px;
+  padding: 10px 14px;
+  min-height: 44px;
   background: transparent;
   transition: border-color 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
 
   &:focus-within {
     border-color: rgba(255, 255, 255, 0.85);
@@ -160,28 +162,39 @@ const FieldInner = styled.div`
 `;
 
 const FieldLabel = styled.span`
+  position: absolute;
+  top: 0;
+  left: 10px;
+  transform: translateY(-50%);
+  background: ${({ theme }) => theme.base};
+  padding: 0 6px;
   color: #fff;
   font-family: ${({ theme }) => theme.fonts.mulish};
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 500;
   white-space: nowrap;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.85;
+  pointer-events: none;
 `;
 
 const Input = styled.input`
-  flex: 1;
-  min-width: 0;
+  width: 100%;
   border: none;
   background: transparent;
   color: #fff;
   font-family: ${({ theme }) => theme.fonts.mulish};
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 600;
   padding: 0;
   outline: none;
 
   &::placeholder {
     color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
     font-weight: 400;
   }
 `;

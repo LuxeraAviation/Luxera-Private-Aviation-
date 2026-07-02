@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import lottie from "lottie-web";
 import styled, { css } from "styled-components";
-import animationData from "@/imports/core/components/loaderAnimation.json";
 
 export default function Preloader() {
   const [hidden, setHidden] = useState(false);
@@ -15,7 +14,7 @@ export default function Preloader() {
       renderer: "svg",
       loop: true,
       autoplay: true,
-      animationData,
+      path: "/loaderAnimation.json",
     });
 
     const t = setTimeout(() => setHidden(true), 1200);

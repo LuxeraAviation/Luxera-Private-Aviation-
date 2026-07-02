@@ -1,18 +1,9 @@
 export const HERO_SLIDES = [
   {
     subtitle: "Private jet charter, on your schedule",
-    titleLines: ["Fly Privately,", "Arrive Effortlessly"],
-    bg: "/image/av/jet-reflection.jpg",
-  },
-  {
-    subtitle: "A global fleet at your command",
-    titleLines: ["Your Journey,", "Elevated Beyond First Class"],
-    bg: "/image/av/new-plane.jpg",
-  },
-  {
-    subtitle: "Seamless, discreet, uncompromising",
-    titleLines: ["The Sky Is", "Your Private Domain"],
-    bg: "/image/av/jet-dusk-blue.jpg",
+    titleLines: ["The Art of", "Luxera Aviation"],
+    tagline: "Exclusivity. Elegance. Excellence.",
+    bg: "/image/av/jet-gold-hero.png",
   },
 ];
 

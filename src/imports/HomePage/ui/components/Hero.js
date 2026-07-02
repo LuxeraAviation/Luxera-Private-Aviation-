@@ -39,10 +39,10 @@ export default function Hero() {
         <Slider
           items={HERO_SLIDES}
           perView={1}
-          loop
-          autoplay
+          loop={HERO_SLIDES.length > 1}
+          autoplay={HERO_SLIDES.length > 1}
           autoplayInterval={5000}
-          controls={HeroArrows}
+          controls={HERO_SLIDES.length > 1 ? HeroArrows : undefined}
           renderItem={(slide) => (
             <Slide>
               <Bg>
@@ -51,21 +51,7 @@ export default function Hero() {
               <Overlay />
               <Container>
                 <Text>
-                  <Subtitle>
-                    <Image
-                      src="/image/icons/star.svg"
-                      alt=""
-                      width={16}
-                      height={16}
-                    />
-                    {slide.subtitle}
-                    <Image
-                      src="/image/icons/star.svg"
-                      alt=""
-                      width={16}
-                      height={16}
-                    />
-                  </Subtitle>
+                  <Subtitle>{slide.subtitle}</Subtitle>
                   <Title>
                     {slide.titleLines.map((line, i) => (
                       <span key={i}>
@@ -74,6 +60,7 @@ export default function Hero() {
                       </span>
                     ))}
                   </Title>
+                  {slide.tagline && <Tagline>{slide.tagline}</Tagline>}
                 </Text>
               </Container>
             </Slide>
@@ -162,6 +149,21 @@ const Title = styled.h1`
   color: ${({ theme }) => theme.white};
   margin: 0;
   ${fs89}
+`;
+
+const Tagline = styled.p`
+  color: ${({ theme }) => theme.white};
+  margin: 24px 0 0;
+  font-family: ${({ theme }) => theme.fonts.playfair};
+  font-style: italic;
+  font-size: 24px;
+  letter-spacing: 0.5px;
+  opacity: 0.95;
+
+  @media (max-width: 767px) {
+    font-size: 18px;
+    margin-top: 18px;
+  }
 `;
 
 const EdgeArrow = styled.button`

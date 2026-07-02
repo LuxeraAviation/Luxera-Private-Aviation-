@@ -18,14 +18,6 @@ function isSameDay(a, b) {
   );
 }
 
-function isBetween(date, start, end) {
-  if (!start || !end) return false;
-  const d = date.getTime();
-  const s = Math.min(start.getTime(), end.getTime());
-  const e = Math.max(start.getTime(), end.getTime());
-  return d > s && d < e;
-}
-
 function isBeforeToday(date) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -55,7 +47,7 @@ function getMonthDays(year, month) {
   return days;
 }
 
-function MonthGrid({ year, month, startDate, endDate, hoverDate, onDayClick, onDayHover }) {
+function MonthGrid({ year, month, selectedDate, onDayClick }) {
   const days = getMonthDays(year, month);
 
   return (
@@ -70,24 +62,16 @@ function MonthGrid({ year, month, startDate, endDate, hoverDate, onDayClick, onD
       </WeekRow>
       <DayGrid>
         {days.map(({ date, outside }, idx) => {
-          const isStart = isSameDay(date, startDate);
-          const isEnd = isSameDay(date, endDate || hoverDate);
-          const hasRange = startDate && (endDate || hoverDate) && (endDate || hoverDate).getTime() > startDate.getTime();
-          const effectiveEnd = endDate || hoverDate;
-          const inRange = isBetween(date, startDate, effectiveEnd);
+          const isSelected = isSameDay(date, selectedDate);
           const disabled = isBeforeToday(date);
 
           return (
             <DayCell
               key={idx}
               $outside={outside}
-              $isStart={isStart}
-              $isEnd={isEnd}
-              $hasRange={hasRange}
-              $inRange={inRange}
+              $isSelected={isSelected}
               $disabled={disabled}
               onClick={() => !disabled && !outside && onDayClick(date)}
-              onMouseEnter={() => !disabled && !outside && onDayHover(date)}
             >
               {date.getDate()}
             </DayCell>
@@ -98,109 +82,146 @@ function MonthGrid({ year, month, startDate, endDate, hoverDate, onDayClick, onD
   );
 }
 
-export default function DatePickerPopover({ value, onChange, onClose }) {
+export default function DateTimePickerPopover({ value, onChange, onClose, align = "left" }) {
   const today = new Date();
 
-  const [leftYear, setLeftYear] = useState(today.getFullYear());
-  const [leftMonth, setLeftMonth] = useState(today.getMonth());
+  // Date states
+  const [year, setYear] = useState(value ? value.getFullYear() : today.getFullYear());
+  const [month, setMonth] = useState(value ? value.getMonth() : today.getMonth());
+  const [selectedDate, setSelectedDate] = useState(value || null);
 
-  const rightMonth = leftMonth === 11 ? 0 : leftMonth + 1;
-  const rightYear = leftMonth === 11 ? leftYear + 1 : leftYear;
+  // Time states
+  const [hours, setHours] = useState(() => {
+    if (!value) return 12;
+    const h = value.getHours();
+    const h12 = h % 12 || 12;
+    return h12;
+  });
+  const [minutes, setMinutes] = useState(() => {
+    if (!value) return 0;
+    return value.getMinutes();
+  });
+  const [ampm, setAmpm] = useState(() => {
+    if (!value) return "PM";
+    const h = value.getHours();
+    return h >= 12 ? "PM" : "AM";
+  });
 
-  const [startDate, setStartDate] = useState(value?.start || null);
-  const [endDate, setEndDate] = useState(value?.end || null);
-  const [hoverDate, setHoverDate] = useState(null);
+  const hourOptions = Array.from({ length: 12 }, (_, i) => i + 1);
+  const minuteOptions = Array.from({ length: 12 }, (_, i) => i * 5); // 00, 05, 10, ... 55
 
   function handleDayClick(date) {
-    if (startDate && isSameDay(date, startDate)) {
-      if (endDate) {
-        setStartDate(null);
-        setEndDate(null);
-      } else {
-        setStartDate(null);
-      }
-      return;
-    }
-    if (endDate && isSameDay(date, endDate)) {
-      setEndDate(null);
-      return;
-    }
-
-    if (!startDate || (startDate && endDate)) {
-      setStartDate(date);
-      setEndDate(null);
-    } else {
-      if (date < startDate) {
-        setEndDate(startDate);
-        setStartDate(date);
-      } else {
-        setEndDate(date);
-      }
-    }
+    setSelectedDate(date);
   }
 
   function goLeft() {
-    if (leftMonth === 0) {
-      setLeftMonth(11);
-      setLeftYear((y) => y - 1);
+    if (month === 0) {
+      setMonth(11);
+      setYear((y) => y - 1);
     } else {
-      setLeftMonth((m) => m - 1);
+      setMonth((m) => m - 1);
     }
   }
 
   function goRight() {
-    if (leftMonth === 11) {
-      setLeftMonth(0);
-      setLeftYear((y) => y + 1);
+    if (month === 11) {
+      setMonth(0);
+      setYear((y) => y + 1);
     } else {
-      setLeftMonth((m) => m + 1);
+      setMonth((m) => m + 1);
     }
   }
 
   function handleApply() {
-    onChange({ start: startDate, end: endDate });
+    if (!selectedDate) return;
+
+    // Construct a new Date using the selected day and the chosen hours/minutes
+    const resultDate = new Date(selectedDate);
+    let h24 = hours;
+    if (ampm === "PM" && hours !== 12) {
+      h24 += 12;
+    } else if (ampm === "AM" && hours === 12) {
+      h24 = 0;
+    }
+    resultDate.setHours(h24, minutes, 0, 0);
+
+    onChange(resultDate);
     onClose();
   }
 
   return (
     <>
       <Backdrop onClick={onClose} />
-      <Popover>
-        <Header>
-          <NavBtn onClick={goLeft} aria-label="Previous month">
-            <i className="fa-solid fa-chevron-left" />
-          </NavBtn>
-          <MonthsRow>
-            <MonthGrid
-              year={leftYear}
-              month={leftMonth}
-              startDate={startDate}
-              endDate={endDate}
-              hoverDate={hoverDate}
-              onDayClick={handleDayClick}
-              onDayHover={setHoverDate}
-            />
-            <Divider />
-            <MonthGrid
-              year={rightYear}
-              month={rightMonth}
-              startDate={startDate}
-              endDate={endDate}
-              hoverDate={hoverDate}
-              onDayClick={handleDayClick}
-              onDayHover={setHoverDate}
-            />
-          </MonthsRow>
-          <NavBtn onClick={goRight} aria-label="Next month">
-            <i className="fa-solid fa-chevron-right" />
-          </NavBtn>
-        </Header>
+      <Popover $align={align}>
+        <PopoverBody>
+          <CalendarSection>
+            <Header>
+              <NavBtn onClick={goLeft} type="button" aria-label="Previous month">
+                <i className="fa-solid fa-chevron-left" />
+              </NavBtn>
+              <MonthGrid
+                year={year}
+                month={month}
+                selectedDate={selectedDate}
+                onDayClick={handleDayClick}
+              />
+              <NavBtn onClick={goRight} type="button" aria-label="Next month">
+                <i className="fa-solid fa-chevron-right" />
+              </NavBtn>
+            </Header>
+          </CalendarSection>
+
+          <Divider />
+
+          <TimeSection>
+            <TimeTitle>Select Time</TimeTitle>
+            <TimeColumns>
+              <TimeColumn>
+                {hourOptions.map((h) => (
+                  <TimeItem
+                    key={h}
+                    type="button"
+                    $active={h === hours}
+                    onClick={() => setHours(h)}
+                  >
+                    {h.toString().padStart(2, "0")}
+                  </TimeItem>
+                ))}
+              </TimeColumn>
+              <TimeColumn>
+                {minuteOptions.map((m) => (
+                  <TimeItem
+                    key={m}
+                    type="button"
+                    $active={m === minutes}
+                    onClick={() => setMinutes(m)}
+                  >
+                    {m.toString().padStart(2, "0")}
+                  </TimeItem>
+                ))}
+              </TimeColumn>
+              <TimeColumn style={{ overflow: "hidden", justifyContent: "center" }}>
+                {["AM", "PM"].map((a) => (
+                  <TimeItem
+                    key={a}
+                    type="button"
+                    $active={a === ampm}
+                    onClick={() => setAmpm(a)}
+                    style={{ margin: "4px 0", height: "36px" }}
+                  >
+                    {a}
+                  </TimeItem>
+                ))}
+              </TimeColumn>
+            </TimeColumns>
+          </TimeSection>
+        </PopoverBody>
 
         <Footer>
           <CancelBtn type="button" onClick={onClose}>
             Cancel
           </CancelBtn>
-          <ApplyBtn type="button" onClick={handleApply} disabled={!startDate}>
+          <ApplyBtn type="button" onClick={handleApply} disabled={!selectedDate}>
             Apply
           </ApplyBtn>
         </Footer>
@@ -228,59 +249,62 @@ const Backdrop = styled.div`
 const Popover = styled.div`
   position: absolute;
   top: calc(100% + 8px);
-  left: 0;
+  ${({ $align }) => ($align === "right" ? "right: 0;" : "left: 0;")}
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
   border: 1px solid rgba(0, 0, 0, 0.07);
   z-index: 200;
-  padding: 24px 20px 16px;
-  width: max-content;
+  padding: 20px 20px 14px;
+  box-sizing: border-box;
 
-  @media (max-width: 767px) {
+  @media (max-width: 575px) {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: calc(100vw - 20px);
-    max-width: 520px;
-    padding: 16px 10px 12px;
+    width: 290px;
     z-index: 200;
     box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
   }
+`;
+
+const PopoverBody = styled.div`
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
 
   @media (max-width: 575px) {
-    width: calc(100vw - 32px);
-    max-width: 320px;
-    padding: 12px 10px 8px;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+`;
+
+const CalendarSection = styled.div`
+  width: 230px;
+`;
+
+const TimeSection = styled.div`
+  width: 220px;
+`;
+
+const Divider = styled.div`
+  align-self: stretch;
+  width: 1px;
+  background: rgba(0, 0, 0, 0.08);
+
+  @media (max-width: 575px) {
+    width: 100%;
+    height: 1px;
   }
 `;
 
 const Header = styled.div`
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 8px;
   position: relative;
-
-  @media (max-width: 767px) {
-    gap: 6px;
-  }
-`;
-
-const MonthsRow = styled.div`
-  display: flex;
-  gap: 24px;
-  flex: 1;
-
-  @media (max-width: 767px) {
-    gap: 8px;
-  }
-
-  @media (max-width: 575px) {
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
-  }
 `;
 
 const NavBtn = styled.button`
@@ -294,57 +318,16 @@ const NavBtn = styled.button`
   opacity: 0.6;
   transition: opacity 0.2s ease;
   flex-shrink: 0;
+  z-index: 10;
 
   &:hover {
     opacity: 1;
   }
-
-  @media (max-width: 767px) {
-    padding: 4px 2px;
-    font-size: 11px;
-  }
-
-  @media (max-width: 575px) {
-    position: absolute;
-    top: 0;
-    margin-top: 0;
-    z-index: 10;
-    padding: 4px 6px;
-    font-size: 13px;
-
-    &:first-of-type {
-      left: 0;
-    }
-
-    &:last-of-type {
-      right: 0;
-    }
-  }
-`;
-
-const Divider = styled.div`
-  width: 1px;
-  background: rgba(0, 0, 0, 0.08);
-  align-self: stretch;
-
-  @media (max-width: 575px) {
-    width: 100%;
-    height: 1px;
-    margin: 4px 0;
-  }
 `;
 
 const MonthWrap = styled.div`
-  min-width: 220px;
   flex: 1;
-
-  @media (max-width: 767px) {
-    min-width: 0;
-  }
-
-  @media (max-width: 575px) {
-    width: 100%;
-  }
+  min-width: 0;
 `;
 
 const MonthTitle = styled.div`
@@ -354,16 +337,6 @@ const MonthTitle = styled.div`
   color: #1b1b1b;
   margin-bottom: 14px;
   letter-spacing: 0.3px;
-
-  @media (max-width: 767px) {
-    font-size: 12px;
-    margin-bottom: 8px;
-  }
-
-  @media (max-width: 575px) {
-    font-size: 11px;
-    margin-bottom: 6px;
-  }
 `;
 
 const WeekRow = styled.div`
@@ -378,16 +351,6 @@ const WeekDay = styled.div`
   font-weight: 600;
   color: #999;
   padding: 4px 0;
-
-  @media (max-width: 767px) {
-    font-size: 10px;
-    padding: 2px 0;
-  }
-
-  @media (max-width: 575px) {
-    font-size: 9px;
-    padding: 1px 0;
-  }
 `;
 
 const DayGrid = styled.div`
@@ -399,50 +362,29 @@ const DayCell = styled.div`
   text-align: center;
   font-size: 13px;
   font-weight: 500;
-  padding: 7px 2px;
+  padding: 6px 0;
   cursor: ${({ $outside, $disabled }) =>
     $outside || $disabled ? "default" : "pointer"};
-  color: ${({ $outside, $disabled, $isStart, $isEnd }) =>
-    $isStart || $isEnd
+  color: ${({ $outside, $disabled, $isSelected }) =>
+    $isSelected
       ? "#fff"
       : $outside || $disabled
       ? "#ccc"
       : "#1b1b1b"};
-  background: ${({ $isStart, $isEnd, $inRange }) =>
-    $isStart || $isEnd
+  background: ${({ $isSelected }) =>
+    $isSelected
       ? "#aa8453"
-      : $inRange
-      ? "rgba(170, 132, 83, 0.12)"
       : "transparent"};
-  border-radius: ${({ $isStart, $isEnd, $hasRange }) =>
-    $isStart && $isEnd
-      ? "50%"
-      : $isStart
-      ? ($hasRange ? "50% 0 0 50%" : "50%")
-      : $isEnd
-      ? ($hasRange ? "0 50% 50% 0" : "50%")
-      : "0"};
+  border-radius: 50%;
   font-style: ${({ $outside, $disabled }) =>
     $outside || $disabled ? "italic" : "normal"};
   transition: background 0.15s ease;
 
   &:hover {
-    background: ${({ $outside, $disabled, $isStart, $isEnd }) =>
-      $outside || $disabled || $isStart || $isEnd
+    background: ${({ $outside, $disabled, $isSelected }) =>
+      $outside || $disabled || $isSelected
         ? undefined
         : "rgba(170, 132, 83, 0.2)"};
-    border-radius: ${({ $outside, $disabled, $isStart, $isEnd }) =>
-      $outside || $disabled || $isStart || $isEnd ? undefined : "50%"};
-  }
-
-  @media (max-width: 767px) {
-    font-size: 11px;
-    padding: 4px 1px;
-  }
-
-  @media (max-width: 575px) {
-    font-size: 10px;
-    padding: 4px 1px;
   }
 `;
 
@@ -451,25 +393,19 @@ const Footer = styled.div`
   justify-content: flex-end;
   align-items: center;
   gap: 12px;
-  margin-top: 16px;
-  padding-top: 14px;
+  margin-top: 12px;
+  padding-top: 10px;
   border-top: 1px solid rgba(0, 0, 0, 0.07);
-
-  @media (max-width: 575px) {
-    margin-top: 8px;
-    padding-top: 8px;
-    gap: 8px;
-  }
 `;
 
 const CancelBtn = styled.button`
   background: transparent;
   border: none;
   color: #555;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  padding: 8px 20px;
+  padding: 6px 14px;
   border-radius: 5px;
   transition: all 0.2s ease;
 
@@ -477,21 +413,16 @@ const CancelBtn = styled.button`
     color: #1b1b1b;
     background: rgba(0, 0, 0, 0.05);
   }
-
-  @media (max-width: 575px) {
-    font-size: 12px;
-    padding: 6px 14px;
-  }
 `;
 
 const ApplyBtn = styled.button`
   background: #aa8453;
   border: none;
   color: #fff;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  padding: 8px 24px;
+  padding: 6px 16px;
   border-radius: 5px;
   transition: all 0.2s ease;
 
@@ -503,9 +434,66 @@ const ApplyBtn = styled.button`
     opacity: 0.5;
     cursor: default;
   }
+`;
 
-  @media (max-width: 575px) {
-    font-size: 12px;
-    padding: 6px 16px;
+const TimeTitle = styled.div`
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1b1b1b;
+  margin-bottom: 14px;
+  letter-spacing: 0.3px;
+`;
+
+const TimeColumns = styled.div`
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  height: 180px;
+  margin-bottom: 4px;
+`;
+
+const TimeColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  width: 70px;
+  height: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 6px;
+  padding: 4px;
+  box-sizing: border-box;
+
+  /* styling scrollbar */
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+  }
+`;
+
+const TimeItem = styled.button`
+  background: ${({ $active }) => ($active ? "#aa8453" : "transparent")};
+  color: ${({ $active }) => ($active ? "#fff" : "#1b1b1b")};
+  border: none;
+  border-radius: 4px;
+  padding: 8px 0;
+  font-family: ${({ theme }) => theme.fonts.mulish};
+  font-size: 13px;
+  font-weight: ${({ $active }) => ($active ? "700" : "500")};
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    background: ${({ $active }) => ($active ? "#aa8453" : "rgba(170, 132, 83, 0.1)")};
+    color: ${({ $active }) => ($active ? "#fff" : "#aa8453")};
   }
 `;
