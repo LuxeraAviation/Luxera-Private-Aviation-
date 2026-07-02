@@ -264,12 +264,12 @@ export default function BookingForm() {
       <RequestsContainer>
         <Field as="label" htmlFor="special-requests-input" style={{ cursor: "text" }}>
           <Label style={{ cursor: "pointer" }}>
-            <i className="fa-solid fa-clipboard-list" /> Requests
+            <i className="fa-solid fa-clipboard-list" /> Special Request
           </Label>
           <RequestsInput
             id="special-requests-input"
             type="text"
-            placeholder="e.g. pets, catering"
+            placeholder="Any special requests?"
             value={specialRequests}
             onChange={(e) => setSpecialRequests(e.target.value)}
             autoComplete="off"
