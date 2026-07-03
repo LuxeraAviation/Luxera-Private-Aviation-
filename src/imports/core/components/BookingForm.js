@@ -82,6 +82,20 @@ export default function BookingForm() {
     return () => document.removeEventListener("mousedown", clickOutside);
   }, []);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const cat = params.get("category");
+      if (cat && AIRCRAFT_CATEGORIES.includes(cat)) {
+        // window.location is only readable after mount; syncing here (instead of
+        // in a lazy useState initializer) keeps the SSR and initial client render
+        // identical and avoids a hydration mismatch.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setAircraftCategory(cat);
+      }
+    }
+  }, []);
+
   function formatDateTime(date) {
     if (!date) return "Select date & time";
     const dateStr = date.toLocaleDateString("en-GB", {
@@ -101,8 +115,6 @@ export default function BookingForm() {
 
   return (
     <Form onSubmit={handleSearch}>
-      {/* --- ROW 1 --- */}
-      {/* 1. Departure Airport */}
       <AirportAutocompleteWrapper>
         <AirportAutocomplete
           label={
@@ -119,7 +131,6 @@ export default function BookingForm() {
         />
       </AirportAutocompleteWrapper>
 
-      {/* 2. Arrival Airport */}
       <AirportAutocompleteWrapper>
         <AirportAutocomplete
           label={
@@ -136,7 +147,6 @@ export default function BookingForm() {
         />
       </AirportAutocompleteWrapper>
 
-      {/* 3. Number of Passengers */}
       <PassengersContainer ref={paxRef}>
         <Field onClick={() => setIsPaxOpen((o) => !o)}>
           <Label>
@@ -181,7 +191,6 @@ export default function BookingForm() {
         )}
       </PassengersContainer>
 
-      {/* 4. Preferred Aircraft Category */}
       <CategoryContainer ref={categoryRef}>
         <Field onClick={() => setIsCategoryOpen((o) => !o)}>
           <Label>
@@ -213,8 +222,6 @@ export default function BookingForm() {
         )}
       </CategoryContainer>
 
-      {/* --- ROW 2 --- */}
-      {/* 5. Departure Date & Time */}
       <DateContainer ref={depDateTimeRef}>
         <Field onClick={() => setIsDepOpen((o) => !o)}>
           <Label>
@@ -237,7 +244,6 @@ export default function BookingForm() {
         )}
       </DateContainer>
 
-      {/* 6. Return Date & Time */}
       <DateContainer ref={retDateTimeRef}>
         <Field onClick={() => setIsRetOpen((o) => !o)}>
           <Label>
@@ -260,7 +266,6 @@ export default function BookingForm() {
         )}
       </DateContainer>
 
-      {/* 7. Special Requests */}
       <RequestsContainer>
         <Field as="label" htmlFor="special-requests-input" style={{ cursor: "text" }}>
           <Label style={{ cursor: "pointer" }}>
@@ -277,7 +282,6 @@ export default function BookingForm() {
         </Field>
       </RequestsContainer>
 
-      {/* 8. Search Button */}
       <SearchButton type="submit">Request Quotation</SearchButton>
     </Form>
   );

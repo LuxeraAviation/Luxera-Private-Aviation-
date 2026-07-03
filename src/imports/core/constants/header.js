@@ -1,5 +1,6 @@
 export const NAV_ITEMS = [
   { label: "Home", url: "/" },
+  { label: "Fleet", url: "/" },
   { label: "About Us", url: "/" },
   { label: "Services", url: "/" },
   { label: "FAQ", url: "/" },

@@ -34,7 +34,9 @@ export default function OfferingCard({
           <Link href={href}>{title}</Link>
         </Title>
         {desc && <Desc>{desc}</Desc>}
-        <ArrowButton href={href}>{cta}</ArrowButton>
+        <Cta>
+          <ArrowButton href={href}>{cta}</ArrowButton>
+        </Cta>
       </Info>
     </Card>
   );
@@ -42,6 +44,8 @@ export default function OfferingCard({
 
 const Card = styled.div`
   height: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Thumb = styled(Link)`
@@ -85,7 +89,11 @@ const HoverIcon = styled.span`
   }
 `;
 
-const Info = styled.div``;
+const Info = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
 
 const Meta = styled.div`
   display: flex;
@@ -114,4 +122,8 @@ const Title = styled.h2`
 
 const Desc = styled.p`
   margin: 0 0 36px;
+`;
+
+const Cta = styled.div`
+  margin-top: auto;
 `;

@@ -24,6 +24,9 @@ export default function Offerings() {
           <Slider
             items={OFFERINGS}
             perView={3}
+            resolvePerView={(width) =>
+              width < 768 ? 1 : width < 992 ? 2 : 3
+            }
             loop
             slideGap={60}
             controls={SliderArrows}

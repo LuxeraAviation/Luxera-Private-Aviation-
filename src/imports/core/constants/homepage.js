@@ -9,15 +9,15 @@ export const HERO_SLIDES = [
 
 export const HOME_ABOUT = {
   subtitle: "WHY FLY WITH US",
-  title:
-    "Tailored to your itinerary and preferences, our charter service pairs an elite global fleet, vetted crews, and white-glove concierge for travel without compromise",
+  title: "Beyond Charter. Your Journey, Curated.",
+  body: "At Luxera, we don't just fly; we orchestrate. Every flight is a bespoke expression of your unique requirements, from the cabin configuration and onboard dining to the seamless, discreet ground logistics. Experience a level of personalization that treats every detail as a priority, ensuring your travel is as distinctive as you are.",
   href: "/",
 };
 
 export const HOME_SECTIONS = {
   offerings: {
     subtitle: "WHAT WE OFFER",
-    title: "Charter Services Built Around You",
+    title: "Exclusively Tailored Charter Journeys",
   },
 };
 

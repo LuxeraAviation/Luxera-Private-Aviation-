@@ -6,15 +6,33 @@ export const OFFERINGS = [
     href: "/",
   },
   {
-    title: "Empty-Leg Flights",
-    desc: "Travel on repositioning flights at a fraction of the price. Same private experience, exceptional value, limited availability.",
-    image: "/image/av/jet-flying.webp",
+    title: "Commercial Aircraft Charter",
+    desc: "Charter full commercial aircraft for large groups, corporate teams, and sports delegations with dedicated crews and cabins.",
+    image: "/image/av/new-plane.jpg",
     href: "/",
   },
   {
-    title: "Aircraft Management",
-    desc: "Own an aircraft? We handle crew, maintenance, and charter revenue while you enjoy effortless, on-call access to your jet.",
+    title: "Cargo Charter",
+    desc: "Move time-critical and oversized freight worldwide with tailored cargo solutions and end-to-end logistics handling.",
+    image: "/image/av/jet-dusk-blue.jpg",
+    href: "/",
+  },
+  {
+    title: "Medical Evacuation",
+    desc: "Rapid air ambulance and medevac flights equipped for critical care, with medical teams ready around the clock.",
     image: "/image/av/jet-night.webp",
+    href: "/",
+  },
+  {
+    title: "Hajj Charters",
+    desc: "Dedicated pilgrimage charters for Hajj and Umrah, delivering comfortable, seamless travel to the holy cities.",
+    image: "/image/av/jet-sunset.webp",
+    href: "/",
+  },
+  {
+    title: "Empty Legs",
+    desc: "Travel on repositioning flights at a fraction of the price. Same private experience, exceptional value, limited availability.",
+    image: "/image/av/jet-flying.webp",
     href: "/",
   },
 ];
@@ -63,6 +81,6 @@ export const SERVICES = [
 export const SERVICE_INTRO = {
   subtitle: "PREMIUM SERVICE",
   title: "Every Detail of Your Flight, Handled by One Team.",
-  image1: "/image/av/jet-sunset.webp",
-  image2: "/image/av/cabin-portrait.webp",
+  image1: "/image/av/luxury-jet-boarding.jpg",
+  image2: "/image/av/jet-interior-split.jpg",
 };

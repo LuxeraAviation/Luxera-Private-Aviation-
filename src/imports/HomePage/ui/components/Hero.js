@@ -68,7 +68,7 @@ export default function Hero() {
         />
       </SliderShell>
 
-      <FormZone>
+      <FormZone id="booking-zone">
         <WideContainer>
           <BookingForm />
         </WideContainer>
@@ -131,6 +131,11 @@ const Overlay = styled.div`
 const Text = styled.div`
   position: relative;
   z-index: 3;
+  transform: translateY(-60px);
+
+  @media (max-width: 767px) {
+    transform: translateY(-40px);
+  }
 `;
 
 const Subtitle = styled.p`

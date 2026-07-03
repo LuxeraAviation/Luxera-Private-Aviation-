@@ -6,7 +6,7 @@ const headingFont = css`
 
 export const fs150 = css`
   ${headingFont}
-  font-size: 150px;
+  font-size: 135px;
   line-height: 1em;
   @media (max-width: 991px) {
     font-size: 120px;
