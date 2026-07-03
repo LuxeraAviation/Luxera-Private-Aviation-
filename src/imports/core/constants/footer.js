@@ -1,7 +1,7 @@
 export const FOOTER_CONTACT = {
   title: "Contact Us",
   phone: { label: "+1 (888) 247-7359", href: "tel:+18882477359" },
-  email: { label: "charter@luxera.aero", href: "mailto:charter@luxera.aero" },
+  email: { label: "info@luxeraaviation.com", href: "mailto:info@luxeraaviation.com" },
   note: "On call 24/7 — wheels up in as little as 4 hours",
 };
 
