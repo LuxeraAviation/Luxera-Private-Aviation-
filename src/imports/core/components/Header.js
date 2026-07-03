@@ -5,9 +5,8 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Container from "@/imports/core/atom/Container";
-import Button from "@/imports/core/components/Button";
 import { useThemeMode } from "@/imports/core/components/ThemeMode";
-import { NAV_ITEMS, RESERVATION, BRAND } from "@/imports/core/constants/header";
+import { NAV_ITEMS, BRAND } from "@/imports/core/constants/header";
 import { DUBAI_MAP } from "@/imports/core/constants/footer";
 
 export default function Header() {
@@ -166,17 +165,14 @@ export default function Header() {
           </Nav>
 
           <Right>
-            <ThemeToggle
+            {/* <ThemeToggle
               onClick={toggle}
               aria-label="Toggle dark mode"
               type="button"
               $transparent={overHero}
             >
               <i className={mode === "dark" ? "fas fa-sun" : "fas fa-moon"} />
-            </ThemeToggle>
-            <ReserveBtn href={RESERVATION.url} $transparent={overHero}>
-              {RESERVATION.label}
-            </ReserveBtn>
+            </ThemeToggle> */}
             <Hamburger
               onClick={toggleMenu}
               aria-label="Toggle menu"
@@ -229,6 +225,10 @@ const LogoLink = styled(Link)`
   flex-shrink: 0;
   padding:5px 15px;
 
+  @media (min-width: 992px) {
+    flex: 1 1 0;
+  }
+
   img {
     width: 180px;
     height: auto;
@@ -241,8 +241,8 @@ const LogoLink = styled(Link)`
 const Nav = styled.nav`
   @media (min-width: 992px) {
     display: flex;
-    flex: 1;
-    justify-content: center;
+    flex: 0 0 auto;
+    justify-content: flex-end;
   }
 
   @media (max-width: 991px) {
@@ -441,6 +441,7 @@ const SubLink = styled(Link)`
 const Right = styled.div`
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 16px;
   flex-shrink: 0;
 `;
@@ -467,23 +468,6 @@ const ThemeToggle = styled.button`
   }
 
   @media (max-width: 991px) {
-    display: none;
-  }
-`;
-
-const ReserveBtn = styled(Button)`
-  padding: 5px 25px;
-  border-radius: 20px;
-
-  ${({ $transparent }) =>
-    $transparent &&
-    css`
-      background: transparent;
-      border-color: rgba(255, 255, 255, 0.6);
-      color: ${({ theme }) => theme.white};
-    `}
-
-  @media (max-width: 575px) {
     display: none;
   }
 `;

@@ -85,12 +85,10 @@ function MonthGrid({ year, month, selectedDate, onDayClick }) {
 export default function DateTimePickerPopover({ value, onChange, onClose, align = "left" }) {
   const today = new Date();
 
-  // Date states
   const [year, setYear] = useState(value ? value.getFullYear() : today.getFullYear());
   const [month, setMonth] = useState(value ? value.getMonth() : today.getMonth());
   const [selectedDate, setSelectedDate] = useState(value || null);
 
-  // Time states
   const [hours, setHours] = useState(() => {
     if (!value) return 12;
     const h = value.getHours();
@@ -108,7 +106,7 @@ export default function DateTimePickerPopover({ value, onChange, onClose, align 
   });
 
   const hourOptions = Array.from({ length: 12 }, (_, i) => i + 1);
-  const minuteOptions = Array.from({ length: 12 }, (_, i) => i * 5); // 00, 05, 10, ... 55
+  const minuteOptions = Array.from({ length: 12 }, (_, i) => i * 5);
 
   function handleDayClick(date) {
     setSelectedDate(date);
@@ -135,7 +133,6 @@ export default function DateTimePickerPopover({ value, onChange, onClose, align 
   function handleApply() {
     if (!selectedDate) return;
 
-    // Construct a new Date using the selected day and the chosen hours/minutes
     const resultDate = new Date(selectedDate);
     let h24 = hours;
     if (ampm === "PM" && hours !== 12) {

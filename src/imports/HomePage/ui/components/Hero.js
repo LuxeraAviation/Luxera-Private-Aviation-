@@ -6,6 +6,7 @@ import Slider from "@/imports/core/components/Slider";
 import Container from "@/imports/core/atom/Container";
 import BookingForm from "@/imports/core/components/BookingForm";
 import SliderArrowIcon from "@/imports/core/assets/SliderArrowIcon";
+import { useThemeMode } from "@/imports/core/components/ThemeMode";
 import { fs89 } from "@/styles/typography";
 import { HERO_SLIDES } from "@/imports/core/constants/homepage";
 
@@ -33,6 +34,8 @@ function HeroArrows({ prev, next }) {
 }
 
 export default function Hero() {
+  const { mode, toggle } = useThemeMode();
+
   return (
     <Wrap>
       <SliderShell>
@@ -73,6 +76,14 @@ export default function Hero() {
           <BookingForm />
         </WideContainer>
       </FormZone>
+
+      <HeroThemeToggle
+        onClick={toggle}
+        aria-label="Toggle dark mode"
+        type="button"
+      >
+        <i className={mode === "dark" ? "fas fa-sun" : "fas fa-moon"} />
+      </HeroThemeToggle>
     </Wrap>
   );
 }
@@ -223,5 +234,34 @@ const FormZone = styled.div`
     bottom: auto;
     transform: none;
     margin-top: -40px;
+  }
+`;
+
+const HeroThemeToggle = styled.button`
+  display: none;
+
+  @media (min-width: 992px) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    right: 28px;
+    bottom: 28px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: ${({ theme }) => theme.base};
+    color: ${({ theme }) => theme.white};
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+    transition: all 0.3s ease;
+    z-index: 900;
+
+    &:hover {
+      background: ${({ theme }) => theme.baseDark};
+      transform: translateY(-2px);
+    }
   }
 `;

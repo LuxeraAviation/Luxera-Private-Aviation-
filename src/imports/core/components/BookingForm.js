@@ -87,10 +87,6 @@ export default function BookingForm() {
       const params = new URLSearchParams(window.location.search);
       const cat = params.get("category");
       if (cat && AIRCRAFT_CATEGORIES.includes(cat)) {
-        // window.location is only readable after mount; syncing here (instead of
-        // in a lazy useState initializer) keeps the SSR and initial client render
-        // identical and avoids a hydration mismatch.
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setAircraftCategory(cat);
       }
     }
