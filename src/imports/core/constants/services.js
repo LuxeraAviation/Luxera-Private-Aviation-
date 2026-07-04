@@ -82,5 +82,5 @@ export const SERVICE_INTRO = {
   subtitle: "PREMIUM SERVICE",
   title: "Every Detail of Your Flight, Handled by One Team.",
   image1: "/image/av/luxury-jet-boarding.jpg",
-  image2: "/image/av/jet-interior-split.jpg",
+  image2: "/image/av/jet-cabin-interior.png",
 };

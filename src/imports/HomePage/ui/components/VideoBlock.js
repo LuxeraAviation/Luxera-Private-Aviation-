@@ -28,11 +28,12 @@ export default function VideoBlock() {
             <Close onClick={() => setOpen(false)} aria-label="Close">
               <i className="fa-solid fa-xmark" />
             </Close>
-            <iframe
-              src={`${VIDEO_BLOCK.videoUrl}?autoplay=1`}
+            <video
+              src={VIDEO_BLOCK.videoUrl}
               title="Video"
-              allow="autoplay; encrypted-media"
-              allowFullScreen
+              autoPlay
+              controls
+              playsInline
             />
           </ModalInner>
         </Modal>
@@ -183,11 +184,14 @@ const ModalInner = styled.div`
   width: min(900px, 100%);
   aspect-ratio: 16 / 9;
 
-  iframe {
+  iframe,
+  video {
     width: 100%;
     height: 100%;
     border: 0;
     border-radius: 6px;
+    background: #000;
+    object-fit: contain;
   }
 `;
 
@@ -200,7 +204,7 @@ const Close = styled.button`
   border-radius: 50%;
   border: none;
   background: ${({ theme }) => theme.white};
-  color: ${({ theme }) => theme.heading};
+  color: ${({ theme }) => theme.dark};
   font-size: 18px;
   cursor: pointer;
 `;

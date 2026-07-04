@@ -2,7 +2,7 @@
 
 import styled, { css } from "styled-components";
 import { Reveal } from "@/styles/Theme";
-import { fs67, sectionSubtitle } from "@/styles/typography";
+import { fs50, sectionSubtitle } from "@/styles/typography";
 
 export default function SectionHeading({
   subtitle,
@@ -49,6 +49,6 @@ const Subtitle = styled.p`
 
 const Title = styled.h2`
   margin: 0;
-  ${fs67}
+  ${fs50}
   color: ${({ theme, $light }) => ($light ? theme.white : theme.heading)};
 `;
