@@ -5,15 +5,6 @@ import styled from "styled-components";
 import DateTimePickerPopover from "@/imports/core/components/DatePickerPopover";
 import AirportAutocomplete from "@/imports/core/components/AirportAutocomplete";
 
-const AIRCRAFT_CATEGORIES = [
-  "Light Jet",
-  "Midsize Jet",
-  "Super Midsize",
-  "Heavy Jet",
-  "Ultra Long Range",
-  "VIP Airliner",
-];
-
 export default function BookingForm() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
@@ -28,19 +19,16 @@ export default function BookingForm() {
     d.setHours(12, 0, 0, 0);
     return d;
   });
-  const [passengers, setPassengers] = useState(4);
-  const [aircraftCategory, setAircraftCategory] = useState("Light Jet");
+  const [passengers, setPassengers] = useState(0);
   const [specialRequests, setSpecialRequests] = useState("");
 
   const depDateTimeRef = useRef(null);
   const retDateTimeRef = useRef(null);
   const paxRef = useRef(null);
-  const categoryRef = useRef(null);
 
   const [isDepOpen, setIsDepOpen] = useState(false);
   const [isRetOpen, setIsRetOpen] = useState(false);
   const [isPaxOpen, setIsPaxOpen] = useState(false);
-  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -58,8 +46,7 @@ export default function BookingForm() {
       d.setHours(12, 0, 0, 0);
       return d;
     });
-    setPassengers(4);
-    setAircraftCategory("Light Jet");
+    setPassengers(0);
     setSpecialRequests("");
   };
 
@@ -74,22 +61,9 @@ export default function BookingForm() {
       if (paxRef.current && !paxRef.current.contains(e.target)) {
         setIsPaxOpen(false);
       }
-      if (categoryRef.current && !categoryRef.current.contains(e.target)) {
-        setIsCategoryOpen(false);
-      }
     }
     document.addEventListener("mousedown", clickOutside);
     return () => document.removeEventListener("mousedown", clickOutside);
-  }, []);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const cat = params.get("category");
-      if (cat && AIRCRAFT_CATEGORIES.includes(cat)) {
-        setAircraftCategory(cat);
-      }
-    }
   }, []);
 
   function formatDateTime(date) {
@@ -162,7 +136,7 @@ export default function BookingForm() {
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setPassengers(Math.max(1, passengers - 1));
+                    setPassengers(Math.max(0, passengers - 1));
                   }}
                   aria-label="Decrease passengers"
                 >
@@ -186,37 +160,6 @@ export default function BookingForm() {
           </DropdownMenu>
         )}
       </PassengersContainer>
-
-      <CategoryContainer ref={categoryRef}>
-        <Field onClick={() => setIsCategoryOpen((o) => !o)}>
-          <Label>
-            <i className="fa-solid fa-plane" /> Class
-          </Label>
-          <Content>{aircraftCategory}</Content>
-          <Chevron>
-            <i
-              className={`fa-solid fa-chevron-${isCategoryOpen ? "up" : "down"}`}
-            />
-          </Chevron>
-        </Field>
-        {isCategoryOpen && (
-          <SelectDropdownMenu>
-            {AIRCRAFT_CATEGORIES.map((cat) => (
-              <DropdownItemSelect
-                key={cat}
-                $active={cat === aircraftCategory}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setAircraftCategory(cat);
-                  setIsCategoryOpen(false);
-                }}
-              >
-                {cat}
-              </DropdownItemSelect>
-            ))}
-          </SelectDropdownMenu>
-        )}
-      </CategoryContainer>
 
       <DateContainer ref={depDateTimeRef}>
         <Field onClick={() => setIsDepOpen((o) => !o)}>
@@ -308,7 +251,7 @@ const Form = styled.form`
 `;
 
 const AirportAutocompleteWrapper = styled.div`
-  grid-column: span 3;
+  grid-column: span 4;
   min-width: 0;
   width: 100%;
 
@@ -326,16 +269,6 @@ const FieldContainer = styled.div`
   width: 100%;
 `;
 
-const CategoryContainer = styled(FieldContainer)`
-  grid-column: span 3;
-  @media (max-width: 991px) {
-    grid-column: span 6;
-  }
-  @media (max-width: 767px) {
-    grid-column: span 1;
-  }
-`;
-
 const DateContainer = styled(FieldContainer)`
   grid-column: span 3;
   @media (max-width: 991px) {
@@ -347,7 +280,7 @@ const DateContainer = styled(FieldContainer)`
 `;
 
 const PassengersContainer = styled(FieldContainer)`
-  grid-column: span 3;
+  grid-column: span 4;
   @media (max-width: 991px) {
     grid-column: span 6;
   }
@@ -487,49 +420,7 @@ const DropdownMenu = styled.div`
   }
 `;
 
-const SelectDropdownMenu = styled.div`
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  width: 100%;
-  min-width: 180px;
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 6px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  padding: 6px 0;
-  z-index: 100;
-  max-height: 240px;
-  overflow-y: auto;
 
-  /* styling scrollbar */
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.15);
-    border-radius: 3px;
-  }
-`;
-
-const DropdownItemSelect = styled.div`
-  padding: 10px 16px;
-  font-family: ${({ theme }) => theme.fonts.mulish};
-  font-size: 13px;
-  font-weight: 500;
-  color: ${({ $active }) => ($active ? "#aa8453" : "#1b1b1b")};
-  background: ${({ $active }) => ($active ? "rgba(170, 132, 83, 0.08)" : "transparent")};
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: rgba(170, 132, 83, 0.1);
-    color: #aa8453;
-  }
-`;
 
 const DropdownItem = styled.div`
   display: flex;
