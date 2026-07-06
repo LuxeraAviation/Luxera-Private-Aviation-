@@ -1,61 +1,40 @@
 "use client";
 
-import { useState } from "react";
 import styled from "styled-components";
 import { fs150 } from "@/styles/typography";
 import { VIDEO_BLOCK } from "@/imports/core/constants/homepage";
 
 export default function VideoBlock() {
-  const [open, setOpen] = useState(false);
-
   return (
-    <>
-      <Block onClick={() => setOpen(true)} aria-label="Play video">
-        <Bg>
-          <BgVideo
-            src={VIDEO_BLOCK.videoUrl}
-            poster={VIDEO_BLOCK.bg}
-            autoPlay
-            muted
-            loop
-            playsInline
-          />
-        </Bg>
-        <Overlay />
-        <Title>{VIDEO_BLOCK.title}</Title>
-        <Play>
-          <i className="fa-solid fa-play" />
-        </Play>
-      </Block>
-
-      {open && (
-        <Modal onClick={() => setOpen(false)}>
-          <ModalInner onClick={(e) => e.stopPropagation()}>
-            <Close onClick={() => setOpen(false)} aria-label="Close">
-              <i className="fa-solid fa-xmark" />
-            </Close>
-            <video
-              src={VIDEO_BLOCK.videoUrl}
-              title="Video"
-              autoPlay
-              controls
-              playsInline
-            />
-          </ModalInner>
-        </Modal>
-      )}
-    </>
+    <Block>
+      <Bg>
+        <BgVideo
+          src={VIDEO_BLOCK.videoUrl}
+          poster={VIDEO_BLOCK.bg}
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+      </Bg>
+      <Overlay />
+      <Title>
+        {VIDEO_BLOCK.title.split("").map((char, index) => (
+          <Letter key={index} $delay={index * 0.1}>
+            {char}
+          </Letter>
+        ))}
+      </Title>
+    </Block>
   );
 }
 
-const Block = styled.button`
+const Block = styled.div`
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  border: none;
-  cursor: pointer;
   padding: 250px 0 300px;
   background: ${({ theme }) => theme.heading};
   overflow: hidden;
@@ -129,95 +108,19 @@ const Title = styled.h2`
   }
 `;
 
-const Play = styled.span`
-  position: absolute;
-  z-index: 4;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  background: ${({ theme }) => theme.base};
-  color: ${({ theme }) => theme.white};
-  font-size: 26px;
+const Letter = styled.span`
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(30px) scale(0.9);
+  animation: revealLetter 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: ${({ $delay }) => $delay}s;
 
-  @media (max-width: 991px) {
-    width: 64px;
-    height: 64px;
-    font-size: 20px;
-  }
-
-  @media (max-width: 767px) {
-    width: 54px;
-    height: 54px;
-    font-size: 16px;
-  }
-
-  @media (max-width: 480px) {
-    width: 44px;
-    height: 44px;
-    font-size: 14px;
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    inset: -10px;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
+  @keyframes revealLetter {
+    to {
       opacity: 1;
-    }
-    100% {
-      transform: scale(1.4);
-      opacity: 0;
+      transform: translateY(0) scale(1);
     }
   }
 `;
 
-const Modal = styled.div`
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: rgba(0, 0, 0, 0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-`;
-
-const ModalInner = styled.div`
-  position: relative;
-  width: min(900px, 100%);
-  aspect-ratio: 16 / 9;
-
-  iframe,
-  video {
-    width: 100%;
-    height: 100%;
-    border: 0;
-    border-radius: 6px;
-    background: #000;
-    object-fit: contain;
-  }
-`;
-
-const Close = styled.button`
-  position: absolute;
-  top: -46px;
-  right: 0;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: none;
-  background: ${({ theme }) => theme.white};
-  color: ${({ theme }) => theme.dark};
-  font-size: 18px;
-  cursor: pointer;
-`;
+// Modal styles removed as video popover is disabled
