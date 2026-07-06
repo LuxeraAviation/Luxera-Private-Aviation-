@@ -116,7 +116,7 @@ export default function DateTimePickerPopover({ value, onChange, onClose, align 
   return (
     <>
       <Backdrop onClick={onClose} />
-      <Popover $align={align}>
+      <Popover $align={align} className="datetime-picker-popover">
         <PopoverBody>
           <CalendarSection>
             <CalendarHeader>
@@ -247,10 +247,11 @@ const Popover = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 260px;
+    width: 90%;
+    max-width: 360px;
     z-index: 200;
     box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
-    padding: 12px 12px 10px;
+    padding: 16px 16px 12px;
   }
 `;
 

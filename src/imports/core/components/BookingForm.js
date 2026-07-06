@@ -145,7 +145,7 @@ export default function BookingForm() {
         )}
       </PassengersContainer>
 
-      <DateContainer ref={depDateTimeRef}>
+      <DepartureDateContainer ref={depDateTimeRef}>
         <Field onClick={() => setIsDepOpen((o) => !o)}>
           <Label>
             <i className="fa-solid fa-calendar-days" /> Departure
@@ -165,7 +165,7 @@ export default function BookingForm() {
             align="left"
           />
         )}
-      </DateContainer>
+      </DepartureDateContainer>
 
       <DateContainer ref={retDateTimeRef}>
         <Field onClick={() => setIsRetOpen((o) => !o)}>
@@ -260,6 +260,15 @@ const DateContainer = styled(FieldContainer)`
   }
   @media (max-width: 767px) {
     grid-column: span 1;
+  }
+`;
+
+const DepartureDateContainer = styled(DateContainer)`
+  @media (min-width: 576px) and (max-width: 991px) {
+    .datetime-picker-popover {
+      left: auto !important;
+      right: 0 !important;
+    }
   }
 `;
 
