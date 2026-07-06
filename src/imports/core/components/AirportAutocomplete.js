@@ -150,7 +150,7 @@ const FieldInner = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: 6px;
   padding: 10px 14px;
-  min-height: 44px;
+  height: 44px;
   background: transparent;
   transition: border-color 0.3s ease;
   width: 100%;
@@ -188,7 +188,7 @@ const Input = styled.input`
   color: #fff;
   font-family: ${({ theme }) => theme.fonts.mulish};
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 400;
   padding: 0;
   outline: none;
 

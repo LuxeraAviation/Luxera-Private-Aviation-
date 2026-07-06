@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import styled from "styled-components";
 import { fs150 } from "@/styles/typography";
 import { VIDEO_BLOCK } from "@/imports/core/constants/homepage";
@@ -13,7 +12,14 @@ export default function VideoBlock() {
     <>
       <Block onClick={() => setOpen(true)} aria-label="Play video">
         <Bg>
-          <Image src={VIDEO_BLOCK.bg} alt="" fill sizes="100vw" />
+          <BgVideo
+            src={VIDEO_BLOCK.videoUrl}
+            poster={VIDEO_BLOCK.bg}
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
         </Bg>
         <Overlay />
         <Title>{VIDEO_BLOCK.title}</Title>
@@ -50,24 +56,24 @@ const Block = styled.button`
   width: 100%;
   border: none;
   cursor: pointer;
-  padding: 250px 0 300px 20%;
+  padding: 250px 0 300px;
   background: ${({ theme }) => theme.heading};
   overflow: hidden;
 
   @media (max-width: 1199px) {
-    padding: 210px 0 250px 22%;
+    padding: 210px 0 250px;
   }
 
   @media (max-width: 991px) {
-    padding: 170px 0 200px 30%;
+    padding: 170px 0 200px;
   }
 
   @media (max-width: 767px) {
-    padding: 130px 0 150px 40%;
+    padding: 130px 0 150px;
   }
 
   @media (max-width: 480px) {
-    padding: 100px 0 120px 44%;
+    padding: 100px 0 120px;
   }
 `;
 
@@ -79,6 +85,13 @@ const Bg = styled.div`
     object-fit: cover;
     object-position: left center;
   }
+`;
+
+const BgVideo = styled.video`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 `;
 
 const Overlay = styled.div`

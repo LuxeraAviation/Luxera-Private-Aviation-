@@ -8,17 +8,8 @@ import AirportAutocomplete from "@/imports/core/components/AirportAutocomplete";
 export default function BookingForm() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
-  const [depDateTime, setDepDateTime] = useState(() => {
-    const d = new Date();
-    d.setHours(12, 0, 0, 0);
-    return d;
-  });
-  const [retDateTime, setRetDateTime] = useState(() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 1);
-    d.setHours(12, 0, 0, 0);
-    return d;
-  });
+  const [depDateTime, setDepDateTime] = useState(null);
+  const [retDateTime, setRetDateTime] = useState(null);
   const [passengers, setPassengers] = useState(0);
   const [specialRequests, setSpecialRequests] = useState("");
 
@@ -35,17 +26,8 @@ export default function BookingForm() {
 
     setFrom("");
     setTo("");
-    setDepDateTime(() => {
-      const d = new Date();
-      d.setHours(12, 0, 0, 0);
-      return d;
-    });
-    setRetDateTime(() => {
-      const d = new Date();
-      d.setDate(d.getDate() + 1);
-      d.setHours(12, 0, 0, 0);
-      return d;
-    });
+    setDepDateTime(null);
+    setRetDateTime(null);
     setPassengers(0);
     setSpecialRequests("");
   };
@@ -122,7 +104,9 @@ export default function BookingForm() {
           <Label>
             <i className="fa-solid fa-users" /> Pax
           </Label>
-          <Content>{String(passengers).padStart(2, "0")}</Content>
+          <Content $isPlaceholder={passengers === 0}>
+            {passengers > 0 ? String(passengers).padStart(2, "0") : "Number of passengers"}
+          </Content>
           <Chevron>
             <i className={`fa-solid fa-chevron-${isPaxOpen ? "up" : "down"}`} />
           </Chevron>
@@ -166,8 +150,8 @@ export default function BookingForm() {
           <Label>
             <i className="fa-solid fa-calendar-days" /> Departure
           </Label>
-          <Content>
-            {depDateTime ? formatDateTime(depDateTime) : "Select date & time"}
+          <Content $isPlaceholder={!depDateTime}>
+            {depDateTime ? formatDateTime(depDateTime) : "Departure Date"}
           </Content>
           <Chevron>
             <i className={`fa-solid fa-chevron-${isDepOpen ? "up" : "down"}`} />
@@ -188,8 +172,8 @@ export default function BookingForm() {
           <Label>
             <i className="fa-solid fa-calendar-days" /> Return
           </Label>
-          <Content>
-            {retDateTime ? formatDateTime(retDateTime) : "Select date & time"}
+          <Content $isPlaceholder={!retDateTime}>
+            {retDateTime ? formatDateTime(retDateTime) : "Return Date"}
           </Content>
           <Chevron>
             <i className={`fa-solid fa-chevron-${isRetOpen ? "up" : "down"}`} />
@@ -230,7 +214,7 @@ const Form = styled.form`
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   background: ${({ theme }) => theme.base};
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px;
@@ -308,7 +292,7 @@ const Field = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: 6px;
   padding: 10px 14px;
-  min-height: 44px;
+  height: 44px;
   cursor: pointer;
   background: transparent;
   transition: border-color 0.3s ease;
@@ -345,10 +329,10 @@ const Label = styled.span`
 `;
 
 const Content = styled.span`
-  color: #fff;
+  color: ${({ $isPlaceholder }) => $isPlaceholder ? "rgba(255, 255, 255, 0.6)" : "#fff"};
   font-family: ${({ theme }) => theme.fonts.mulish};
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 400;
   white-space: nowrap;
   pointer-events: none;
   overflow: hidden;
@@ -362,7 +346,7 @@ const RequestsInput = styled.input`
   color: #fff !important;
   font-family: ${({ theme }) => theme.fonts.mulish} !important;
   font-size: 13px !important;
-  font-weight: 600 !important;
+  font-weight: 400 !important;
   outline: none !important;
   width: 100% !important;
   padding: 0 !important;
@@ -376,10 +360,10 @@ const RequestsInput = styled.input`
   }
 
   &:-webkit-autofill,
-  &:-webkit-autofill:hover, 
-  &:-webkit-autofill:focus, 
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
   &:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 1000px #aa8453 inset !important;
+    -webkit-box-shadow: 0 0 0 1000px #AA8453 inset !important;
     -webkit-text-fill-color: #fff !important;
     transition: background-color 5000s ease-in-out 0s !important;
   }
@@ -420,8 +404,6 @@ const DropdownMenu = styled.div`
   }
 `;
 
-
-
 const DropdownItem = styled.div`
   display: flex;
   align-items: center;
@@ -430,7 +412,7 @@ const DropdownItem = styled.div`
 `;
 
 const DropdownLabel = styled.span`
-  color: #1b1b1b;
+  color: #1B1B1B;
   font-family: ${({ theme }) => theme.fonts.mulish};
   font-size: 14px;
   font-weight: 600;
@@ -447,7 +429,7 @@ const CounterButton = styled.button`
   background: transparent;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 4px;
-  color: #1b1b1b;
+  color: #1B1B1B;
   font-size: 14px;
   cursor: pointer;
   padding: 6px 10px;
@@ -458,13 +440,13 @@ const CounterButton = styled.button`
 
   &:hover {
     background: rgba(170, 132, 83, 0.1);
-    border-color: #aa8453;
-    color: #aa8453;
+    border-color: #AA8453;
+    color: #AA8453;
   }
 `;
 
 const CounterValue = styled.span`
-  color: #1b1b1b;
+  color: #1B1B1B;
   font-family: ${({ theme }) => theme.fonts.mulish};
   font-size: 14px;
   font-weight: 700;
@@ -478,7 +460,7 @@ const SearchButton = styled.button`
   border: none;
   border-radius: 6px;
   padding: 12px 10px;
-  min-height: 44px;
+  height: 44px;
   font-family: ${({ theme }) => theme.fonts.mulish};
   font-size: 13px;
   font-weight: 600;
@@ -492,9 +474,11 @@ const SearchButton = styled.button`
   grid-column: span 3;
 
   @media (max-width: 991px) {
-    grid-column: span 6;
+    grid-column: 4 / span 6;
     padding: 14px 28px;
     font-size: 15px;
+    height: auto;
+    min-height: 44px;
   }
   @media (max-width: 767px) {
     grid-column: span 1;

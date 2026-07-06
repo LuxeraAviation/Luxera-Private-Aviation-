@@ -23,14 +23,6 @@ export default function ServicesIntro() {
                 height={620}
               />
             </Back>
-            <Front>
-              <Image
-                src={SERVICE_INTRO.image2}
-                alt="Service"
-                width={300}
-                height={360}
-              />
-            </Front>
           </ImageCol>
 
           <TextCol>
@@ -79,16 +71,6 @@ const ImageCol = styled.div`
 `;
 
 const Back = styled.div``;
-
-const Front = styled.div`
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 55%;
-  border: 8px solid ${({ theme }) => theme.bg};
-  border-radius: 5px;
-  overflow: hidden;
-`;
 
 const List = styled.ul`
   list-style: none;

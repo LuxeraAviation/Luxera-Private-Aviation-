@@ -51,14 +51,14 @@ export default function Footer() {
               </Socials>
             </Col>
 
-            <Col>
+            {/* <Col>
               <Title>{FOOTER_ADDRESS.title}</Title>
               <Text>
                 {FOOTER_ADDRESS.lines.map((line) => (
                   <AddressLine key={line}>{line}</AddressLine>
                 ))}
               </Text>
-            </Col>
+            </Col> */}
 
             <Col>
               <Title>{FOOTER_LINKS.title}</Title>
@@ -125,7 +125,7 @@ const Main = styled.div`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 1.2fr 1fr 1fr 1.4fr;
+  grid-template-columns: 1.2fr 1fr 1.4fr;
   gap: 40px;
 
   @media (max-width: 991px) {
@@ -217,7 +217,7 @@ const MapWrap = styled.div``;
 
 const Map = styled.iframe`
   width: 100%;
-  height: 160px;
+  height: 200px;
   border: 0;
   filter: grayscale(100%);
 `;

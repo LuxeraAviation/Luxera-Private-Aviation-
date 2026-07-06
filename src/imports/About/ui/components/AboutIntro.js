@@ -1,18 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import styled from "styled-components";
 import Section from "@/imports/core/atom/Section";
 import Container from "@/imports/core/atom/Container";
 import SectionHeading from "@/imports/core/components/SectionHeading";
 import { Reveal, Odometer } from "@/styles/Theme";
 import { fs38 } from "@/styles/typography";
-
-const STATS = [
-  { value: "12000", suffix: "+", label: "Flights Operated" },
-  { value: "3000", suffix: "+", label: "Aircraft Worldwide" },
-  { value: "98", suffix: "%", label: "Client Satisfaction" },
-];
+import { ABOUT_INTRO, ABOUT_STATS } from "@/imports/core/constants/about";
 
 export default function AboutIntro() {
   return (
@@ -20,20 +14,16 @@ export default function AboutIntro() {
       <Container>
         <SectionHeading
           center
-          subtitle="ABOUT US"
-          title="Built around your itinerary, our charter service pairs an elite global fleet with vetted crews and white-glove concierge for travel without compromise"
+          title={ABOUT_INTRO.title}
           maxWidth="1000px"
         />
-        <ImageWrap as={Reveal} variant="zoom-in">
-          <Image
-            src="/image/av/jet-flying.webp"
-            alt="Luxera private aviation"
-            width={1170}
-            height={560}
-          />
-        </ImageWrap>
+        <Body as={Reveal} variant="fade-up" delay={150}>
+          {ABOUT_INTRO.body.before}
+          <Brand>{ABOUT_INTRO.body.brand}</Brand>
+          {ABOUT_INTRO.body.after}
+        </Body>
         <Stats>
-          {STATS.map((s) => (
+          {ABOUT_STATS.map((s) => (
             <li key={s.label}>
               <Value>
                 <Odometer to={s.value} />
@@ -48,16 +38,22 @@ export default function AboutIntro() {
   );
 }
 
-const ImageWrap = styled.div`
-  margin: 60px 0;
-  border-radius: 6px;
-  overflow: hidden;
+const Body = styled.p`
+  max-width: 900px;
+  margin: 26px auto 60px;
+  text-align: center;
+  color: ${({ theme }) => theme.text};
+  font-size: 19px;
+  line-height: 1.7em;
 
-  img {
-    width: 100%;
-    height: auto;
-    border-radius: 6px;
+  @media (max-width: 991px) {
+    font-size: 17px;
   }
+`;
+
+const Brand = styled.span`
+  color: ${({ theme }) => theme.base};
+  font-weight: 600;
 `;
 
 const Stats = styled.ul`

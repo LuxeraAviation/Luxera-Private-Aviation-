@@ -47,41 +47,6 @@ function getMonthDays(year, month) {
   return days;
 }
 
-function MonthGrid({ year, month, selectedDate, onDayClick }) {
-  const days = getMonthDays(year, month);
-
-  return (
-    <MonthWrap>
-      <MonthTitle>
-        {MONTHS[month]} {year}
-      </MonthTitle>
-      <WeekRow>
-        {DAYS.map((d) => (
-          <WeekDay key={d}>{d}</WeekDay>
-        ))}
-      </WeekRow>
-      <DayGrid>
-        {days.map(({ date, outside }, idx) => {
-          const isSelected = isSameDay(date, selectedDate);
-          const disabled = isBeforeToday(date);
-
-          return (
-            <DayCell
-              key={idx}
-              $outside={outside}
-              $isSelected={isSelected}
-              $disabled={disabled}
-              onClick={() => !disabled && !outside && onDayClick(date)}
-            >
-              {date.getDate()}
-            </DayCell>
-          );
-        })}
-      </DayGrid>
-    </MonthWrap>
-  );
-}
-
 export default function DateTimePickerPopover({ value, onChange, onClose, align = "left" }) {
   const today = new Date();
 
@@ -146,26 +111,48 @@ export default function DateTimePickerPopover({ value, onChange, onClose, align 
     onClose();
   }
 
+  const days = getMonthDays(year, month);
+
   return (
     <>
       <Backdrop onClick={onClose} />
       <Popover $align={align}>
         <PopoverBody>
           <CalendarSection>
-            <Header>
+            <CalendarHeader>
               <NavBtn onClick={goLeft} type="button" aria-label="Previous month">
                 <i className="fa-solid fa-chevron-left" />
               </NavBtn>
-              <MonthGrid
-                year={year}
-                month={month}
-                selectedDate={selectedDate}
-                onDayClick={handleDayClick}
-              />
+              <MonthTitle>
+                {MONTHS[month]} {year}
+              </MonthTitle>
               <NavBtn onClick={goRight} type="button" aria-label="Next month">
                 <i className="fa-solid fa-chevron-right" />
               </NavBtn>
-            </Header>
+            </CalendarHeader>
+            <WeekRow>
+              {DAYS.map((d) => (
+                <WeekDay key={d}>{d}</WeekDay>
+              ))}
+            </WeekRow>
+            <DayGrid>
+              {days.map(({ date, outside }, idx) => {
+                const isSelected = isSameDay(date, selectedDate);
+                const disabled = isBeforeToday(date);
+
+                return (
+                  <DayCell
+                    key={idx}
+                    $outside={outside}
+                    $isSelected={isSelected}
+                    $disabled={disabled}
+                    onClick={() => !disabled && !outside && handleDayClick(date)}
+                  >
+                    {date.getDate()}
+                  </DayCell>
+                );
+              })}
+            </DayGrid>
           </CalendarSection>
 
           <Divider />
@@ -260,9 +247,10 @@ const Popover = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 290px;
+    width: 260px;
     z-index: 200;
     box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+    padding: 12px 12px 10px;
   }
 `;
 
@@ -274,16 +262,24 @@ const PopoverBody = styled.div`
   @media (max-width: 575px) {
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 10px;
   }
 `;
 
 const CalendarSection = styled.div`
   width: 230px;
+
+  @media (max-width: 575px) {
+    width: 100%;
+  }
 `;
 
 const TimeSection = styled.div`
   width: 220px;
+
+  @media (max-width: 575px) {
+    width: 100%;
+  }
 `;
 
 const Divider = styled.div`
@@ -297,11 +293,16 @@ const Divider = styled.div`
   }
 `;
 
-const Header = styled.div`
+const CalendarHeader = styled.div`
   display: flex;
-  align-items: flex-start;
-  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
   position: relative;
+
+  @media (max-width: 575px) {
+    margin-bottom: 8px;
+  }
 `;
 
 const NavBtn = styled.button`
@@ -311,7 +312,6 @@ const NavBtn = styled.button`
   cursor: pointer;
   padding: 4px 6px;
   font-size: 13px;
-  margin-top: 2px;
   opacity: 0.6;
   transition: opacity 0.2s ease;
   flex-shrink: 0;
@@ -322,17 +322,10 @@ const NavBtn = styled.button`
   }
 `;
 
-const MonthWrap = styled.div`
-  flex: 1;
-  min-width: 0;
-`;
-
 const MonthTitle = styled.div`
-  text-align: center;
   font-size: 14px;
   font-weight: 700;
   color: #1b1b1b;
-  margin-bottom: 14px;
   letter-spacing: 0.3px;
 `;
 
@@ -393,6 +386,11 @@ const Footer = styled.div`
   margin-top: 12px;
   padding-top: 10px;
   border-top: 1px solid rgba(0, 0, 0, 0.07);
+
+  @media (max-width: 575px) {
+    margin-top: 8px;
+    padding-top: 8px;
+  }
 `;
 
 const CancelBtn = styled.button`
@@ -440,6 +438,10 @@ const TimeTitle = styled.div`
   color: #1b1b1b;
   margin-bottom: 14px;
   letter-spacing: 0.3px;
+
+  @media (max-width: 575px) {
+    margin-bottom: 8px;
+  }
 `;
 
 const TimeColumns = styled.div`
@@ -448,6 +450,10 @@ const TimeColumns = styled.div`
   justify-content: center;
   height: 250px;
   margin-bottom: 4px;
+
+  @media (max-width: 575px) {
+    height: 160px;
+  }
 `;
 
 const TimeColumn = styled.div`
@@ -461,7 +467,6 @@ const TimeColumn = styled.div`
   padding: 4px;
   box-sizing: border-box;
 
-  /* styling scrollbar */
   &::-webkit-scrollbar {
     width: 4px;
   }

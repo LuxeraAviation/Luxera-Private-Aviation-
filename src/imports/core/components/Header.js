@@ -165,14 +165,6 @@ export default function Header() {
           </Nav>
 
           <Right>
-            {/* <ThemeToggle
-              onClick={toggle}
-              aria-label="Toggle dark mode"
-              type="button"
-              $transparent={overHero}
-            >
-              <i className={mode === "dark" ? "fas fa-sun" : "fas fa-moon"} />
-            </ThemeToggle> */}
             <Hamburger
               onClick={toggleMenu}
               aria-label="Toggle menu"
@@ -234,7 +226,7 @@ const LogoLink = styled(Link)`
     height: auto;
     transition: filter 0.5s ease;
     filter: ${({ $transparent }) =>
-      $transparent ? "brightness(0) invert(1)" : "none"};
+    $transparent ? "brightness(0) invert(1)" : "none"};
   }
 `;
 
@@ -446,32 +438,6 @@ const Right = styled.div`
   flex-shrink: 0;
 `;
 
-const ThemeToggle = styled.button`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 1px solid
-    ${({ theme, $transparent }) =>
-    $transparent ? "rgba(255,255,255,0.5)" : theme.border};
-  background: transparent;
-  color: ${({ theme, $transparent }) => ($transparent ? theme.white : theme.heading)};
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: ${({ theme }) => theme.base};
-    border-color: ${({ theme }) => theme.base};
-    color: ${({ theme }) => theme.white};
-  }
-
-  @media (max-width: 991px) {
-    display: none;
-  }
-`;
-
 const Hamburger = styled.button`
   display: none;
   align-items: center;
@@ -490,8 +456,8 @@ const Hamburger = styled.button`
     display: inline-flex;
 
     ${({ $open }) =>
-      $open &&
-      css`
+    $open &&
+    css`
         position: fixed;
         top: 18px;
         right: 22px;
