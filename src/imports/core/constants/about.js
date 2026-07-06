@@ -54,6 +54,6 @@ export const ABOUT_WHY = {
     "Your time is your most precious asset. Allow us the privilege of protecting it.",
   closing:
     "Are you ready to redefine your travel standards? Contact us today to begin curating your next journey.",
-  image: "/image/av/luxury-jet-boarding.jpg",
+  image: "/image/av/luxury-jet.jpg",
   cta: { label: "Begin Your Journey", href: "/" },
 };

@@ -24,10 +24,10 @@ export default function Offerings() {
           <Slider
             items={OFFERINGS}
             perView={3}
-            resolvePerView={(width) =>
-              width < 768 ? 1 : width < 992 ? 2 : 3
-            }
+            resolvePerView={(width) => (width < 768 ? 1 : width < 992 ? 2 : 3)}
             loop
+            autoplay
+            autoplayInterval={2500}
             slideGap={60}
             controls={SliderArrows}
             renderItem={(o) => (
@@ -47,8 +47,10 @@ export default function Offerings() {
 
 const SliderArea = styled.div`
   margin-top: 80px;
+  padding-bottom: 30px;
 
   @media (max-width: 991px) {
     margin-top: 50px;
+    padding-bottom: 20px;
   }
 `;

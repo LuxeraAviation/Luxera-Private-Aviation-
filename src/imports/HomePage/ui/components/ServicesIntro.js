@@ -63,6 +63,13 @@ const ImageCol = styled.div`
   padding-right: 80px;
   padding-bottom: 60px;
 
+  @media (max-width: 991px) {
+    padding-right: 0;
+    padding-bottom: 0;
+    display: flex;
+    justify-content: center;
+  }
+
   img {
     border-radius: 5px;
     width: 100%;
@@ -70,7 +77,12 @@ const ImageCol = styled.div`
   }
 `;
 
-const Back = styled.div``;
+const Back = styled.div`
+  @media (max-width: 991px) {
+    width: 100%;
+    max-width: 520px;
+  }
+`;
 
 const List = styled.ul`
   list-style: none;
