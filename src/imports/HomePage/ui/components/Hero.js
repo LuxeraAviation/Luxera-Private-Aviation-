@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import Slider from "@/imports/core/components/Slider";
@@ -35,6 +36,19 @@ function HeroArrows({ prev, next }) {
 
 export default function Hero() {
   const { mode, toggle } = useThemeMode();
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && sessionStorage.getItem("scrollToBooking") === "true") {
+      sessionStorage.removeItem("scrollToBooking");
+      const timer = setTimeout(() => {
+        const element = document.getElementById("booking-zone");
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   return (
     <Wrap>

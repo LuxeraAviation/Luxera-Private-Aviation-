@@ -44,7 +44,13 @@ export default function Footer() {
               </Menu>
               <Socials>
                 {SOCIAL_LINKS.map((s) => (
-                  <SocialLink key={s.iconClass} href={s.url} aria-label="social">
+                  <SocialLink
+                    key={s.iconClass}
+                    href={s.url}
+                    aria-label="social"
+                    target={s.url !== "#" ? "_blank" : undefined}
+                    rel={s.url !== "#" ? "noopener noreferrer" : undefined}
+                  >
                     <Icon className={s.iconClass} />
                   </SocialLink>
                 ))}
@@ -65,7 +71,24 @@ export default function Footer() {
               <Menu>
                 {FOOTER_LINKS.links.map((l) => (
                   <MenuItem key={l.text}>
-                    <NavLink href={l.url}>{l.text}</NavLink>
+                    {l.text === "Request Quotation" ? (
+                      <NavLink
+                        href={l.url}
+                        onClick={(e) => {
+                          const element = document.getElementById("booking-zone");
+                          if (element) {
+                            e.preventDefault();
+                            element.scrollIntoView({ behavior: "smooth", block: "center" });
+                          } else {
+                            sessionStorage.setItem("scrollToBooking", "true");
+                          }
+                        }}
+                      >
+                        {l.text}
+                      </NavLink>
+                    ) : (
+                      <NavLink href={l.url}>{l.text}</NavLink>
+                    )}
                   </MenuItem>
                 ))}
               </Menu>

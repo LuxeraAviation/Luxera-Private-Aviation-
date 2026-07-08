@@ -14,8 +14,8 @@ export const FOOTER_LINKS = {
   title: "Links",
   links: [
     { text: "Home", url: "/" },
-    { text: "About Us", url: "/" },
-    { text: "Charter a Jet", url: "/" },
+    { text: "About Us", url: "/about" },
+    { text: "Request Quotation", url: "/" },
     { text: "Services", url: "/" },
   ],
 };
@@ -25,7 +25,7 @@ export const DUBAI_MAP =
 
 export const SOCIAL_LINKS = [
   { iconClass: "fa-brands fa-linkedin-in", url: "#" },
-  { iconClass: "fa-brands fa-instagram", url: "#" },
+  { iconClass: "fa-brands fa-instagram", url: "https://www.instagram.com/luxeraaviation?igsh=dXgzcWNyNW04dzgw&utm_source=qr" },
   { iconClass: "fa-brands fa-youtube", url: "#" },
   { iconClass: "fa-brands fa-facebook-f", url: "#" },
 ];
