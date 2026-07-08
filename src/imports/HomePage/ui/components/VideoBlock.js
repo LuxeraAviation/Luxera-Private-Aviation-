@@ -122,5 +122,3 @@ const Letter = styled.span`
     }
   }
 `;
-
-// Modal styles removed as video popover is disabled

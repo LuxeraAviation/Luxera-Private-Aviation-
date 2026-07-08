@@ -17,7 +17,7 @@ export default function FAQPage() {
 
   const handleTabChange = (index) => {
     setActiveTab(index);
-    setOpenAccordion(0); // Reset accordion to first item when switching tabs
+    setOpenAccordion(0);
   };
 
   const handleAccordionToggle = (index) => {
@@ -27,7 +27,7 @@ export default function FAQPage() {
   return (
     <main>
       <PageHeading title="FAQ" bg="/image/luxera/new.png" />
-      
+
       <Section $top="120px" $bottom="120px">
         <Container>
           <Intro>
@@ -104,7 +104,7 @@ export default function FAQPage() {
                   <h3>Have specific operational requirements?</h3>
                   <p>Our bespoke private office team is available 24/7 to orchestrate your travel.</p>
                 </ContactText>
-                <StyledContactButton href="/">Get in Touch</StyledContactButton>
+                <StyledContactButton href="tel:+447469189255">Get in Touch</StyledContactButton>
               </ContactCard>
             </ContentCol>
           </Grid>
@@ -204,11 +204,11 @@ const TabButton = styled.button`
     border-bottom: 1px solid ${({ theme }) => theme.border};
     width: 100%;
     background: ${({ theme, $active }) =>
-      $active
-        ? theme.mode === "dark"
-          ? "rgba(170, 132, 83, 0.08)"
-          : "rgba(170, 132, 83, 0.04)"
-        : "transparent"};
+    $active
+      ? theme.mode === "dark"
+        ? "rgba(170, 132, 83, 0.08)"
+        : "rgba(170, 132, 83, 0.04)"
+      : "transparent"};
 
     &::after {
       display: none;
