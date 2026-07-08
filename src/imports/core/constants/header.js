@@ -3,7 +3,7 @@ export const NAV_ITEMS = [
   // { label: "Fleet", url: "/" },
   { label: "About Us", url: "/about" },
   { label: "Services", url: "/" },
-  { label: "FAQ", url: "/" },
+  { label: "FAQ", url: "/faq" },
   { label: "Contact", url: "/" },
 ];
 

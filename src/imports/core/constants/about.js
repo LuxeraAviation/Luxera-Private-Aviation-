@@ -48,7 +48,7 @@ export const ABOUT_SOLUTIONS = {
 
 export const ABOUT_WHY = {
   subtitle: "WHY CHOOSE LUXERA?",
-  title: "Experience Is the Ultimate Currency",
+  title: "The Quiet Confidence of Expert Service",
   body: "With over a decade of expertise in elite luxury sectors, our leadership understands the nuance of high-end service. We view every partnership as a long-term commitment, ensuring that your unique preferences are not just met, but anticipated, with every flight you take with us.",
   highlight:
     "Your time is your most precious asset. Allow us the privilege of protecting it.",

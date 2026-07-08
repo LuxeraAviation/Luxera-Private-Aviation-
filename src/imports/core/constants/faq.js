@@ -1,26 +1,55 @@
-export const FAQS = [
+export const FAQ_CATEGORIES = [
   {
-    q: "How far in advance do I need to book?",
-    a: "For most routes we can have an aircraft ready in as little as 4 hours. For specific aircraft, peak dates, or international permits we recommend booking 24-48 hours ahead.",
+    id: "commitment",
+    label: "The Luxera Commitment",
+    image: "/image/av/cabin-portrait.webp",
+    items: [
+      {
+        q: "What defines the Luxera experience?",
+        a: "At Luxera, we do not simply broker flights; we curate a standard of travel that mirrors your own. By serving as a strategic partner to your private office, we ensure that every journey is an extension of your lifestyle, characterized by flawless execution and absolute discretion.",
+      },
+      {
+        q: "How do you maintain such a high level of personalized service?",
+        a: "As a boutique firm, we intentionally prioritize depth of service over volume. We dedicate ourselves to understanding your precise preferences—from cabin environment and catering nuances to ground logistics—ensuring that every flight feels uniquely prepared for you alone.",
+      },
+      {
+        q: "Is my privacy guaranteed?",
+        a: "Discretion is the cornerstone of our brand. We manage your travel with complete confidentiality, ensuring that your movements remain private and undisturbed from departure to arrival.",
+      },
+    ],
   },
   {
-    q: "How is charter pricing calculated?",
-    a: "Pricing is primarily based on aircraft category and flight time, plus landing, handling, and crew fees. You receive a clear, all-in quote before you confirm — no hidden costs.",
+    id: "brokerage",
+    label: "Bespoke Brokerage",
+    image: "/image/av/luxury-jet.jpg",
+    items: [
+      {
+        q: "What is the advantage of partnering with a boutique brokerage?",
+        a: "Our independence allows us to act as your dedicated advocate in a complex market. We provide unbiased, strategic intelligence to secure the optimal aircraft for your specific mission, ensuring that your expectations are not just met, but anticipated and exceeded.",
+      },
+      {
+        q: "How does Luxera ensure the highest quality of aircraft?",
+        a: "Our vetting process is uncompromising. We conduct rigorous, independent assessments of every operator and aircraft, ensuring that every asset we present to you meets the most stringent global safety and performance standards.",
+      },
+      {
+        q: "How do you handle complex or highly time-sensitive itineraries?",
+        a: "We excel in high-stakes environments. Leveraging our deep industry expertise, we navigate operational challenges with foresight and agility, ensuring your schedule remains entirely protected and your travel remains effortless.",
+      },
+    ],
   },
   {
-    q: "What is an empty-leg flight?",
-    a: "When an aircraft flies without passengers to reposition for its next trip, we offer that leg at a significant discount. It's the same private experience for a fraction of the price.",
-  },
-  {
-    q: "Can I bring pets on board?",
-    a: "Absolutely. One of the great advantages of flying private is that your pets travel in the cabin with you. Just let our charter desk know in advance.",
-  },
-  {
-    q: "Which airports can I fly into?",
-    a: "Private jets access thousands more airports than commercial airlines, including smaller regional fields closer to your destination — getting you door to door faster.",
-  },
-  {
-    q: "How do you ensure safety?",
-    a: "We charter exclusively through ARGUS and Wyvern-rated operators, and every aircraft, crew, and maintenance record is audited before each flight.",
+    id: "transparency",
+    label: "Financial & Operational",
+    image: "/image/av/jet-reflection.jpg",
+    items: [
+      {
+        q: "How do you approach pricing for your clients?",
+        a: "We operate with absolute financial transparency. As your independent broker, our focus is on providing market-leading value and clear, objective advice, ensuring you receive the highest level of luxury without ambiguity.",
+      },
+      {
+        q: "What is the core of our partnership?",
+        a: "We view each engagement as a long-term commitment. By deeply understanding your unique standards, we function as a seamless extension of your personal or professional office, dedicated to the preservation of your time and the elevation of your travel experience.",
+      },
+    ],
   },
 ];

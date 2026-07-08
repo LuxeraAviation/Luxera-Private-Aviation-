@@ -14,6 +14,7 @@ export const FOOTER_LINKS = {
   title: "Links",
   links: [
     { text: "Home", url: "/" },
+    { text: "FAQ", url: "/faq" },
     { text: "About Us", url: "/about" },
     { text: "Request Quotation", url: "/" },
     { text: "Services", url: "/" },
