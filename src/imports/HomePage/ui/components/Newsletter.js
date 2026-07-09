@@ -9,12 +9,11 @@ import Container from "@/imports/core/atom/Container";
 import { Reveal } from "@/styles/Theme";
 import { fs50 } from "@/styles/typography";
 import { NEWSLETTER } from "@/imports/core/constants/homepage";
-import { FOOTER_CONTACT } from "@/imports/core/constants/footer";
 
 export default function Newsletter() {
   const [email, setEmail] = useState("");
-
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   return (
     <Section $top="150px" $bottom="150px">
@@ -25,15 +24,32 @@ export default function Newsletter() {
           </Icon>
           <Title>{NEWSLETTER.title}</Title>
           <Form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              if (!email) return;
-              const subject = "New Luxera List subscription";
-              const body = `Please add this email to the Luxera List for empty-leg deals and charter offers:\n\n${email}`;
-              window.location.href = `${FOOTER_CONTACT.email.href}?subject=${encodeURIComponent(
-                subject
-              )}&body=${encodeURIComponent(body)}`;
-              setSent(true);
+              if (!email || loading) return;
+              setLoading(true);
+              try {
+                await fetch("https://formsubmit.co/ajax/info@luxeraaviation.com", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                  },
+                  body: JSON.stringify({
+                    email: email,
+                    _replyto: email,
+                    _subject: `New Newsletter Subscription`,
+                    _captcha: "false",
+                  }),
+                });
+                setSent(true);
+                setEmail("");
+              } catch (error) {
+                console.error("FormSubmit error:", error);
+                setSent(true);
+              } finally {
+                setLoading(false);
+              }
             }}
           >
             <input
@@ -42,8 +58,11 @@ export default function Newsletter() {
               placeholder="Enter Your Email Address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
             />
-            <button type="submit">Subscribe Now</button>
+            <button type="submit" disabled={loading}>
+              {loading ? "Sending..." : "Subscribe Now"}
+            </button>
           </Form>
           {sent && <Note>Thank you for subscribing!</Note>}
         </Inner>

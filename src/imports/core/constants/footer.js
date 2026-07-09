@@ -18,6 +18,7 @@ export const FOOTER_LINKS = {
     { text: "Services", url: "/" },
     { text: "Request Quotation", url: "/" },
     { text: "FAQ", url: "/faq" },
+    { text: "Contact", url: "/contact" },
 
   ],
 };

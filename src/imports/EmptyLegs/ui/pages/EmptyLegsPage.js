@@ -7,11 +7,10 @@ import Container from "@/imports/core/atom/Container";
 import SectionHeading from "@/imports/core/components/SectionHeading";
 import { Reveal } from "@/styles/Theme";
 import { fs28, fs67, sectionSubtitle } from "@/styles/typography";
-import EmptyLegsForm from "@/imports/EmptyLegs/ui/components/EmptyLegsForm";
 import { EMPTY_LEGS } from "@/imports/core/constants/emptyLegs";
 
 export default function EmptyLegsPage() {
-  const { hero, why, stayInformed, form } = EMPTY_LEGS;
+  const { hero, why, stayInformed } = EMPTY_LEGS;
 
   return (
     <main>
@@ -30,7 +29,7 @@ export default function EmptyLegsPage() {
             <Kicker>{hero.kicker}</Kicker>
             <HeroTitle>{hero.title}</HeroTitle>
             <HeroTagline>{hero.tagline}</HeroTagline>
-            <HeroCta href="#enquire">
+            <HeroCta href="/contact">
               Enquire Now <i className="fa-solid fa-arrow-right" />
             </HeroCta>
           </Container>
@@ -120,22 +119,12 @@ export default function EmptyLegsPage() {
         <Container>
           <CtaInner as={Reveal} variant="fade-up">
             <p>{stayInformed.closing}</p>
-            <CtaButton href="#enquire">
+            <CtaButton href="/contact">
               Secure Your Flight <i className="fa-solid fa-arrow-right" />
             </CtaButton>
           </CtaInner>
         </Container>
       </CtaBand>
-
-      <Section id="enquire" $top="120px" $bottom="150px" style={{ scrollMarginTop: "100px" }}>
-        <Container>
-          <FormWrap as={Reveal} variant="fade-up">
-            <SectionHeading center subtitle={form.subtitle} title={form.title} maxWidth="640px" />
-            <FormLead>{form.lead}</FormLead>
-            <EmptyLegsForm />
-          </FormWrap>
-        </Container>
-      </Section>
     </main>
   );
 }
@@ -515,18 +504,4 @@ const CtaButton = styled.a`
       transform: translateX(4px);
     }
   }
-`;
-
-/* ── Form ── */
-const FormWrap = styled.div`
-  max-width: 760px;
-  margin: 0 auto;
-`;
-
-const FormLead = styled.p`
-  text-align: center;
-  color: ${({ theme }) => theme.text};
-  margin: 0 auto 44px;
-  max-width: 560px;
-  line-height: 1.8em;
 `;

@@ -1,13 +1,10 @@
 export const NAV_ITEMS = [
   { label: "Home", url: "/" },
-  // { label: "Fleet", url: "/" },
   { label: "About Us", url: "/about" },
   { label: "Services", url: "/" },
   { label: "FAQ", url: "/faq" },
-  { label: "Contact", url: "/" },
+  { label: "Contact", url: "/contact" },
 ];
-
-export const RESERVATION = { label: "Book a Jet", url: "/" };
 
 export const BRAND = {
   name: "Luxera",

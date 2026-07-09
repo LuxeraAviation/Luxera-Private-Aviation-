@@ -57,15 +57,6 @@ export default function Footer() {
               </Socials>
             </Col>
 
-            {/* <Col>
-              <Title>{FOOTER_ADDRESS.title}</Title>
-              <Text>
-                {FOOTER_ADDRESS.lines.map((line) => (
-                  <AddressLine key={line}>{line}</AddressLine>
-                ))}
-              </Text>
-            </Col> */}
-
             <Col>
               <Title>{FOOTER_LINKS.title}</Title>
               <Menu>
@@ -200,15 +191,6 @@ const NavLink = styled(Link)`
   &:hover {
     color: ${({ theme }) => theme.base};
   }
-`;
-
-const Text = styled.p`
-  margin: 0;
-  line-height: 1.9;
-`;
-
-const AddressLine = styled.span`
-  display: block;
 `;
 
 const Socials = styled.div`

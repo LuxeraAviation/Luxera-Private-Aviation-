@@ -55,10 +55,4 @@ export const EMPTY_LEGS = {
     closing:
       "Ready to secure your next extraordinary flight? Browse our current availability or contact your Luxera representative today to curate your travel experience.",
   },
-  form: {
-    subtitle: "GET IN TOUCH",
-    title: "Enquire About Empty Leg Availability",
-    lead:
-      "Share your details and preferred routes with our charter desk. We'll alert you the moment an empty leg matches your itinerary.",
-  },
 };
