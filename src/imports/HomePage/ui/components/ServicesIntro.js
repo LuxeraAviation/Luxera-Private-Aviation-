@@ -4,7 +4,6 @@ import Image from "next/image";
 import styled from "styled-components";
 import Section from "@/imports/core/atom/Section";
 import Container from "@/imports/core/atom/Container";
-import ArrowButton from "@/imports/core/components/ArrowButton";
 import SectionHeading from "@/imports/core/components/SectionHeading";
 import { Reveal } from "@/styles/Theme";
 import { SERVICE_INTRO, SERVICE_LIST } from "@/imports/core/constants/services";
@@ -38,7 +37,6 @@ export default function ServicesIntro() {
                 </li>
               ))}
             </List>
-            <ArrowButton href="/">Learn More</ArrowButton>
           </TextCol>
         </Grid>
       </Container>

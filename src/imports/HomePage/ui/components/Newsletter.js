@@ -9,6 +9,7 @@ import Container from "@/imports/core/atom/Container";
 import { Reveal } from "@/styles/Theme";
 import { fs50 } from "@/styles/typography";
 import { NEWSLETTER } from "@/imports/core/constants/homepage";
+import { FOOTER_CONTACT } from "@/imports/core/constants/footer";
 
 export default function Newsletter() {
   const [email, setEmail] = useState("");
@@ -26,7 +27,13 @@ export default function Newsletter() {
           <Form
             onSubmit={(e) => {
               e.preventDefault();
-              if (email) setSent(true);
+              if (!email) return;
+              const subject = "New Luxera List subscription";
+              const body = `Please add this email to the Luxera List for empty-leg deals and charter offers:\n\n${email}`;
+              window.location.href = `${FOOTER_CONTACT.email.href}?subject=${encodeURIComponent(
+                subject
+              )}&body=${encodeURIComponent(body)}`;
+              setSent(true);
             }}
           >
             <input

@@ -2,7 +2,7 @@ export const OFFERINGS = [
   {
     title: "On-Demand Charter",
     desc: "Book a private jet anywhere in the world, any time. Transparent hourly pricing and wheels up in as little as four hours.",
-    image: "/image/av/jet-stairs.webp",
+    image: "/image/av/jet-on-demand.jpg",
     href: "/",
   },
   {
@@ -32,8 +32,8 @@ export const OFFERINGS = [
   {
     title: "Empty Legs",
     desc: "Travel on repositioning flights at a fraction of the price. Same private experience, exceptional value, limited availability.",
-    image: "/image/av/jet-flying.webp",
-    href: "/",
+    image: "/image/av/jet-empty-legs.jpg",
+    href: "/empty-legs",
   },
 ];
 
