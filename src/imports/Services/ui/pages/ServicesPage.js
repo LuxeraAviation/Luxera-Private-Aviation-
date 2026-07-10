@@ -1,18 +1,14 @@
 import PageHeading from "@/imports/core/components/PageHeading";
+import ServicePrinciples from "@/imports/Services/ui/components/ServicePrinciples";
 import ServicesGrid from "@/imports/Services/ui/components/ServicesGrid";
-import ServicesIntro from "@/imports/HomePage/ui/components/ServicesIntro";
-import Offerings from "@/imports/HomePage/ui/components/Offerings";
-import VideoBlock from "@/imports/HomePage/ui/components/VideoBlock";
 import Newsletter from "@/imports/HomePage/ui/components/Newsletter";
 
 export default function ServicesPage() {
   return (
     <main>
-      <PageHeading title="Services" bg="/image/luxera/new.png" />
-      <ServicesIntro />
+      <PageHeading title="Our Services" bg="/image/luxera/new.png" />
+      <ServicePrinciples />
       <ServicesGrid />
-      <Offerings />
-      <VideoBlock />
       <Newsletter />
     </main>
   );
