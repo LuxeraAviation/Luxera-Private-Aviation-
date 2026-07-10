@@ -3,6 +3,8 @@ export const CARGO = {
     kicker: "CARGO CHARTER",
     title: "Cargo Charter",
     tagline: "Time-critical, high-value freight — moved with precision.",
+    video: "/video/cargo-charter.mp4",
+    poster: "/image/av/jet-dusk-blue.jpg",
     image: "/image/av/jet-dusk-blue.jpg",
   },
   subtitle: "CARGO CHARTER",

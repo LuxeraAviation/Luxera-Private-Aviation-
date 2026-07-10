@@ -68,7 +68,7 @@ export const ABOUT_FOUNDER = {
     "Under her direction, Luxera dissolves the standard friction of travel, replacing it with a quiet, poetic experience in the clouds—crafted solely for those who demand ultimate autonomy over their time, their privacy, and their peace whilst emerged into complete luxury."
   ],
   quote: "We do not simply move our clients across the map. We protect their environment, preserve their energy, and give them back their most irreplaceable asset: their time.",
-  image: "/image/luxera/CEO.jpg",
+  image: "/image/luxera/CEO1.jpg",
   pillarsTitle: "The Poetry of the Skies",
   pillarsImage: "/image/luxera/charter.jpg",
   pillars: [

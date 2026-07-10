@@ -1,7 +1,7 @@
 export const NAV_ITEMS = [
   { label: "Home", url: "/" },
   { label: "About Us", url: "/about" },
-  { label: "Services", url: "/" },
+  { label: "Services", url: "/services" },
   { label: "FAQ", url: "/faq" },
   { label: "Contact", url: "/contact" },
 ];

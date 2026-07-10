@@ -7,7 +7,9 @@ import styled, { css } from "styled-components";
 import Container from "@/imports/core/atom/Container";
 import { useThemeMode } from "@/imports/core/components/ThemeMode";
 import { NAV_ITEMS, BRAND } from "@/imports/core/constants/header";
-import { DUBAI_MAP } from "@/imports/core/constants/footer";
+
+const DUBAI_MAP_LINK =
+  "https://www.google.com/maps/search/?api=1&query=Dubai%2C%20United%20Arab%20Emirates";
 
 export default function Header() {
   const { mode, toggle } = useThemeMode();
@@ -77,6 +79,7 @@ export default function Header() {
       document.body.style.overflow = "";
     };
   }, [open]);
+
 
   const toggleSubmenu = (idx) =>
     setOpenIdx((prev) => (prev === idx ? null : idx));
@@ -155,12 +158,26 @@ export default function Header() {
 
             <MobileMap>
               <MapLabel>Dubai</MapLabel>
-              <MapFrame
-                src={DUBAI_MAP}
-                title="Dubai location"
-                allowFullScreen
-                loading="lazy"
-              />
+              <MapBox
+                href={DUBAI_MAP_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open Dubai location in Google Maps"
+              >
+                <Image
+                  src="/image/dubai-map.png"
+                  alt="Map of Dubai, United Arab Emirates"
+                  fill
+                  sizes="320px"
+                  style={{ objectFit: "cover" }}
+                />
+                <MapPin>
+                  <i className="fas fa-location-dot" />
+                </MapPin>
+                <MapHint>
+                  Open in Maps <i className="fas fa-arrow-up-right-from-square" />
+                </MapHint>
+              </MapBox>
             </MobileMap>
           </Nav>
 
@@ -327,12 +344,58 @@ const MapLabel = styled.h2`
   margin: 0 0 12px;
 `;
 
-const MapFrame = styled.iframe`
+const MapBox = styled.a`
+  display: block;
+  position: relative;
   width: 100%;
   height: 200px;
-  border: 0;
   border-radius: 6px;
-  filter: grayscale(100%);
+  overflow: hidden;
+  border: 1px solid ${({ theme }) => theme.border};
+
+  img {
+    filter: grayscale(100%);
+    transition: filter 0.3s ease, transform 0.4s ease;
+  }
+
+  &:hover img {
+    filter: grayscale(0%);
+    transform: scale(1.04);
+  }
+`;
+
+const MapPin = styled.span`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  color: ${({ theme }) => theme.base};
+  font-size: 30px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+`;
+
+const MapHint = styled.span`
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: ${({ theme }) => theme.bg};
+  color: ${({ theme }) => theme.heading};
+  font-family: ${({ theme }) => theme.fonts.mulish};
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+
+  i {
+    font-size: 10px;
+    color: ${({ theme }) => theme.base};
+  }
 `;
 
 const NavItem = styled.li`
