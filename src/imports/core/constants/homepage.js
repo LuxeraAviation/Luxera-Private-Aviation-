@@ -11,7 +11,7 @@ export const HOME_ABOUT = {
   subtitle: "WHY FLY WITH US",
   title: "Beyond Charter. Your Journey, Curated.",
   body: "At Luxera, we don't just fly; we orchestrate. Every flight is a bespoke expression of your unique requirements, from the cabin configuration and onboard dining to the seamless, discreet ground logistics. Experience a level of personalization that treats every detail as a priority, ensuring your travel is as distinctive as you are.",
-  href: "/",
+  href: "/services",
 };
 
 export const HOME_SECTIONS = {
