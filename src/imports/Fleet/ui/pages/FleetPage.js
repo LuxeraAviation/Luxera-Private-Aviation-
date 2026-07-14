@@ -179,8 +179,11 @@ export default function FleetPage() {
                 </SpecsTable>
 
                 <BookBtn
-                  href={`/?category=${encodeURIComponent(selectedPlane.category)}#booking-zone`}
-                  onClick={() => setSelectedPlane(null)}
+                  href={`/?category=${encodeURIComponent(selectedPlane.category)}`}
+                  onClick={() => {
+                    setSelectedPlane(null);
+                    sessionStorage.setItem("scrollToBooking", "true");
+                  }}
                 >
                   Request Flight Quotation
                 </BookBtn>

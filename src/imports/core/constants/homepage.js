@@ -24,7 +24,7 @@ export const HOME_SECTIONS = {
 export const VIDEO_BLOCK = {
   title: "LUXERA",
   bg: "/image/luxera/new.png",
-  videoUrl: "/video/luxera-intro.mp4",
+  videoUrl: "/video/luxera-cabin.mp4",
 };
 
 export const NEWSLETTER = {

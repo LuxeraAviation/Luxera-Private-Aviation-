@@ -11,7 +11,7 @@ import { ABOUT_FOUNDER } from "@/imports/core/constants/about";
 
 const pillarImages = [
   "/image/av/cabin-portrait.webp",
-  "/image/luxera/charter.jpg",
+  "/image/luxera/cabin-seat.jpg",
   "/image/av/jet-cabin-interior.png",
 ];
 

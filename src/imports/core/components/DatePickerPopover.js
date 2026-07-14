@@ -5,8 +5,18 @@ import styled from "styled-components";
 
 const DAYS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 const MONTHS = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 function isSameDay(a, b) {
@@ -47,11 +57,20 @@ function getMonthDays(year, month) {
   return days;
 }
 
-export default function DateTimePickerPopover({ value, onChange, onClose, align = "left" }) {
+export default function DateTimePickerPopover({
+  value,
+  onChange,
+  onClose,
+  align = "left",
+}) {
   const today = new Date();
 
-  const [year, setYear] = useState(value ? value.getFullYear() : today.getFullYear());
-  const [month, setMonth] = useState(value ? value.getMonth() : today.getMonth());
+  const [year, setYear] = useState(
+    value ? value.getFullYear() : today.getFullYear(),
+  );
+  const [month, setMonth] = useState(
+    value ? value.getMonth() : today.getMonth(),
+  );
   const [selectedDate, setSelectedDate] = useState(value || null);
 
   const [hours, setHours] = useState(() => {
@@ -120,7 +139,11 @@ export default function DateTimePickerPopover({ value, onChange, onClose, align 
         <PopoverBody>
           <CalendarSection>
             <CalendarHeader>
-              <NavBtn onClick={goLeft} type="button" aria-label="Previous month">
+              <NavBtn
+                onClick={goLeft}
+                type="button"
+                aria-label="Previous month"
+              >
                 <i className="fa-solid fa-chevron-left" />
               </NavBtn>
               <MonthTitle>
@@ -146,7 +169,9 @@ export default function DateTimePickerPopover({ value, onChange, onClose, align 
                     $outside={outside}
                     $isSelected={isSelected}
                     $disabled={disabled}
-                    onClick={() => !disabled && !outside && handleDayClick(date)}
+                    onClick={() =>
+                      !disabled && !outside && handleDayClick(date)
+                    }
                   >
                     {date.getDate()}
                   </DayCell>
@@ -184,7 +209,9 @@ export default function DateTimePickerPopover({ value, onChange, onClose, align 
                   </TimeItem>
                 ))}
               </TimeColumn>
-              <TimeColumn style={{ overflow: "hidden", justifyContent: "center" }}>
+              <TimeColumn
+                style={{ overflow: "hidden", justifyContent: "center" }}
+              >
                 {["AM", "PM"].map((a) => (
                   <TimeItem
                     key={a}
@@ -205,7 +232,11 @@ export default function DateTimePickerPopover({ value, onChange, onClose, align 
           <CancelBtn type="button" onClick={onClose}>
             Cancel
           </CancelBtn>
-          <ApplyBtn type="button" onClick={handleApply} disabled={!selectedDate}>
+          <ApplyBtn
+            type="button"
+            onClick={handleApply}
+            disabled={!selectedDate}
+          >
             Apply
           </ApplyBtn>
         </Footer>
@@ -357,15 +388,8 @@ const DayCell = styled.div`
   cursor: ${({ $outside, $disabled }) =>
     $outside || $disabled ? "default" : "pointer"};
   color: ${({ $outside, $disabled, $isSelected }) =>
-    $isSelected
-      ? "#fff"
-      : $outside || $disabled
-      ? "#ccc"
-      : "#1b1b1b"};
-  background: ${({ $isSelected }) =>
-    $isSelected
-      ? "#aa8453"
-      : "transparent"};
+    $isSelected ? "#fff" : $outside || $disabled ? "#ccc" : "#1b1b1b"};
+  background: ${({ $isSelected }) => ($isSelected ? "#aa8453" : "transparent")};
   border-radius: 50%;
   font-style: ${({ $outside, $disabled }) =>
     $outside || $disabled ? "italic" : "normal"};
@@ -496,7 +520,8 @@ const TimeItem = styled.button`
   flex-shrink: 0;
 
   &:hover {
-    background: ${({ $active }) => ($active ? "#aa8453" : "rgba(170, 132, 83, 0.1)")};
+    background: ${({ $active }) =>
+      $active ? "#aa8453" : "rgba(170, 132, 83, 0.1)"};
     color: ${({ $active }) => ($active ? "#fff" : "#aa8453")};
   }
 `;

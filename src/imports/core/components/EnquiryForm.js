@@ -20,6 +20,7 @@ export default function EnquiryForm({
   const [form, setForm] = useState(INITIAL);
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const update = (field) => (e) =>
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
@@ -28,40 +29,29 @@ export default function EnquiryForm({
     e.preventDefault();
     if (loading) return;
     setLoading(true);
+    setError("");
     try {
-      await fetch("https://formsubmit.co/ajax/info@luxeraaviation.com", {
+      const res = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify({
-          Name: `${form.name} ${form.surname}`.trim(),
-          Email: form.email,
-          "Contact Number": form.number,
-          Address: form.address,
-          Message: form.message,
-          _replyto: form.email,
-          _subject: subject,
-          _captcha: "false",
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, subject }),
       });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Something went wrong.");
+      }
       setSent(true);
       setForm(INITIAL);
-    } catch (error) {
-      console.error("FormSubmit error:", error);
-      setSent(true);
+    } catch (err) {
+      console.error("Contact form error:", err);
+      setError(err.message || "Could not send your enquiry. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Form
-      onSubmit={handleSubmit}
-      action="https://formsubmit.co/harshilgohil2703@gmail.com"
-      method="POST"
-    >
+    <Form onSubmit={handleSubmit}>
       <Row>
         <Field>
           <Label>Name*</Label>
@@ -139,6 +129,7 @@ export default function EnquiryForm({
         {loading ? "Sending..." : submitLabel}
       </Submit>
       {sent && <Note>{successMessage}</Note>}
+      {error && <ErrorNote>{error}</ErrorNote>}
     </Form>
   );
 }
@@ -215,4 +206,9 @@ const Submit = styled.button`
 const Note = styled.p`
   margin: 0;
   color: ${({ theme }) => theme.base};
+`;
+
+const ErrorNote = styled.p`
+  margin: 0;
+  color: #c0392b;
 `;

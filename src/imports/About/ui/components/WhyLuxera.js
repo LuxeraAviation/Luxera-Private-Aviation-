@@ -38,7 +38,18 @@ export default function WhyLuxera() {
               {ABOUT_WHY.closing}
             </Closing>
             <Reveal delay={300}>
-              <ArrowButton href={ABOUT_WHY.cta.href}>
+              <ArrowButton
+                href={ABOUT_WHY.cta.href}
+                onClick={(e) => {
+                  const element = document.getElementById("booking-zone");
+                  if (element) {
+                    e.preventDefault();
+                    element.scrollIntoView({ behavior: "smooth", block: "center" });
+                  } else {
+                    sessionStorage.setItem("scrollToBooking", "true");
+                  }
+                }}
+              >
                 {ABOUT_WHY.cta.label}
               </ArrowButton>
             </Reveal>

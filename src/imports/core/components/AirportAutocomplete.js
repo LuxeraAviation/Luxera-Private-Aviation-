@@ -101,7 +101,9 @@ export default function AirportAutocomplete({
           onKeyDown={handleKeyDown}
           onFocus={() => results.length > 0 && setIsOpen(true)}
           placeholder={placeholder}
-          aria-label={ariaLabel || (typeof label === "string" ? label : "Airport")}
+          aria-label={
+            ariaLabel || (typeof label === "string" ? label : "Airport")
+          }
           aria-autocomplete="list"
           aria-expanded={isOpen}
           autoComplete="off"
@@ -127,7 +129,8 @@ export default function AirportAutocomplete({
               <ItemInfo>
                 <ItemName>{airport.airport_name}</ItemName>
                 <ItemSub>
-                  {airport.city_name ? `${airport.city_name}, ` : ""}{airport.country_name}
+                  {airport.city_name ? `${airport.city_name}, ` : ""}
+                  {airport.country_name}
                 </ItemSub>
               </ItemInfo>
             </DropdownItem>

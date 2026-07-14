@@ -8,10 +8,15 @@ import AirportAutocomplete from "@/imports/core/components/AirportAutocomplete";
 export default function BookingForm() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [email, setEmail] = useState("");
   const [depDateTime, setDepDateTime] = useState(null);
   const [retDateTime, setRetDateTime] = useState(null);
   const [passengers, setPassengers] = useState(0);
   const [specialRequests, setSpecialRequests] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
 
   const depDateTimeRef = useRef(null);
   const retDateTimeRef = useRef(null);
@@ -21,23 +26,62 @@ export default function BookingForm() {
   const [isRetOpen, setIsRetOpen] = useState(false);
   const [isPaxOpen, setIsPaxOpen] = useState(false);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-
+  const resetForm = () => {
     setFrom("");
     setTo("");
+    setEmail("");
     setDepDateTime(null);
     setRetDateTime(null);
     setPassengers(0);
     setSpecialRequests("");
   };
 
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (loading) return;
+    setLoading(true);
+    setError("");
+    setSent(false);
+    try {
+      const res = await fetch("/api/quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          from,
+          to,
+          departure: depDateTime ? formatDateTime(depDateTime) : "",
+          return: retDateTime ? formatDateTime(retDateTime) : "",
+          passengers: passengers > 0 ? passengers : "",
+          additionalInfo: specialRequests,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Something went wrong.");
+      }
+      setSent(true);
+      resetForm();
+    } catch (err) {
+      console.error("Quote form error:", err);
+      setError(err.message || "Could not send your request. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     function clickOutside(e) {
-      if (depDateTimeRef.current && !depDateTimeRef.current.contains(e.target)) {
+      if (
+        depDateTimeRef.current &&
+        !depDateTimeRef.current.contains(e.target)
+      ) {
         setIsDepOpen(false);
       }
-      if (retDateTimeRef.current && !retDateTimeRef.current.contains(e.target)) {
+      if (
+        retDateTimeRef.current &&
+        !retDateTimeRef.current.contains(e.target)
+      ) {
         setIsRetOpen(false);
       }
       if (paxRef.current && !paxRef.current.contains(e.target)) {
@@ -105,7 +149,9 @@ export default function BookingForm() {
             <i className="fa-solid fa-users" /> Pax
           </Label>
           <Content $isPlaceholder={passengers === 0}>
-            {passengers > 0 ? String(passengers).padStart(2, "0") : "Number of passengers"}
+            {passengers > 0
+              ? String(passengers).padStart(2, "0")
+              : "Number of passengers"}
           </Content>
           <Chevron>
             <i className={`fa-solid fa-chevron-${isPaxOpen ? "up" : "down"}`} />
@@ -189,8 +235,30 @@ export default function BookingForm() {
         )}
       </DateContainer>
 
+      <EmailContainer>
+        <Field as="label" htmlFor="booking-email-input" style={{ cursor: "text" }}>
+          <Label style={{ cursor: "pointer" }}>
+            <i className="fa-solid fa-envelope" /> Email
+          </Label>
+          <RequestsInput
+            id="booking-email-input"
+            type="email"
+            required
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
+            disabled={loading}
+          />
+        </Field>
+      </EmailContainer>
+
       <RequestsContainer>
-        <Field as="label" htmlFor="special-requests-input" style={{ cursor: "text" }}>
+        <Field
+          as="label"
+          htmlFor="special-requests-input"
+          style={{ cursor: "text" }}
+        >
           <Label style={{ cursor: "pointer" }}>
             <i className="fa-solid fa-clipboard-list" /> Additional Information
           </Label>
@@ -201,11 +269,22 @@ export default function BookingForm() {
             value={specialRequests}
             onChange={(e) => setSpecialRequests(e.target.value)}
             autoComplete="off"
+            disabled={loading}
           />
         </Field>
       </RequestsContainer>
 
-      <SearchButton type="submit">Request Quotation</SearchButton>
+      <SearchButton type="submit" disabled={loading}>
+        {loading ? "Sending..." : "Request Quotation"}
+      </SearchButton>
+
+      {sent && (
+        <StatusNote>
+          Thank you — your quote request has been received. We&apos;ll be in
+          touch shortly.
+        </StatusNote>
+      )}
+      {error && <StatusNote $error>{error}</StatusNote>}
     </Form>
   );
 }
@@ -254,7 +333,17 @@ const FieldContainer = styled.div`
 `;
 
 const DateContainer = styled(FieldContainer)`
-  grid-column: span 3;
+  grid-column: span 4;
+  @media (max-width: 991px) {
+    grid-column: span 6;
+  }
+  @media (max-width: 767px) {
+    grid-column: span 1;
+  }
+`;
+
+const EmailContainer = styled(FieldContainer)`
+  grid-column: span 4;
   @media (max-width: 991px) {
     grid-column: span 6;
   }
@@ -283,7 +372,7 @@ const PassengersContainer = styled(FieldContainer)`
 `;
 
 const RequestsContainer = styled(FieldContainer)`
-  grid-column: span 3;
+  grid-column: span 9;
   @media (max-width: 991px) {
     grid-column: span 6;
   }
@@ -338,7 +427,8 @@ const Label = styled.span`
 `;
 
 const Content = styled.span`
-  color: ${({ $isPlaceholder }) => $isPlaceholder ? "rgba(255, 255, 255, 0.6)" : "#fff"};
+  color: ${({ $isPlaceholder }) =>
+    $isPlaceholder ? "rgba(255, 255, 255, 0.6)" : "#fff"};
   font-family: ${({ theme }) => theme.fonts.mulish};
   font-size: 13px;
   font-weight: 400;
@@ -372,7 +462,7 @@ const RequestsInput = styled.input`
   &:-webkit-autofill:hover,
   &:-webkit-autofill:focus,
   &:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 1000px #AA8453 inset !important;
+    -webkit-box-shadow: 0 0 0 1000px #aa8453 inset !important;
     -webkit-text-fill-color: #fff !important;
     transition: background-color 5000s ease-in-out 0s !important;
   }
@@ -421,7 +511,7 @@ const DropdownItem = styled.div`
 `;
 
 const DropdownLabel = styled.span`
-  color: #1B1B1B;
+  color: #1b1b1b;
   font-family: ${({ theme }) => theme.fonts.mulish};
   font-size: 14px;
   font-weight: 600;
@@ -438,7 +528,7 @@ const CounterButton = styled.button`
   background: transparent;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 4px;
-  color: #1B1B1B;
+  color: #1b1b1b;
   font-size: 14px;
   cursor: pointer;
   padding: 6px 10px;
@@ -449,13 +539,13 @@ const CounterButton = styled.button`
 
   &:hover {
     background: rgba(170, 132, 83, 0.1);
-    border-color: #AA8453;
-    color: #AA8453;
+    border-color: #aa8453;
+    color: #aa8453;
   }
 `;
 
 const CounterValue = styled.span`
-  color: #1B1B1B;
+  color: #1b1b1b;
   font-family: ${({ theme }) => theme.fonts.mulish};
   font-size: 14px;
   font-weight: 700;
@@ -483,8 +573,8 @@ const SearchButton = styled.button`
   grid-column: span 3;
 
   @media (max-width: 991px) {
-    grid-column: 4 / span 6;
-    padding: 14px 28px;
+    grid-column: span 6;
+    padding: 12px 28px;
     font-size: 15px;
     height: auto;
     min-height: 44px;
@@ -497,4 +587,18 @@ const SearchButton = styled.button`
     background: ${({ theme }) => theme.white};
     color: ${({ theme }) => theme.dark};
   }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+`;
+
+const StatusNote = styled.p`
+  grid-column: 1 / -1;
+  margin: 0;
+  color: ${({ $error, theme }) => ($error ? "#ff6b6b" : theme.white)};
+  font-family: ${({ theme }) => theme.fonts.mulish};
+  font-size: 13px;
+  text-align: center;
 `;
