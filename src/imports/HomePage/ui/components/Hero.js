@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import Slider from "@/imports/core/components/Slider";
@@ -36,6 +36,23 @@ function HeroArrows({ prev, next }) {
 
 export default function Hero() {
   const { mode, toggle } = useThemeMode();
+  const formZoneRef = useRef(null);
+  const [overhang, setOverhang] = useState(0);
+
+  useEffect(() => {
+    const el = formZoneRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+
+    const measure = () => {
+      const half = el.offsetHeight / 2;
+      setOverhang(Math.max(0, Math.round(half - 100)));
+    };
+
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined" && sessionStorage.getItem("scrollToBooking") === "true") {
@@ -85,11 +102,13 @@ export default function Hero() {
         />
       </SliderShell>
 
-      <FormZone id="booking-zone">
+      <FormZone id="booking-zone" ref={formZoneRef} $bottom={overhang}>
         <WideContainer>
           <BookingForm />
         </WideContainer>
       </FormZone>
+
+      <Spacer $h={overhang} />
 
       <HeroThemeToggle
         onClick={toggle}
@@ -239,7 +258,7 @@ const FormZone = styled.div`
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: ${({ $bottom }) => $bottom || 0}px;
   transform: translateY(50%);
   z-index: 10;
 
@@ -248,6 +267,14 @@ const FormZone = styled.div`
     bottom: auto;
     transform: none;
     margin-top: -40px;
+  }
+`;
+
+const Spacer = styled.div`
+  height: 0;
+
+  @media (min-width: 992px) {
+    height: ${({ $h }) => $h || 0}px;
   }
 `;
 

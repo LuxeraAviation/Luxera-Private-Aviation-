@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 import DateTimePickerPopover from "@/imports/core/components/DatePickerPopover";
 import AirportAutocomplete from "@/imports/core/components/AirportAutocomplete";
 
@@ -25,6 +27,7 @@ export default function BookingForm() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [depDateTime, setDepDateTime] = useState(null);
   const [retDateTime, setRetDateTime] = useState(null);
   const [passengers, setPassengers] = useState(0);
@@ -58,6 +61,7 @@ export default function BookingForm() {
     setFrom("");
     setTo("");
     setEmail("");
+    setPhone("");
     setDepDateTime(null);
     setRetDateTime(null);
     setPassengers(0);
@@ -76,6 +80,7 @@ export default function BookingForm() {
       const payload = {
         tripType: TRIP_LABELS[tripType],
         email,
+        phone,
         passengers: passengers > 0 ? passengers : "",
         additionalInfo: specialRequests,
       };
@@ -151,13 +156,19 @@ export default function BookingForm() {
     return `${dateStr}, ${timeStr}`;
   }
 
-  const depSpan = 4;
-  const paxSpan = tripType === "round" ? 4 : 3;
-  const emailSpan = tripType === "round" ? 4 : 3;
-  const requestsSpan = tripType === "round" ? 9 : 3;
+  // Uniform sizing: route fields sit 4-per-row on round trip (span 3) and
+  // 3-per-row otherwise (span 4). Contact fields are always 3-per-row (span 4).
+  // Additional information and the submit button always span the full width.
+  const routeSpan = tripType === "round" ? 3 : 4;
+  const contactSpan = 4;
+  const fullSpan = 12;
+  // At the 2-per-row (<=991px) breakpoint the contact fields are odd in round
+  // and multi trips, leaving Phone alone — so pair Additional Information with
+  // it (half width). One way has an even count, so it stays full width.
+  const requestsMdSpan = tripType === "oneway" ? 12 : 6;
 
   const PaxField = (
-    <PassengersContainer ref={paxRef} $span={paxSpan}>
+    <PassengersContainer ref={paxRef} $span={contactSpan}>
       <Field onClick={() => setIsPaxOpen((o) => !o)}>
         <Label>
           <i className="fa-solid fa-users" /> Pax
@@ -205,7 +216,7 @@ export default function BookingForm() {
   );
 
   const EmailField = (
-    <EmailContainer $span={emailSpan}>
+    <EmailContainer $span={contactSpan}>
       <Field as="label" htmlFor="booking-email-input" style={{ cursor: "text" }}>
         <Label style={{ cursor: "pointer" }}>
           <i className="fa-solid fa-envelope" /> Email
@@ -224,8 +235,27 @@ export default function BookingForm() {
     </EmailContainer>
   );
 
+  const PhoneField = (
+    <EmailContainer $span={contactSpan}>
+      <Field as="div" style={{ cursor: "text" }}>
+        <Label>
+          <i className="fa-solid fa-phone" /> Phone
+        </Label>
+        <PhoneInputStyled
+          international
+          defaultCountry="US"
+          value={phone}
+          onChange={(value) => setPhone(value || "")}
+          placeholder="Phone number"
+          disabled={loading}
+          numberInputProps={{ autoComplete: "tel" }}
+        />
+      </Field>
+    </EmailContainer>
+  );
+
   const RequestsField = (
-    <RequestsContainer $span={requestsSpan}>
+    <RequestsContainer $span={fullSpan} $mdSpan={requestsMdSpan}>
       <Field
         as="label"
         htmlFor="special-requests-input"
@@ -254,7 +284,7 @@ export default function BookingForm() {
   );
 
   const DepartureField = (
-    <DepartureDateContainer ref={depDateTimeRef} $span={depSpan}>
+    <DepartureDateContainer ref={depDateTimeRef} $span={routeSpan}>
       <Field onClick={() => setIsDepOpen((o) => !o)}>
         <Label>
           <i className="fa-solid fa-calendar-days" /> Departure
@@ -278,7 +308,7 @@ export default function BookingForm() {
   );
 
   const ReturnField = (
-    <DateContainer ref={retDateTimeRef}>
+    <DateContainer ref={retDateTimeRef} $span={routeSpan}>
       <Field onClick={() => setIsRetOpen((o) => !o)}>
         <Label>
           <i className="fa-solid fa-calendar-days" /> Return
@@ -409,12 +439,13 @@ export default function BookingForm() {
 
           {PaxField}
           {EmailField}
+          {PhoneField}
           {RequestsField}
           {SubmitButton}
         </>
       ) : (
         <>
-          <AirportAutocompleteWrapper>
+          <AirportAutocompleteWrapper $span={routeSpan}>
             <AirportAutocomplete
               label={
                 <>
@@ -430,7 +461,7 @@ export default function BookingForm() {
             />
           </AirportAutocompleteWrapper>
 
-          <AirportAutocompleteWrapper>
+          <AirportAutocompleteWrapper $span={routeSpan}>
             <AirportAutocomplete
               label={
                 <>
@@ -446,20 +477,12 @@ export default function BookingForm() {
             />
           </AirportAutocompleteWrapper>
 
-          {tripType === "oneway" ? (
-            <>
-              {DepartureField}
-              {PaxField}
-            </>
-          ) : (
-            <>
-              {PaxField}
-              {DepartureField}
-              {ReturnField}
-            </>
-          )}
+          {DepartureField}
+          {tripType === "round" && ReturnField}
 
+          {PaxField}
           {EmailField}
+          {PhoneField}
           {RequestsField}
           {SubmitButton}
         </>
@@ -540,7 +563,7 @@ const TripTab = styled.button`
 `;
 
 const AirportAutocompleteWrapper = styled.div`
-  grid-column: span 4;
+  grid-column: span ${({ $span }) => $span || 4};
   min-width: 0;
   width: 100%;
 
@@ -559,7 +582,7 @@ const FieldContainer = styled.div`
 `;
 
 const DateContainer = styled(FieldContainer)`
-  grid-column: span 4;
+  grid-column: span ${({ $span }) => $span || 4};
   @media (max-width: 991px) {
     grid-column: span 6;
   }
@@ -605,9 +628,9 @@ const PassengersContainer = styled(FieldContainer)`
 `;
 
 const RequestsContainer = styled(FieldContainer)`
-  grid-column: span ${({ $span }) => $span || 9};
+  grid-column: span ${({ $span }) => $span || 12};
   @media (max-width: 991px) {
-    grid-column: span 6;
+    grid-column: ${({ $mdSpan }) => ($mdSpan === 6 ? "span 6" : "1 / -1")};
   }
   @media (max-width: 767px) {
     grid-column: span 1;
@@ -718,6 +741,62 @@ const RequestsInput = styled.input`
     -webkit-box-shadow: 0 0 0 1000px #aa8453 inset !important;
     -webkit-text-fill-color: #fff !important;
     transition: background-color 5000s ease-in-out 0s !important;
+  }
+`;
+
+const PhoneInputStyled = styled(PhoneInput)`
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  .PhoneInputCountry {
+    margin: 0 10px 0 0;
+    padding-right: 10px;
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .PhoneInputCountryIcon {
+    box-shadow: none;
+  }
+
+  .PhoneInputCountryIcon--border {
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .PhoneInputCountrySelectArrow {
+    color: #fff;
+    opacity: 0.85;
+    border-color: currentColor;
+  }
+
+  .PhoneInputInput {
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-family: ${({ theme }) => theme.fonts.mulish};
+    font-size: 13px;
+    font-weight: 400;
+    outline: none;
+    width: 100%;
+    padding: 0;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 12px;
+    }
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus {
+      -webkit-box-shadow: 0 0 0 1000px #aa8453 inset !important;
+      -webkit-text-fill-color: #fff !important;
+      transition: background-color 5000s ease-in-out 0s !important;
+    }
+  }
+
+  .PhoneInputCountrySelect:focus + .PhoneInputCountryIcon .PhoneInputInternationalIconGlobe {
+    color: #fff;
   }
 `;
 
@@ -874,10 +953,10 @@ const SearchButton = styled.button`
   width: 100%;
   text-align: center;
 
-  grid-column: span 3;
+  grid-column: 1 / -1;
 
   @media (max-width: 991px) {
-    grid-column: span 6;
+    grid-column: 1 / -1;
     padding: 14px 28px;
     font-size: 15px;
     height: auto;

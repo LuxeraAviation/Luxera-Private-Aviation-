@@ -15,6 +15,7 @@ export async function POST(request) {
 
   const {
     email = "",
+    phone = "",
     tripType = "",
     from = "",
     to = "",
@@ -34,6 +35,7 @@ export async function POST(request) {
   const fields = [
     ["Trip type", tripType],
     ["Email", email],
+    ["Phone", phone],
   ];
 
   if (Array.isArray(legs) && legs.length) {
