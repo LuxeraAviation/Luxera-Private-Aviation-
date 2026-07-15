@@ -156,17 +156,10 @@ export default function BookingForm() {
     return `${dateStr}, ${timeStr}`;
   }
 
-  // Uniform sizing: route fields sit 4-per-row on round trip (span 3) and
-  // 3-per-row otherwise (span 4). Contact fields are always 3-per-row (span 4).
-  // Additional information and the submit button always span the full width.
-  const routeSpan = tripType === "round" ? 3 : 4;
-  const contactSpan = 4;
+  const routeSpan = tripType === "multi" ? 4 : 6;
+  const contactSpan = tripType === "oneway" ? 6 : 4;
   const fullSpan = 12;
-  // At the 2-per-row (<=991px) breakpoint the contact fields are odd in round
-  // and multi trips, leaving Phone alone — so pair Additional Information with
-  // it (half width). One way has an even count, so it stays full width.
   const requestsMdSpan = tripType === "oneway" ? 12 : 6;
-
   const PaxField = (
     <PassengersContainer ref={paxRef} $span={contactSpan}>
       <Field onClick={() => setIsPaxOpen((o) => !o)}>
@@ -503,6 +496,7 @@ const Form = styled.form`
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   align-items: center;
+  align-content: space-between;
   gap: 16px;
   background: ${({ theme }) => theme.base};
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -512,14 +506,21 @@ const Form = styled.form`
   box-sizing: border-box;
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
 
+  /* Keep the widget the same height on every trip type (one way / round /
+     multi-city). Multi-city is the tallest, so this floor matches it and the
+     shorter tabs spread their rows to fill via align-content. */
+  min-height: 430px;
+
   @media (max-width: 991px) {
     grid-template-columns: repeat(12, 1fr);
     gap: 16px;
     padding: 22px;
+    min-height: 460px;
   }
   @media (max-width: 767px) {
     grid-template-columns: 1fr;
     gap: 16px;
+    min-height: 0;
   }
 `;
 
