@@ -1,8 +1,9 @@
-import { getTransporter, mailFrom } from "@/lib/mail";
+import { getTransporter } from "@/lib/mail";
 import { collectRequestMeta } from "@/lib/requestMeta";
 import { notificationEmail, confirmationEmail } from "@/lib/emailTemplates";
 
 const QUOTE_TO = process.env.QUOTE_TO || "charter@luxeraaviation.com";
+const QUOTE_FROM = process.env.QUOTE_FROM || "charter@luxeraaviation.com";
 
 export async function POST(request) {
   let body;
@@ -14,12 +15,14 @@ export async function POST(request) {
 
   const {
     email = "",
+    tripType = "",
     from = "",
     to = "",
     departure = "",
     return: returnDate = "",
     passengers = "",
     additionalInfo = "",
+    legs = null,
   } = body || {};
 
   if (!email.trim()) {
@@ -29,14 +32,25 @@ export async function POST(request) {
   const meta = await collectRequestMeta(request);
 
   const fields = [
+    ["Trip type", tripType],
     ["Email", email],
-    ["From", from],
-    ["To", to],
-    ["Departure", departure],
-    ["Return", returnDate],
+  ];
+
+  if (Array.isArray(legs) && legs.length) {
+    legs.forEach((leg, i) => {
+      const route = [leg.from, leg.to].filter(Boolean).join(" → ");
+      const value = [route, leg.departure].filter(Boolean).join("  ·  ");
+      fields.push([`Flight ${i + 1}`, value]);
+    });
+  } else {
+    fields.push(["From", from], ["To", to], ["Departure", departure]);
+    if (returnDate) fields.push(["Return", returnDate]);
+  }
+
+  fields.push(
     ["Passengers", passengers],
     ["Additional information", additionalInfo],
-  ];
+  );
 
   const notification = notificationEmail({
     heading: "New Quote Request",
@@ -51,7 +65,7 @@ export async function POST(request) {
 
   try {
     const transporter = getTransporter();
-    const from_ = mailFrom();
+    const from_ = QUOTE_FROM;
 
     await transporter.sendMail({
       from: from_,

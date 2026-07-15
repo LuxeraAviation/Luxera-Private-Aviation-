@@ -5,7 +5,23 @@ import styled from "styled-components";
 import DateTimePickerPopover from "@/imports/core/components/DatePickerPopover";
 import AirportAutocomplete from "@/imports/core/components/AirportAutocomplete";
 
+const TRIP_TYPES = [
+  { key: "oneway", label: "One way" },
+  { key: "round", label: "Round trip" },
+  { key: "multi", label: "Multi-city" },
+];
+
+const TRIP_LABELS = {
+  oneway: "One way",
+  round: "Round trip",
+  multi: "Multi-city",
+};
+
+const emptyLeg = () => ({ from: "", to: "", dep: null });
+
 export default function BookingForm() {
+  const [tripType, setTripType] = useState("oneway");
+
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [email, setEmail] = useState("");
@@ -13,6 +29,7 @@ export default function BookingForm() {
   const [retDateTime, setRetDateTime] = useState(null);
   const [passengers, setPassengers] = useState(0);
   const [specialRequests, setSpecialRequests] = useState("");
+  const [legs, setLegs] = useState([emptyLeg(), emptyLeg()]);
 
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
@@ -21,10 +38,21 @@ export default function BookingForm() {
   const depDateTimeRef = useRef(null);
   const retDateTimeRef = useRef(null);
   const paxRef = useRef(null);
+  const legRefs = useRef([]);
 
   const [isDepOpen, setIsDepOpen] = useState(false);
   const [isRetOpen, setIsRetOpen] = useState(false);
   const [isPaxOpen, setIsPaxOpen] = useState(false);
+  const [openLeg, setOpenLeg] = useState(null);
+
+  const updateLeg = (i, patch) =>
+    setLegs((prev) => prev.map((l, idx) => (idx === i ? { ...l, ...patch } : l)));
+
+  const addLeg = () =>
+    setLegs((prev) => (prev.length >= 5 ? prev : [...prev, emptyLeg()]));
+
+  const removeLeg = (i) =>
+    setLegs((prev) => (prev.length <= 2 ? prev : prev.filter((_, idx) => idx !== i)));
 
   const resetForm = () => {
     setFrom("");
@@ -34,6 +62,8 @@ export default function BookingForm() {
     setRetDateTime(null);
     setPassengers(0);
     setSpecialRequests("");
+    setLegs([emptyLeg(), emptyLeg()]);
+    setOpenLeg(null);
   };
 
   const handleSearch = async (e) => {
@@ -43,18 +73,32 @@ export default function BookingForm() {
     setError("");
     setSent(false);
     try {
+      const payload = {
+        tripType: TRIP_LABELS[tripType],
+        email,
+        passengers: passengers > 0 ? passengers : "",
+        additionalInfo: specialRequests,
+      };
+      if (tripType === "multi") {
+        payload.legs = legs
+          .filter((l) => l.from || l.to || l.dep)
+          .map((l) => ({
+            from: l.from,
+            to: l.to,
+            departure: l.dep ? formatDateTime(l.dep) : "",
+          }));
+      } else {
+        payload.from = from;
+        payload.to = to;
+        payload.departure = depDateTime ? formatDateTime(depDateTime) : "";
+        payload.return =
+          tripType === "round" && retDateTime ? formatDateTime(retDateTime) : "";
+      }
+
       const res = await fetch("/api/quote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          from,
-          to,
-          departure: depDateTime ? formatDateTime(depDateTime) : "",
-          return: retDateTime ? formatDateTime(retDateTime) : "",
-          passengers: passengers > 0 ? passengers : "",
-          additionalInfo: specialRequests,
-        }),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -72,25 +116,23 @@ export default function BookingForm() {
 
   useEffect(() => {
     function clickOutside(e) {
-      if (
-        depDateTimeRef.current &&
-        !depDateTimeRef.current.contains(e.target)
-      ) {
+      if (depDateTimeRef.current && !depDateTimeRef.current.contains(e.target)) {
         setIsDepOpen(false);
       }
-      if (
-        retDateTimeRef.current &&
-        !retDateTimeRef.current.contains(e.target)
-      ) {
+      if (retDateTimeRef.current && !retDateTimeRef.current.contains(e.target)) {
         setIsRetOpen(false);
       }
       if (paxRef.current && !paxRef.current.contains(e.target)) {
         setIsPaxOpen(false);
       }
+      if (openLeg !== null) {
+        const ref = legRefs.current[openLeg];
+        if (ref && !ref.contains(e.target)) setOpenLeg(null);
+      }
     }
     document.addEventListener("mousedown", clickOutside);
     return () => document.removeEventListener("mousedown", clickOutside);
-  }, []);
+  }, [openLeg]);
 
   function formatDateTime(date) {
     if (!date) return "Select date & time";
@@ -109,174 +151,319 @@ export default function BookingForm() {
     return `${dateStr}, ${timeStr}`;
   }
 
+  const depSpan = 4;
+  const paxSpan = tripType === "round" ? 4 : 3;
+  const emailSpan = tripType === "round" ? 4 : 3;
+  const requestsSpan = tripType === "round" ? 9 : 3;
+
+  const PaxField = (
+    <PassengersContainer ref={paxRef} $span={paxSpan}>
+      <Field onClick={() => setIsPaxOpen((o) => !o)}>
+        <Label>
+          <i className="fa-solid fa-users" /> Pax
+        </Label>
+        <Content $isPlaceholder={passengers === 0}>
+          {passengers > 0
+            ? String(passengers).padStart(2, "0")
+            : "Number of passengers"}
+        </Content>
+        <Chevron>
+          <i className={`fa-solid fa-chevron-${isPaxOpen ? "up" : "down"}`} />
+        </Chevron>
+      </Field>
+      {isPaxOpen && (
+        <DropdownMenu>
+          <DropdownItem>
+            <DropdownLabel>Passengers:</DropdownLabel>
+            <CounterContainer>
+              <CounterButton
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setPassengers(Math.max(0, passengers - 1));
+                }}
+                aria-label="Decrease passengers"
+              >
+                <i className="fa-solid fa-minus" />
+              </CounterButton>
+              <CounterValue>{String(passengers).padStart(2, "0")}</CounterValue>
+              <CounterButton
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setPassengers(Math.min(50, passengers + 1));
+                }}
+                aria-label="Increase passengers"
+              >
+                <i className="fa-solid fa-plus" />
+              </CounterButton>
+            </CounterContainer>
+          </DropdownItem>
+        </DropdownMenu>
+      )}
+    </PassengersContainer>
+  );
+
+  const EmailField = (
+    <EmailContainer $span={emailSpan}>
+      <Field as="label" htmlFor="booking-email-input" style={{ cursor: "text" }}>
+        <Label style={{ cursor: "pointer" }}>
+          <i className="fa-solid fa-envelope" /> Email
+        </Label>
+        <RequestsInput
+          id="booking-email-input"
+          type="email"
+          required
+          placeholder="you@example.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          autoComplete="email"
+          disabled={loading}
+        />
+      </Field>
+    </EmailContainer>
+  );
+
+  const RequestsField = (
+    <RequestsContainer $span={requestsSpan}>
+      <Field
+        as="label"
+        htmlFor="special-requests-input"
+        style={{ cursor: "text" }}
+      >
+        <Label style={{ cursor: "pointer" }}>
+          <i className="fa-solid fa-clipboard-list" /> Additional Information
+        </Label>
+        <RequestsInput
+          id="special-requests-input"
+          type="text"
+          placeholder=""
+          value={specialRequests}
+          onChange={(e) => setSpecialRequests(e.target.value)}
+          autoComplete="off"
+          disabled={loading}
+        />
+      </Field>
+    </RequestsContainer>
+  );
+
+  const SubmitButton = (
+    <SearchButton type="submit" disabled={loading}>
+      {loading ? "Sending..." : "Request Quotation"}
+    </SearchButton>
+  );
+
+  const DepartureField = (
+    <DepartureDateContainer ref={depDateTimeRef} $span={depSpan}>
+      <Field onClick={() => setIsDepOpen((o) => !o)}>
+        <Label>
+          <i className="fa-solid fa-calendar-days" /> Departure
+        </Label>
+        <Content $isPlaceholder={!depDateTime}>
+          {depDateTime ? formatDateTime(depDateTime) : "Departure Date"}
+        </Content>
+        <Chevron>
+          <i className={`fa-solid fa-chevron-${isDepOpen ? "up" : "down"}`} />
+        </Chevron>
+      </Field>
+      {isDepOpen && (
+        <DateTimePickerPopover
+          value={depDateTime}
+          onChange={(date) => setDepDateTime(date)}
+          onClose={() => setIsDepOpen(false)}
+          align="left"
+        />
+      )}
+    </DepartureDateContainer>
+  );
+
+  const ReturnField = (
+    <DateContainer ref={retDateTimeRef}>
+      <Field onClick={() => setIsRetOpen((o) => !o)}>
+        <Label>
+          <i className="fa-solid fa-calendar-days" /> Return
+        </Label>
+        <Content $isPlaceholder={!retDateTime}>
+          {retDateTime ? formatDateTime(retDateTime) : "Return Date"}
+        </Content>
+        <Chevron>
+          <i className={`fa-solid fa-chevron-${isRetOpen ? "up" : "down"}`} />
+        </Chevron>
+      </Field>
+      {isRetOpen && (
+        <DateTimePickerPopover
+          value={retDateTime}
+          onChange={(date) => setRetDateTime(date)}
+          onClose={() => setIsRetOpen(false)}
+          align="left"
+        />
+      )}
+    </DateContainer>
+  );
+
   return (
     <Form onSubmit={handleSearch}>
-      <AirportAutocompleteWrapper>
-        <AirportAutocomplete
-          label={
-            <>
-              <i className="fa-solid fa-plane-departure" /> From
-            </>
-          }
-          value={from}
-          onSelect={(airport) =>
-            setFrom(`${airport.airport_name} (${airport.iata_code})`)
-          }
-          placeholder="Departure Airport"
-          ariaLabel="Departure Airport"
-        />
-      </AirportAutocompleteWrapper>
+      <TripTabs role="tablist">
+        {TRIP_TYPES.map(({ key, label }) => (
+          <TripTab
+            key={key}
+            type="button"
+            role="tab"
+            aria-selected={tripType === key}
+            $active={tripType === key}
+            onClick={() => setTripType(key)}
+          >
+            {label}
+          </TripTab>
+        ))}
+      </TripTabs>
 
-      <AirportAutocompleteWrapper>
-        <AirportAutocomplete
-          label={
-            <>
-              <i className="fa-solid fa-plane-arrival" /> To
-            </>
-          }
-          value={to}
-          onSelect={(airport) =>
-            setTo(`${airport.airport_name} (${airport.iata_code})`)
-          }
-          placeholder="Arrival Airport"
-          ariaLabel="Arrival Airport"
-        />
-      </AirportAutocompleteWrapper>
+      {tripType === "multi" ? (
+        <>
+          <LegsContainer>
+            {legs.map((leg, i) => (
+              <LegRow key={i}>
+                <FieldContainer>
+                  <AirportAutocomplete
+                    label={
+                      <>
+                        <i className="fa-solid fa-plane-departure" /> From
+                      </>
+                    }
+                    value={leg.from}
+                    onSelect={(airport) =>
+                      updateLeg(i, {
+                        from: `${airport.airport_name} (${airport.iata_code})`,
+                      })
+                    }
+                    placeholder="Departure Airport"
+                    ariaLabel={`Flight ${i + 1} departure airport`}
+                  />
+                </FieldContainer>
 
-      <PassengersContainer ref={paxRef}>
-        <Field onClick={() => setIsPaxOpen((o) => !o)}>
-          <Label>
-            <i className="fa-solid fa-users" /> Pax
-          </Label>
-          <Content $isPlaceholder={passengers === 0}>
-            {passengers > 0
-              ? String(passengers).padStart(2, "0")
-              : "Number of passengers"}
-          </Content>
-          <Chevron>
-            <i className={`fa-solid fa-chevron-${isPaxOpen ? "up" : "down"}`} />
-          </Chevron>
-        </Field>
-        {isPaxOpen && (
-          <DropdownMenu>
-            <DropdownItem>
-              <DropdownLabel>Passengers:</DropdownLabel>
-              <CounterContainer>
-                <CounterButton
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setPassengers(Math.max(0, passengers - 1));
+                <FieldContainer>
+                  <AirportAutocomplete
+                    label={
+                      <>
+                        <i className="fa-solid fa-plane-arrival" /> To
+                      </>
+                    }
+                    value={leg.to}
+                    onSelect={(airport) =>
+                      updateLeg(i, {
+                        to: `${airport.airport_name} (${airport.iata_code})`,
+                      })
+                    }
+                    placeholder="Arrival Airport"
+                    ariaLabel={`Flight ${i + 1} arrival airport`}
+                  />
+                </FieldContainer>
+
+                <FieldContainer
+                  ref={(el) => {
+                    legRefs.current[i] = el;
                   }}
-                  aria-label="Decrease passengers"
                 >
-                  <i className="fa-solid fa-minus" />
-                </CounterButton>
-                <CounterValue>
-                  {String(passengers).padStart(2, "0")}
-                </CounterValue>
-                <CounterButton
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setPassengers(Math.min(50, passengers + 1));
-                  }}
-                  aria-label="Increase passengers"
-                >
-                  <i className="fa-solid fa-plus" />
-                </CounterButton>
-              </CounterContainer>
-            </DropdownItem>
-          </DropdownMenu>
-        )}
-      </PassengersContainer>
+                  <Field onClick={() => setOpenLeg(openLeg === i ? null : i)}>
+                    <Label>
+                      <i className="fa-solid fa-calendar-days" /> Departure
+                    </Label>
+                    <Content $isPlaceholder={!leg.dep}>
+                      {leg.dep ? formatDateTime(leg.dep) : "Departure Date"}
+                    </Content>
+                    <Chevron>
+                      <i
+                        className={`fa-solid fa-chevron-${openLeg === i ? "up" : "down"}`}
+                      />
+                    </Chevron>
+                  </Field>
+                  {openLeg === i && (
+                    <DateTimePickerPopover
+                      value={leg.dep}
+                      onChange={(date) => updateLeg(i, { dep: date })}
+                      onClose={() => setOpenLeg(null)}
+                      align="left"
+                    />
+                  )}
+                </FieldContainer>
 
-      <DepartureDateContainer ref={depDateTimeRef}>
-        <Field onClick={() => setIsDepOpen((o) => !o)}>
-          <Label>
-            <i className="fa-solid fa-calendar-days" /> Departure
-          </Label>
-          <Content $isPlaceholder={!depDateTime}>
-            {depDateTime ? formatDateTime(depDateTime) : "Departure Date"}
-          </Content>
-          <Chevron>
-            <i className={`fa-solid fa-chevron-${isDepOpen ? "up" : "down"}`} />
-          </Chevron>
-        </Field>
-        {isDepOpen && (
-          <DateTimePickerPopover
-            value={depDateTime}
-            onChange={(date) => setDepDateTime(date)}
-            onClose={() => setIsDepOpen(false)}
-            align="left"
-          />
-        )}
-      </DepartureDateContainer>
+                {legs.length > 2 && (
+                  <RemoveLegButton
+                    type="button"
+                    onClick={() => removeLeg(i)}
+                    aria-label={`Remove flight ${i + 1}`}
+                  >
+                    <i className="fa-solid fa-xmark" />
+                  </RemoveLegButton>
+                )}
+              </LegRow>
+            ))}
+            <AddLegButton
+              type="button"
+              onClick={addLeg}
+              disabled={legs.length >= 5}
+            >
+              <i className="fa-solid fa-plus" /> Add another flight
+            </AddLegButton>
+          </LegsContainer>
 
-      <DateContainer ref={retDateTimeRef}>
-        <Field onClick={() => setIsRetOpen((o) => !o)}>
-          <Label>
-            <i className="fa-solid fa-calendar-days" /> Return
-          </Label>
-          <Content $isPlaceholder={!retDateTime}>
-            {retDateTime ? formatDateTime(retDateTime) : "Return Date"}
-          </Content>
-          <Chevron>
-            <i className={`fa-solid fa-chevron-${isRetOpen ? "up" : "down"}`} />
-          </Chevron>
-        </Field>
-        {isRetOpen && (
-          <DateTimePickerPopover
-            value={retDateTime}
-            onChange={(date) => setRetDateTime(date)}
-            onClose={() => setIsRetOpen(false)}
-            align="left"
-          />
-        )}
-      </DateContainer>
+          {PaxField}
+          {EmailField}
+          {RequestsField}
+          {SubmitButton}
+        </>
+      ) : (
+        <>
+          <AirportAutocompleteWrapper>
+            <AirportAutocomplete
+              label={
+                <>
+                  <i className="fa-solid fa-plane-departure" /> From
+                </>
+              }
+              value={from}
+              onSelect={(airport) =>
+                setFrom(`${airport.airport_name} (${airport.iata_code})`)
+              }
+              placeholder="Departure Airport"
+              ariaLabel="Departure Airport"
+            />
+          </AirportAutocompleteWrapper>
 
-      <EmailContainer>
-        <Field as="label" htmlFor="booking-email-input" style={{ cursor: "text" }}>
-          <Label style={{ cursor: "pointer" }}>
-            <i className="fa-solid fa-envelope" /> Email
-          </Label>
-          <RequestsInput
-            id="booking-email-input"
-            type="email"
-            required
-            placeholder="you@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            autoComplete="email"
-            disabled={loading}
-          />
-        </Field>
-      </EmailContainer>
+          <AirportAutocompleteWrapper>
+            <AirportAutocomplete
+              label={
+                <>
+                  <i className="fa-solid fa-plane-arrival" /> To
+                </>
+              }
+              value={to}
+              onSelect={(airport) =>
+                setTo(`${airport.airport_name} (${airport.iata_code})`)
+              }
+              placeholder="Arrival Airport"
+              ariaLabel="Arrival Airport"
+            />
+          </AirportAutocompleteWrapper>
 
-      <RequestsContainer>
-        <Field
-          as="label"
-          htmlFor="special-requests-input"
-          style={{ cursor: "text" }}
-        >
-          <Label style={{ cursor: "pointer" }}>
-            <i className="fa-solid fa-clipboard-list" /> Additional Information
-          </Label>
-          <RequestsInput
-            id="special-requests-input"
-            type="text"
-            placeholder=""
-            value={specialRequests}
-            onChange={(e) => setSpecialRequests(e.target.value)}
-            autoComplete="off"
-            disabled={loading}
-          />
-        </Field>
-      </RequestsContainer>
+          {tripType === "oneway" ? (
+            <>
+              {DepartureField}
+              {PaxField}
+            </>
+          ) : (
+            <>
+              {PaxField}
+              {DepartureField}
+              {ReturnField}
+            </>
+          )}
 
-      <SearchButton type="submit" disabled={loading}>
-        {loading ? "Sending..." : "Request Quotation"}
-      </SearchButton>
+          {EmailField}
+          {RequestsField}
+          {SubmitButton}
+        </>
+      )}
 
       {sent && (
         <StatusNote>
@@ -313,6 +500,45 @@ const Form = styled.form`
   }
 `;
 
+const TripTabs = styled.div`
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+`;
+
+const TripTab = styled.button`
+  position: relative;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px 2px 12px;
+  color: #fff;
+  opacity: ${({ $active }) => ($active ? 1 : 0.55)};
+  font-family: ${({ theme }) => theme.fonts.mulish};
+  font-size: 14px;
+  font-weight: ${({ $active }) => ($active ? 700 : 500)};
+  transition: opacity 0.25s ease;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    opacity: ${({ $active }) => ($active ? 1 : 0)};
+    transition: opacity 0.25s ease;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
 const AirportAutocompleteWrapper = styled.div`
   grid-column: span 4;
   min-width: 0;
@@ -343,7 +569,7 @@ const DateContainer = styled(FieldContainer)`
 `;
 
 const EmailContainer = styled(FieldContainer)`
-  grid-column: span 4;
+  grid-column: span ${({ $span }) => $span || 4};
   @media (max-width: 991px) {
     grid-column: span 6;
   }
@@ -352,7 +578,14 @@ const EmailContainer = styled(FieldContainer)`
   }
 `;
 
-const DepartureDateContainer = styled(DateContainer)`
+const DepartureDateContainer = styled(FieldContainer)`
+  grid-column: span ${({ $span }) => $span || 4};
+  @media (max-width: 991px) {
+    grid-column: span 6;
+  }
+  @media (max-width: 767px) {
+    grid-column: span 1;
+  }
   @media (min-width: 576px) and (max-width: 991px) {
     .datetime-picker-popover {
       left: auto !important;
@@ -362,7 +595,7 @@ const DepartureDateContainer = styled(DateContainer)`
 `;
 
 const PassengersContainer = styled(FieldContainer)`
-  grid-column: span 4;
+  grid-column: span ${({ $span }) => $span || 4};
   @media (max-width: 991px) {
     grid-column: span 6;
   }
@@ -372,12 +605,32 @@ const PassengersContainer = styled(FieldContainer)`
 `;
 
 const RequestsContainer = styled(FieldContainer)`
-  grid-column: span 9;
+  grid-column: span ${({ $span }) => $span || 9};
   @media (max-width: 991px) {
     grid-column: span 6;
   }
   @media (max-width: 767px) {
     grid-column: span 1;
+  }
+`;
+
+const LegsContainer = styled.div`
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+`;
+
+const LegRow = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 16px;
+  align-items: center;
+  min-width: 0;
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
   }
 `;
 
@@ -483,6 +736,57 @@ const Chevron = styled.span`
   }
 `;
 
+const RemoveLegButton = styled.button`
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #fff;
+  border-radius: 6px;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+
+  &:hover {
+    border-color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  @media (max-width: 767px) {
+    width: 100%;
+  }
+`;
+
+const AddLegButton = styled.button`
+  align-self: flex-start;
+  background: transparent;
+  border: 1px dashed rgba(255, 255, 255, 0.5);
+  color: #fff;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-family: ${({ theme }) => theme.fonts.mulish};
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+
+  &:hover {
+    border-color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
 const DropdownMenu = styled.div`
   position: absolute;
   top: calc(100% + 8px);
@@ -574,7 +878,7 @@ const SearchButton = styled.button`
 
   @media (max-width: 991px) {
     grid-column: span 6;
-    padding: 12px 28px;
+    padding: 14px 28px;
     font-size: 15px;
     height: auto;
     min-height: 44px;
