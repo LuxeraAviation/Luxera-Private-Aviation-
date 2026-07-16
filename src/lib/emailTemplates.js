@@ -76,5 +76,5 @@ export function confirmationEmail({ name, intro }) {
 
   const text = `${name ? `Dear ${name},` : "Hello,"}\n\n${intro}\n\nOur charter desk is reviewing your details and will be in touch shortly, 24/7.\n\nWarm regards,\nThe Luxera Aviation Team`;
 
-  return { html: shell("We've received your request", inner), text };
+  return { html: shell("We have received your request", inner), text };
 }

@@ -17,7 +17,6 @@ export async function POST(request) {
     surname = "",
     email = "",
     number = "",
-    address = "",
     message = "",
     subject = "New Contact Enquiry",
   } = body || {};
@@ -36,7 +35,6 @@ export async function POST(request) {
     ["Name", fullName],
     ["Email", email],
     ["Contact number", number],
-    ["Address", address],
     ["Message", message],
   ];
 
@@ -48,7 +46,7 @@ export async function POST(request) {
   const confirmation = confirmationEmail({
     name: fullName,
     intro:
-      "Thank you for getting in touch with Luxera Aviation. We've received your enquiry and a member of our team will be in touch shortly.",
+      "Thank you for getting in touch with Luxera Aviation. We have received your enquiry and a member of our team will be in touch shortly.",
   });
 
   try {
@@ -67,7 +65,7 @@ export async function POST(request) {
     await transporter.sendMail({
       from: from_,
       to: email,
-      subject: "We've received your enquiry — Luxera Aviation",
+      subject: "We have received your enquiry — Luxera Aviation",
       html: confirmation.html,
       text: confirmation.text,
     });

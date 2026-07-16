@@ -244,11 +244,10 @@ const MapBox = styled.a`
 
   img {
     filter: grayscale(100%);
-    transition: filter 0.3s ease, transform 0.4s ease;
+    transition: transform 0.4s ease;
   }
 
   &:hover img {
-    filter: grayscale(0%);
     transform: scale(1.04);
   }
 `;

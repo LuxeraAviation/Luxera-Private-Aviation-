@@ -66,7 +66,7 @@ export async function POST(request) {
   const confirmation = confirmationEmail({
     name,
     intro:
-      "Thank you for your quotation request with Luxera Aviation. We've successfully received the details of your journey.",
+      "Thank you for your quotation request with Luxera Aviation. We have successfully received the details of your journey.",
   });
 
   try {
@@ -87,7 +87,7 @@ export async function POST(request) {
     await transporter.sendMail({
       from: from_,
       to: email,
-      subject: "We've received your quote request — Luxera Aviation",
+      subject: "We have received your quote request — Luxera Aviation",
       html: confirmation.html,
       text: confirmation.text,
     });

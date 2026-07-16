@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 import styled, { keyframes } from "styled-components";
 
 const INITIAL = {
@@ -8,7 +10,6 @@ const INITIAL = {
   surname: "",
   email: "",
   number: "",
-  address: "",
   message: "",
 };
 
@@ -43,6 +44,9 @@ export default function EnquiryForm({
       }
       setSent(true);
       setForm(INITIAL);
+      if (typeof window !== "undefined") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
       if (onSuccess) onSuccess();
     } catch (err) {
       console.error("Contact form error:", err);
@@ -110,27 +114,19 @@ export default function EnquiryForm({
         </Field>
         <Field>
           <Label>Number*</Label>
-          <Input
-            type="tel"
-            name="number"
-            required
+          <PhoneInputStyled
+            international
+            defaultCountry="US"
             value={form.number}
-            onChange={update("number")}
+            onChange={(value) =>
+              setForm((prev) => ({ ...prev, number: value || "" }))
+            }
+            placeholder="Phone number"
             disabled={loading}
+            numberInputProps={{ required: true, autoComplete: "tel", name: "number" }}
           />
         </Field>
       </Row>
-
-      <Field>
-        <Label>Address</Label>
-        <Input
-          type="text"
-          name="address"
-          value={form.address}
-          onChange={update("address")}
-          disabled={loading}
-        />
-      </Field>
 
       <Field>
         <Label>Your Message</Label>
@@ -198,6 +194,35 @@ const Textarea = styled.textarea`
   background: ${({ theme }) => theme.bg};
   color: ${({ theme }) => theme.heading};
   resize: vertical;
+`;
+
+const PhoneInputStyled = styled(PhoneInput)`
+  ${field}
+  display: flex;
+  align-items: center;
+  border: 1px solid ${({ theme }) => theme.border};
+  background: ${({ theme }) => theme.bg};
+
+  .PhoneInputCountry {
+    margin: 0 12px 0 0;
+    padding-right: 12px;
+    border-right: 1px solid ${({ theme }) => theme.border};
+  }
+
+  .PhoneInputInput {
+    border: none;
+    background: transparent;
+    color: ${({ theme }) => theme.heading};
+    font-family: inherit;
+    outline: none;
+    width: 100%;
+    padding: 0;
+
+    &::placeholder {
+      color: ${({ theme }) => theme.text};
+      opacity: 0.6;
+    }
+  }
 `;
 
 const Submit = styled.button`
