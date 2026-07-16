@@ -4,8 +4,14 @@ import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+import { useRouter } from "next/navigation";
 import DateTimePickerPopover from "@/imports/core/components/DatePickerPopover";
 import AirportAutocomplete from "@/imports/core/components/AirportAutocomplete";
+
+const STORAGE_KEY = "luxera_quote_request";
+// Set when the user chooses "View or Update" on the success page, so the form
+// reopens pre-filled with their last request instead of empty.
+const EDIT_KEY = "luxera_quote_edit";
 
 const TRIP_TYPES = [
   { key: "oneway", label: "One way" },
@@ -22,12 +28,15 @@ const TRIP_LABELS = {
 const emptyLeg = () => ({ from: "", to: "", dep: null });
 
 export default function BookingForm() {
+  const router = useRouter();
   const [tripType, setTripType] = useState("oneway");
 
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [urgent, setUrgent] = useState(false);
   const [depDateTime, setDepDateTime] = useState(null);
   const [retDateTime, setRetDateTime] = useState(null);
   const [passengers, setPassengers] = useState(0);
@@ -35,7 +44,6 @@ export default function BookingForm() {
   const [legs, setLegs] = useState([emptyLeg(), emptyLeg()]);
 
   const [loading, setLoading] = useState(false);
-  const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
 
   const depDateTimeRef = useRef(null);
@@ -60,8 +68,10 @@ export default function BookingForm() {
   const resetForm = () => {
     setFrom("");
     setTo("");
+    setName("");
     setEmail("");
     setPhone("");
+    setUrgent(false);
     setDepDateTime(null);
     setRetDateTime(null);
     setPassengers(0);
@@ -70,47 +80,122 @@ export default function BookingForm() {
     setOpenLeg(null);
   };
 
+  // Snapshot of the request used for the success summary and localStorage.
+  // Keeps both formatted strings (display) and ISO dates (to restore state).
+  const buildSnapshot = () => {
+    const snap = {
+      tripType,
+      tripLabel: TRIP_LABELS[tripType],
+      name,
+      email,
+      phone,
+      urgent,
+      passengers: passengers > 0 ? passengers : "",
+      additionalInfo: specialRequests,
+      savedAt: new Date().toISOString(),
+    };
+    if (tripType === "multi") {
+      snap.legs = legs
+        .filter((l) => l.from || l.to || l.dep)
+        .map((l) => ({
+          from: l.from,
+          to: l.to,
+          departure: l.dep ? formatDateTime(l.dep) : "",
+          depISO: l.dep ? l.dep.toISOString() : null,
+        }));
+    } else {
+      snap.from = from;
+      snap.to = to;
+      snap.departure = depDateTime ? formatDateTime(depDateTime) : "";
+      snap.depISO = depDateTime ? depDateTime.toISOString() : null;
+      if (tripType === "round") {
+        snap.return = retDateTime ? formatDateTime(retDateTime) : "";
+        snap.retISO = retDateTime ? retDateTime.toISOString() : null;
+      }
+    }
+    return snap;
+  };
+
+  const restoreFromSnapshot = (s) => {
+    if (!s) return;
+    setTripType(s.tripType || "oneway");
+    setName(s.name || "");
+    setEmail(s.email || "");
+    setPhone(s.phone || "");
+    setUrgent(!!s.urgent);
+    setPassengers(s.passengers ? Number(s.passengers) : 0);
+    setSpecialRequests(s.additionalInfo || "");
+    if (s.tripType === "multi") {
+      const restored = (s.legs && s.legs.length ? s.legs : []).map((l) => ({
+        from: l.from || "",
+        to: l.to || "",
+        dep: l.depISO ? new Date(l.depISO) : null,
+      }));
+      while (restored.length < 2) restored.push(emptyLeg());
+      setLegs(restored);
+      setFrom("");
+      setTo("");
+      setDepDateTime(null);
+      setRetDateTime(null);
+    } else {
+      setFrom(s.from || "");
+      setTo(s.to || "");
+      setDepDateTime(s.depISO ? new Date(s.depISO) : null);
+      setRetDateTime(s.retISO ? new Date(s.retISO) : null);
+      setLegs([emptyLeg(), emptyLeg()]);
+    }
+    setError("");
+  };
+
   const handleSearch = async (e) => {
     e.preventDefault();
     if (loading) return;
     setLoading(true);
     setError("");
-    setSent(false);
     try {
-      const payload = {
-        tripType: TRIP_LABELS[tripType],
-        email,
-        phone,
-        passengers: passengers > 0 ? passengers : "",
-        additionalInfo: specialRequests,
-      };
-      if (tripType === "multi") {
-        payload.legs = legs
-          .filter((l) => l.from || l.to || l.dep)
-          .map((l) => ({
-            from: l.from,
-            to: l.to,
-            departure: l.dep ? formatDateTime(l.dep) : "",
-          }));
-      } else {
-        payload.from = from;
-        payload.to = to;
-        payload.departure = depDateTime ? formatDateTime(depDateTime) : "";
-        payload.return =
-          tripType === "round" && retDateTime ? formatDateTime(retDateTime) : "";
+      // --- TEMPORARY: email sending disabled. Show success without calling the API. ---
+      // const payload = {
+      //   tripType: TRIP_LABELS[tripType],
+      //   name,
+      //   email,
+      //   phone,
+      //   urgent,
+      //   passengers: passengers > 0 ? passengers : "",
+      //   additionalInfo: specialRequests,
+      // };
+      // if (tripType === "multi") {
+      //   payload.legs = legs
+      //     .filter((l) => l.from || l.to || l.dep)
+      //     .map((l) => ({
+      //       from: l.from,
+      //       to: l.to,
+      //       departure: l.dep ? formatDateTime(l.dep) : "",
+      //     }));
+      // } else {
+      //   payload.from = from;
+      //   payload.to = to;
+      //   payload.departure = depDateTime ? formatDateTime(depDateTime) : "";
+      //   payload.return =
+      //     tripType === "round" && retDateTime ? formatDateTime(retDateTime) : "";
+      // }
+      //
+      // const res = await fetch("/api/quote", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(payload),
+      // });
+      // if (!res.ok) {
+      //   const data = await res.json().catch(() => ({}));
+      //   throw new Error(data.error || "Something went wrong.");
+      // }
+      const snapshot = buildSnapshot();
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
+      } catch {
+        /* localStorage unavailable — success page falls back gracefully */
       }
-
-      const res = await fetch("/api/quote", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "Something went wrong.");
-      }
-      setSent(true);
       resetForm();
+      router.push("/quote-received");
     } catch (err) {
       console.error("Quote form error:", err);
       setError(err.message || "Could not send your request. Please try again.");
@@ -118,6 +203,20 @@ export default function BookingForm() {
       setLoading(false);
     }
   };
+
+  // If the user came from the success page via "View or Update", reopen the
+  // form pre-filled with their saved request.
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem(EDIT_KEY) === "true") {
+        sessionStorage.removeItem(EDIT_KEY);
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) restoreFromSnapshot(JSON.parse(raw));
+      }
+    } catch {
+      /* ignore malformed storage */
+    }
+  }, []);
 
   useEffect(() => {
     function clickOutside(e) {
@@ -156,10 +255,12 @@ export default function BookingForm() {
     return `${dateStr}, ${timeStr}`;
   }
 
+  // All non-leg fields sit 2 per row (span 6). Additional Information is full
+  // width, except on one way where it pairs with Phone to keep the rows even.
   const routeSpan = tripType === "multi" ? 4 : 6;
-  const contactSpan = tripType === "oneway" ? 6 : 4;
-  const fullSpan = 12;
-  const requestsMdSpan = tripType === "oneway" ? 12 : 6;
+  const contactSpan = 6;
+  const requestsSpan = tripType === "oneway" ? 6 : 12;
+  const requestsMdSpan = tripType === "oneway" ? 6 : 12;
   const PaxField = (
     <PassengersContainer ref={paxRef} $span={contactSpan}>
       <Field onClick={() => setIsPaxOpen((o) => !o)}>
@@ -208,6 +309,26 @@ export default function BookingForm() {
     </PassengersContainer>
   );
 
+  const NameField = (
+    <EmailContainer $span={contactSpan}>
+      <Field as="label" htmlFor="booking-name-input" style={{ cursor: "text" }}>
+        <Label style={{ cursor: "pointer" }}>
+          <i className="fa-solid fa-user" /> Name
+        </Label>
+        <RequestsInput
+          id="booking-name-input"
+          type="text"
+          required
+          placeholder="Your name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          autoComplete="name"
+          disabled={loading}
+        />
+      </Field>
+    </EmailContainer>
+  );
+
   const EmailField = (
     <EmailContainer $span={contactSpan}>
       <Field as="label" htmlFor="booking-email-input" style={{ cursor: "text" }}>
@@ -248,7 +369,7 @@ export default function BookingForm() {
   );
 
   const RequestsField = (
-    <RequestsContainer $span={fullSpan} $mdSpan={requestsMdSpan}>
+    <RequestsContainer $span={requestsSpan} $mdSpan={requestsMdSpan}>
       <Field
         as="label"
         htmlFor="special-requests-input"
@@ -268,6 +389,23 @@ export default function BookingForm() {
         />
       </Field>
     </RequestsContainer>
+  );
+
+  const UrgentField = (
+    <UrgentRow>
+      <UrgentCheckbox>
+        <input
+          type="checkbox"
+          checked={urgent}
+          onChange={(e) => setUrgent(e.target.checked)}
+          disabled={loading}
+        />
+        <span className="box">
+          <i className="fa-solid fa-check" />
+        </span>
+        <span className="text">I need to fly urgently</span>
+      </UrgentCheckbox>
+    </UrgentRow>
   );
 
   const SubmitButton = (
@@ -431,9 +569,11 @@ export default function BookingForm() {
           </LegsContainer>
 
           {PaxField}
+          {NameField}
           {EmailField}
           {PhoneField}
           {RequestsField}
+          {UrgentField}
           {SubmitButton}
         </>
       ) : (
@@ -471,22 +611,18 @@ export default function BookingForm() {
           </AirportAutocompleteWrapper>
 
           {DepartureField}
-          {tripType === "round" && ReturnField}
+          {tripType === "round" ? ReturnField : PaxField}
+          {tripType === "round" && PaxField}
 
-          {PaxField}
+          {NameField}
           {EmailField}
           {PhoneField}
           {RequestsField}
+          {UrgentField}
           {SubmitButton}
         </>
       )}
 
-      {sent && (
-        <StatusNote>
-          Thank you — your quote request has been received. We&apos;ll be in
-          touch shortly.
-        </StatusNote>
-      )}
       {error && <StatusNote $error>{error}</StatusNote>}
     </Form>
   );
@@ -509,13 +645,13 @@ const Form = styled.form`
   /* Keep the widget the same height on every trip type (one way / round /
      multi-city). Multi-city is the tallest, so this floor matches it and the
      shorter tabs spread their rows to fill via align-content. */
-  min-height: 430px;
+  min-height: 540px;
 
   @media (max-width: 991px) {
     grid-template-columns: repeat(12, 1fr);
     gap: 16px;
     padding: 22px;
-    min-height: 460px;
+    min-height: 580px;
   }
   @media (max-width: 767px) {
     grid-template-columns: 1fr;
@@ -530,6 +666,65 @@ const TripTabs = styled.div`
   gap: 24px;
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+`;
+
+const UrgentRow = styled.div`
+  grid-column: 1 / -1;
+`;
+
+const UrgentCheckbox = styled.label`
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  color: #fff;
+  font-family: ${({ theme }) => theme.fonts.mulish};
+  font-size: 13px;
+  user-select: none;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .box {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+
+    i {
+      font-size: 10px;
+      color: ${({ theme }) => theme.base};
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+  }
+
+  input:checked + .box {
+    background: #fff;
+    border-color: #fff;
+
+    i {
+      opacity: 1;
+    }
+  }
+
+  input:focus-visible + .box {
+    outline: 2px solid rgba(255, 255, 255, 0.7);
+    outline-offset: 2px;
+  }
+
+  &:hover .box {
+    border-color: #fff;
+  }
 `;
 
 const TripTab = styled.button`

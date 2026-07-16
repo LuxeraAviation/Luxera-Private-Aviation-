@@ -14,7 +14,7 @@ export default function EmptyLegsPage() {
 
   return (
     <main>
-      <Hero>
+      <Hero data-hero>
         <HeroVideo
           src={hero.video}
           poster={hero.poster}

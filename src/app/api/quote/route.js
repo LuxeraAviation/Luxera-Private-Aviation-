@@ -14,8 +14,10 @@ export async function POST(request) {
   }
 
   const {
+    name = "",
     email = "",
     phone = "",
+    urgent = false,
     tripType = "",
     from = "",
     to = "",
@@ -34,8 +36,10 @@ export async function POST(request) {
 
   const fields = [
     ["Trip type", tripType],
+    ["Name", name],
     ["Email", email],
     ["Phone", phone],
+    ["Urgent", urgent ? "Yes — client needs to fly urgently" : ""],
   ];
 
   if (Array.isArray(legs) && legs.length) {
@@ -55,12 +59,12 @@ export async function POST(request) {
   );
 
   const notification = notificationEmail({
-    heading: "New Quote Request",
+    heading: urgent ? "New Quote Request — URGENT" : "New Quote Request",
     fields,
     meta,
   });
   const confirmation = confirmationEmail({
-    name: "",
+    name,
     intro:
       "Thank you for your quotation request with Luxera Aviation. We've successfully received the details of your journey.",
   });
@@ -73,7 +77,9 @@ export async function POST(request) {
       from: from_,
       to: QUOTE_TO,
       replyTo: email,
-      subject: "New Quote Request — Luxera Aviation",
+      subject: urgent
+        ? "URGENT Quote Request — Luxera Aviation"
+        : "New Quote Request — Luxera Aviation",
       html: notification.html,
       text: notification.text,
     });

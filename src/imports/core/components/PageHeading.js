@@ -6,7 +6,7 @@ import { fs67 } from "@/styles/typography";
 
 export default function PageHeading({ title, bg = "/image/luxera/new.png" }) {
   return (
-    <Section $bg={bg}>
+    <Section $bg={bg} data-hero>
       <Overlay />
       <Container>
         <Title>{title}</Title>

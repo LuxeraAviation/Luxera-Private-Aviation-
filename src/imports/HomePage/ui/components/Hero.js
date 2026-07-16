@@ -68,7 +68,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <Wrap>
+    <Wrap data-hero>
       <SliderShell>
         <Slider
           items={HERO_SLIDES}

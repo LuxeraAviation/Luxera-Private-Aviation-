@@ -13,7 +13,7 @@ export default function CharterServicePage({ data }) {
 
   return (
     <main>
-      <Hero $bg={hero.image}>
+      <Hero $bg={hero.image} data-hero>
         <HeroOverlay />
         <HeroInner>
           <Container>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import styled from "styled-components";
 import PageHeading from "@/imports/core/components/PageHeading";
 import Section from "@/imports/core/atom/Section";
@@ -9,24 +10,35 @@ import { Reveal } from "@/styles/Theme";
 import EnquiryForm from "@/imports/core/components/EnquiryForm";
 
 export default function ContactPage() {
+  const [submitted, setSubmitted] = useState(false);
+
   return (
     <main>
-      <PageHeading title="Contact Us" bg="/image/luxera/new.png" />
+      {!submitted && (
+        <PageHeading title="Contact Us" bg="/image/luxera/new.png" />
+      )}
       <Section $top="120px" $bottom="150px">
         <Container>
           <FormWrap as={Reveal} variant="fade-up">
-            <SectionHeading
-              center
-              subtitle="GET IN TOUCH"
-              title="Plan Your Next Private Flight"
-              maxWidth="640px"
+            {!submitted && (
+              <>
+                <SectionHeading
+                  center
+                  subtitle="GET IN TOUCH"
+                  title="Plan Your Next Private Flight"
+                  maxWidth="640px"
+                />
+                <FormLead>
+                  Reach our charter desk by phone, email, or the form below — we
+                  respond within minutes, 24/7. Tell us your route and dates and
+                  we&apos;ll send tailored aircraft options and an all-in quote.
+                </FormLead>
+              </>
+            )}
+            <EnquiryForm
+              subject="New Contact Enquiry"
+              onSuccess={() => setSubmitted(true)}
             />
-            <FormLead>
-              Reach our charter desk by phone, email, or the form below — we
-              respond within minutes, 24/7. Tell us your route and dates and
-              we&apos;ll send tailored aircraft options and an all-in quote.
-            </FormLead>
-            <EnquiryForm subject="New Contact Enquiry" />
           </FormWrap>
         </Container>
       </Section>

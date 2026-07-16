@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
 import Container from "@/imports/core/atom/Container";
@@ -7,10 +8,12 @@ import {
   FOOTER_CONTACT,
   FOOTER_ADDRESS,
   FOOTER_LINKS,
-  DUBAI_MAP,
   SOCIAL_LINKS,
   COPYRIGHT,
 } from "@/imports/core/constants/footer";
+
+const DUBAI_MAP_LINK =
+  "https://www.google.com/maps/search/?api=1&query=Dubai%2C%20United%20Arab%20Emirates";
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -87,14 +90,26 @@ export default function Footer() {
 
             <Col>
               <Title>Map Location</Title>
-              <MapWrap>
-                <Map
-                  src={DUBAI_MAP}
-                  title="Map location"
-                  allowFullScreen
-                  loading="lazy"
+              <MapBox
+                href={DUBAI_MAP_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open Dubai location in Google Maps"
+              >
+                <Image
+                  src="/image/dubai-map.png"
+                  alt="Map of Dubai, United Arab Emirates"
+                  fill
+                  sizes="(max-width: 991px) 100vw, 420px"
+                  style={{ objectFit: "cover" }}
                 />
-              </MapWrap>
+                <MapPin>
+                  <i className="fas fa-location-dot" />
+                </MapPin>
+                <MapHint>
+                  Open in Maps <i className="fas fa-arrow-up-right-from-square" />
+                </MapHint>
+              </MapBox>
             </Col>
           </Grid>
         </Container>
@@ -218,13 +233,58 @@ const SocialLink = styled.a`
 
 const Icon = styled.i``;
 
-const MapWrap = styled.div``;
-
-const Map = styled.iframe`
+const MapBox = styled.a`
+  display: block;
+  position: relative;
   width: 100%;
   height: 200px;
-  border: 0;
-  filter: grayscale(100%);
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  img {
+    filter: grayscale(100%);
+    transition: filter 0.3s ease, transform 0.4s ease;
+  }
+
+  &:hover img {
+    filter: grayscale(0%);
+    transform: scale(1.04);
+  }
+`;
+
+const MapPin = styled.span`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  color: ${({ theme }) => theme.base};
+  font-size: 30px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+`;
+
+const MapHint = styled.span`
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #fff;
+  color: #181818;
+  font-family: ${({ theme }) => theme.fonts.mulish};
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+
+  i {
+    font-size: 10px;
+    color: ${({ theme }) => theme.base};
+  }
 `;
 
 const Bottom = styled.div`
