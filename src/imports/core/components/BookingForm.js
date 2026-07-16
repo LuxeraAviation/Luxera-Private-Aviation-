@@ -153,41 +153,40 @@ export default function BookingForm() {
     setLoading(true);
     setError("");
     try {
-      // --- TEMPORARY: email sending disabled. Show success without calling the API. ---
-      // const payload = {
-      //   tripType: TRIP_LABELS[tripType],
-      //   name,
-      //   email,
-      //   phone,
-      //   urgent,
-      //   passengers: passengers > 0 ? passengers : "",
-      //   additionalInfo: specialRequests,
-      // };
-      // if (tripType === "multi") {
-      //   payload.legs = legs
-      //     .filter((l) => l.from || l.to || l.dep)
-      //     .map((l) => ({
-      //       from: l.from,
-      //       to: l.to,
-      //       departure: l.dep ? formatDateTime(l.dep) : "",
-      //     }));
-      // } else {
-      //   payload.from = from;
-      //   payload.to = to;
-      //   payload.departure = depDateTime ? formatDateTime(depDateTime) : "";
-      //   payload.return =
-      //     tripType === "round" && retDateTime ? formatDateTime(retDateTime) : "";
-      // }
-      //
-      // const res = await fetch("/api/quote", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(payload),
-      // });
-      // if (!res.ok) {
-      //   const data = await res.json().catch(() => ({}));
-      //   throw new Error(data.error || "Something went wrong.");
-      // }
+      const payload = {
+        tripType: TRIP_LABELS[tripType],
+        name,
+        email,
+        phone,
+        urgent,
+        passengers: passengers > 0 ? passengers : "",
+        additionalInfo: specialRequests,
+      };
+      if (tripType === "multi") {
+        payload.legs = legs
+          .filter((l) => l.from || l.to || l.dep)
+          .map((l) => ({
+            from: l.from,
+            to: l.to,
+            departure: l.dep ? formatDateTime(l.dep) : "",
+          }));
+      } else {
+        payload.from = from;
+        payload.to = to;
+        payload.departure = depDateTime ? formatDateTime(depDateTime) : "";
+        payload.return =
+          tripType === "round" && retDateTime ? formatDateTime(retDateTime) : "";
+      }
+
+      const res = await fetch("/api/quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Something went wrong.");
+      }
       const snapshot = buildSnapshot();
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));

@@ -32,16 +32,15 @@ export default function EnquiryForm({
     setLoading(true);
     setError("");
     try {
-      // --- TEMPORARY: email sending disabled. Show success without calling the API. ---
-      // const res = await fetch("/api/contact", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ ...form, subject }),
-      // });
-      // if (!res.ok) {
-      //   const data = await res.json().catch(() => ({}));
-      //   throw new Error(data.error || "Something went wrong.");
-      // }
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, subject }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Something went wrong.");
+      }
       setSent(true);
       setForm(INITIAL);
       if (onSuccess) onSuccess();
