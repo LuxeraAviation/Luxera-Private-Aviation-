@@ -70,6 +70,7 @@ function Slider({
         delay: autoplayInterval,
         stopOnInteraction: false,
         stopOnMouseEnter: true,
+        playOnInit: false,
       }),
     ];
   }, [autoplay, autoplayInterval]);
@@ -138,6 +139,29 @@ function Slider({
       emblaApi.off("reInit", onSelect);
     };
   }, [emblaApi, onSelect]);
+
+  useEffect(() => {
+    if (!emblaApi || !autoplay) return;
+
+    const autoplayPlugin = emblaApi.plugins()?.autoplay;
+    const root = emblaApi.rootNode();
+    if (!autoplayPlugin || !root || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          autoplayPlugin.play();
+        } else {
+          autoplayPlugin.stop();
+        }
+      },
+      { threshold: 0.35 },
+    );
+
+    observer.observe(root);
+
+    return () => observer.disconnect();
+  }, [emblaApi, autoplay]);
 
   const prev = useCallback(() => {
     emblaApi?.scrollPrev();

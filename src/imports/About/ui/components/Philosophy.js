@@ -39,7 +39,7 @@ export default function Philosophy() {
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 6fr 6fr;
-  align-items: center;
+  align-items: stretch;
   gap: 60px;
 
   @media (max-width: 991px) {
@@ -48,7 +48,11 @@ const Grid = styled.div`
   }
 `;
 
-const TextCol = styled.div``;
+const TextCol = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 
 const Body = styled.p`
   margin: 30px 0 0;
@@ -58,16 +62,27 @@ const Body = styled.p`
 `;
 
 const ImageCol = styled.div`
+  height: 100%;
   border-radius: 6px;
   overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 
   img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    min-height: 420px;
+    object-fit: cover;
     border-radius: 6px;
+    display: block;
   }
 
   @media (max-width: 991px) {
     order: -1;
+    height: auto;
+
+    img {
+      height: auto;
+      min-height: 0;
+    }
   }
 `;

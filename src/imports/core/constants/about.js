@@ -5,7 +5,7 @@ export const ABOUT_INTRO = {
     before: "At ",
     brand: "Luxera Private Aviation",
     after:
-      ", we believe that true luxury is defined not by the destination, but by the seamless, private and luxury sanctuary we curate between points of arrival. In a world that never stops, we provide an elevated escape above the clouds — a bespoke travel experience meticulously crafted to honor your time, your privacy, comfort and your vision.",
+      ", we believe that true luxury is defined not by the destination, but by the seamless, private and luxury sanctuary we curate between points of arrival. In a world that never stops, we provide an elevated escape above the clouds. A bespoke travel experience meticulously crafted to honor your time, your privacy, comfort and your vision.",
   },
   image: "/image/av/jet-flying.webp",
 };
@@ -27,7 +27,7 @@ export const ABOUT_SOLUTIONS = {
   subtitle: "BESPOKE CHARTER SOLUTIONS",
   title: "The Singular, the Curated, and the Exceptional",
   intro:
-    "We do not believe in off-the-shelf travel. From the moment you engage with us, our dedicated aviation specialists work to tailor every detail to your exacting standards.",
+    "We do not believe in off-the-shelf travel; we believe in the singular, the curated, and the exceptional. From the moment you engage with us, our dedicated aviation specialists work to tailor every detail to your exacting standards.",
   items: [
     {
       icon: "/image/icons/clock-three.svg",
@@ -50,7 +50,7 @@ export const ABOUT_SOLUTIONS = {
 export const ABOUT_WHY = {
   subtitle: "WHY CHOOSE LUXERA?",
   title: "The Quiet Confidence of Expert Service",
-  body: "With over a decade of expertise in elite luxury sectors, our leadership understands the nuance of high-end service. We view every partnership as a long-term commitment, ensuring that your unique preferences are not just met, but anticipated, with every flight you take with us.",
+  body: "In the private aviation sector, experience is the ultimate currency. With over a decade of expertise in elite luxury sectors, our leadership understands the nuance of high-end service. We view every partnership as a long-term commitment, ensuring that your unique preferences are not just met, but anticipated, with every flight you take with us.",
   highlight:
     "Your time is your most precious asset. Allow us the privilege of protecting it.",
   closing:

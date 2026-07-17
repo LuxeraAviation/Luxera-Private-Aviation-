@@ -50,31 +50,37 @@ export const SERVICES = [
     icon: "fa-solid fa-plane-up",
     title: "Private Charter",
     desc: "On-demand access to thousands of aircraft worldwide, tailored to your route, schedule, and party size.",
+    href: "/on-demand-charter",
   },
   {
     icon: "fa-solid fa-plane-departure",
     title: "Commercial Aircraft Charter",
     desc: "Charter full commercial aircraft for large groups, corporate teams, and sports delegations with dedicated crews and cabins.",
+    href: "/commercial-charter",
   },
   {
     icon: "fa-solid fa-boxes-stacked",
     title: "Cargo Charter",
     desc: "Move time-critical and oversized freight worldwide with tailored cargo solutions and end-to-end logistics handling.",
+    href: "/cargo-charter",
   },
   {
     icon: "fa-solid fa-kit-medical",
     title: "Medical Evacuation",
     desc: "Rapid air ambulance and medevac flights equipped for critical care, with medical teams ready around the clock.",
+    href: "/medical-evacuation",
   },
   {
     icon: "fa-solid fa-kaaba",
     title: "Hajj Charters",
     desc: "Dedicated pilgrimage charters for Hajj and Umrah, delivering comfortable, seamless travel to the holy cities.",
+    href: "/hajj-charters",
   },
   {
     icon: "fa-solid fa-tags",
     title: "Empty Legs",
     desc: "Travel on repositioning flights at a fraction of the price. Same private experience, exceptional value, limited availability.",
+    href: "/empty-legs",
   },
   {
     icon: "fa-solid fa-briefcase",
@@ -95,6 +101,7 @@ export const SERVICES = [
     icon: "fa-solid fa-id-card",
     title: "Luxera Access — The Ultimate Jet Card",
     desc: "Fixed hourly rates, guaranteed availability, and priority access through our exclusive membership program.",
+    jetCard: true,
   },
 ];
 

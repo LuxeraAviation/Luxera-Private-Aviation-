@@ -24,10 +24,12 @@ export default function BespokeSolutions() {
         <Grid>
           {ABOUT_SOLUTIONS.items.map((item, i) => (
             <Card key={item.title} as={Reveal} delay={i * 80}>
+              <Num>0{i + 1}</Num>
               <Icon>
                 <Image src={item.icon} alt="" width={40} height={40} />
               </Icon>
               <h3>{item.title}</h3>
+              <Rule />
               <p>{item.desc}</p>
             </Card>
           ))}
@@ -58,25 +60,72 @@ const Grid = styled.div`
 `;
 
 const Card = styled.div`
+  position: relative;
+  overflow: hidden;
   background: ${({ theme }) => theme.bg};
   border: 1px solid ${({ theme }) => theme.border};
-  border-radius: 5px;
-  padding: 40px 34px;
-  transition: all 0.3s ease;
+  border-radius: 6px;
+  padding: 46px 38px 48px;
+  transition: transform 0.35s ease, border-color 0.35s ease,
+    box-shadow 0.35s ease;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: ${({ theme }) => theme.base};
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
 
   h3 {
+    font-family: ${({ theme }) => theme.fonts.playfair};
     font-size: 24px;
-    margin: 0 0 14px;
+    font-weight: 500;
+    margin: 0 0 18px;
   }
 
   p {
     margin: 0;
+    color: ${({ theme }) => theme.text};
+    line-height: 1.75em;
   }
 
   &:hover {
     border-color: ${({ theme }) => theme.base};
-    transform: translateY(-6px);
+    transform: translateY(-8px);
+    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.08);
   }
+
+  &:hover::before {
+    transform: scaleX(1);
+  }
+`;
+
+const Num = styled.span`
+  position: absolute;
+  top: 26px;
+  right: 34px;
+  font-family: ${({ theme }) => theme.fonts.playfair};
+  font-size: 46px;
+  font-weight: 600;
+  line-height: 1;
+  color: ${({ theme }) => theme.base};
+  opacity: 0.14;
+  user-select: none;
+  pointer-events: none;
+`;
+
+const Rule = styled.span`
+  display: block;
+  width: 46px;
+  height: 2px;
+  margin: 0 0 20px;
+  background: ${({ theme }) => theme.base};
 `;
 
 const Icon = styled.span`
@@ -87,7 +136,7 @@ const Icon = styled.span`
   height: 72px;
   border-radius: 50%;
   background: ${({ theme }) => theme.soft};
-  margin-bottom: 26px;
+  margin-bottom: 28px;
 
   img {
     filter: ${({ theme }) =>

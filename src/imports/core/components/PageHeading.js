@@ -17,7 +17,7 @@ export default function PageHeading({ title, bg = "/image/luxera/new.png" }) {
 
 const Section = styled.section`
   position: relative;
-  height: 600px;
+  height: 750px;
   padding: 150px 0 50px;
   display: flex;
   align-items: center;
@@ -27,11 +27,11 @@ const Section = styled.section`
   background-position: center;
 
   @media (max-width: 1400px) {
-    height: 500px;
+    height: 600px;
   }
 
   @media (max-width: 991px) {
-    height: 400px;
+    height: 450px;
     padding: 120px 0 50px;
   }
 `;

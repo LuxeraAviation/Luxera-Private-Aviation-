@@ -256,10 +256,10 @@ export default function BookingForm() {
 
   // All non-leg fields sit 2 per row (span 6). Additional Information is full
   // width, except on one way where it pairs with Phone to keep the rows even.
-  const routeSpan = tripType === "multi" ? 4 : 6;
-  const contactSpan = 6;
-  const requestsSpan = tripType === "oneway" ? 6 : 12;
-  const requestsMdSpan = tripType === "oneway" ? 6 : 12;
+  const routeSpan = tripType === "multi" ? 4 : 3;
+  const contactSpan = 3;
+  const requestsSpan = tripType === "round" ? 12 : 3;
+  const requestsMdSpan = tripType === "round" ? 12 : 6;
   const PaxField = (
     <PassengersContainer ref={paxRef} $span={contactSpan}>
       <Field onClick={() => setIsPaxOpen((o) => !o)}>
@@ -390,8 +390,8 @@ export default function BookingForm() {
     </RequestsContainer>
   );
 
-  const UrgentField = (
-    <UrgentRow>
+  const FormFooter = (
+    <Footer>
       <UrgentCheckbox>
         <input
           type="checkbox"
@@ -404,13 +404,10 @@ export default function BookingForm() {
         </span>
         <span className="text">I need to fly urgently</span>
       </UrgentCheckbox>
-    </UrgentRow>
-  );
-
-  const SubmitButton = (
-    <SearchButton type="submit" disabled={loading}>
-      {loading ? "Sending..." : "Request Quotation"}
-    </SearchButton>
+      <SearchButton type="submit" disabled={loading}>
+        {loading ? "Sending..." : "Request Quotation"}
+      </SearchButton>
+    </Footer>
   );
 
   const DepartureField = (
@@ -482,7 +479,7 @@ export default function BookingForm() {
         <>
           <LegsContainer>
             {legs.map((leg, i) => (
-              <LegRow key={i}>
+              <LegRow key={i} $hasRemove={legs.length > 2}>
                 <FieldContainer>
                   <AirportAutocomplete
                     label={
@@ -558,6 +555,9 @@ export default function BookingForm() {
                 )}
               </LegRow>
             ))}
+          </LegsContainer>
+
+          <LegFooterRow $hasRemove={legs.length > 2}>
             <AddLegButton
               type="button"
               onClick={addLeg}
@@ -565,15 +565,15 @@ export default function BookingForm() {
             >
               <i className="fa-solid fa-plus" /> Add another flight
             </AddLegButton>
-          </LegsContainer>
+            <PaxSlot>{PaxField}</PaxSlot>
+            {legs.length > 2 && <RemoveSpacer aria-hidden="true" />}
+          </LegFooterRow>
 
-          {PaxField}
           {NameField}
           {EmailField}
           {PhoneField}
           {RequestsField}
-          {UrgentField}
-          {SubmitButton}
+          {FormFooter}
         </>
       ) : (
         <>
@@ -617,8 +617,7 @@ export default function BookingForm() {
           {EmailField}
           {PhoneField}
           {RequestsField}
-          {UrgentField}
-          {SubmitButton}
+          {FormFooter}
         </>
       )}
 
@@ -631,31 +630,23 @@ const Form = styled.form`
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   align-items: center;
-  align-content: space-between;
-  gap: 16px;
+  gap: 14px 18px;
   background: ${({ theme }) => theme.base};
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
-  padding: 16px;
+  border-radius: 8px;
+  padding: 20px 26px;
   width: 100%;
   box-sizing: border-box;
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
-
-  /* Keep the widget the same height on every trip type (one way / round /
-     multi-city). Multi-city is the tallest, so this floor matches it and the
-     shorter tabs spread their rows to fill via align-content. */
-  min-height: 540px;
 
   @media (max-width: 991px) {
     grid-template-columns: repeat(12, 1fr);
     gap: 16px;
     padding: 22px;
-    min-height: 580px;
   }
   @media (max-width: 767px) {
     grid-template-columns: 1fr;
     gap: 16px;
-    min-height: 0;
   }
 `;
 
@@ -667,8 +658,21 @@ const TripTabs = styled.div`
   border-bottom: 1px solid rgba(255, 255, 255, 0.18);
 `;
 
-const UrgentRow = styled.div`
+const Footer = styled.div`
   grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 2px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+
+  @media (max-width: 575px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
 `;
 
 const UrgentCheckbox = styled.label`
@@ -836,14 +840,14 @@ const LegsContainer = styled.div`
   grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
   min-width: 0;
 `;
 
 const LegRow = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr auto;
-  gap: 16px;
+  grid-template-columns: 1fr 1fr 1fr${({ $hasRemove }) => ($hasRemove ? " auto" : "")};
+  gap: 18px;
   align-items: center;
   min-width: 0;
 
@@ -861,7 +865,7 @@ const Field = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: 6px;
   padding: 10px 14px;
-  height: 44px;
+  height: 42px;
   cursor: pointer;
   background: transparent;
   transition: border-color 0.3s ease;
@@ -1015,8 +1019,8 @@ const RemoveLegButton = styled.button`
   border: 1px solid rgba(255, 255, 255, 0.45);
   color: #fff;
   border-radius: 6px;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1034,13 +1038,44 @@ const RemoveLegButton = styled.button`
   }
 `;
 
+const LegFooterRow = styled.div`
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr${({ $hasRemove }) => ($hasRemove ? " auto" : "")};
+  gap: 18px;
+  align-items: center;
+  min-width: 0;
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const PaxSlot = styled.div`
+  grid-column: 3;
+  min-width: 0;
+
+  @media (max-width: 767px) {
+    grid-column: 1;
+  }
+`;
+
+const RemoveSpacer = styled.span`
+  width: 42px;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+`;
+
 const AddLegButton = styled.button`
-  align-self: flex-start;
+  grid-column: 1 / 3;
+  justify-self: start;
   background: transparent;
   border: 1px dashed rgba(255, 255, 255, 0.5);
   color: #fff;
   border-radius: 6px;
-  padding: 10px 16px;
+  padding: 8px 14px;
   font-family: ${({ theme }) => theme.fonts.mulish};
   font-size: 13px;
   font-weight: 600;
@@ -1136,30 +1171,18 @@ const SearchButton = styled.button`
   color: ${({ theme }) => theme.white};
   border: none;
   border-radius: 6px;
-  padding: 12px 10px;
+  padding: 0 44px;
   height: 44px;
+  min-width: 240px;
   font-family: ${({ theme }) => theme.fonts.mulish};
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
+  letter-spacing: 0.3px;
   cursor: pointer;
   white-space: nowrap;
   box-sizing: border-box;
   transition: all 0.3s ease;
-  width: 100%;
-  text-align: center;
-
-  grid-column: 1 / -1;
-
-  @media (max-width: 991px) {
-    grid-column: 1 / -1;
-    padding: 14px 28px;
-    font-size: 15px;
-    height: auto;
-    min-height: 44px;
-  }
-  @media (max-width: 767px) {
-    grid-column: span 1;
-  }
+  flex-shrink: 0;
 
   &:hover {
     background: ${({ theme }) => theme.white};
@@ -1169,6 +1192,10 @@ const SearchButton = styled.button`
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+  }
+
+  @media (max-width: 575px) {
+    width: 100%;
   }
 `;
 

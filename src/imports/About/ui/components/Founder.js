@@ -133,7 +133,7 @@ export default function Founder() {
 const ProfileGrid = styled.div`
   display: grid;
   grid-template-columns: 5fr 7fr;
-  align-items: center;
+  align-items: stretch;
   gap: 80px;
 
   @media (max-width: 1199px) {
@@ -156,6 +156,7 @@ const ImageCol = styled.div`
 
 const ImageWrapper = styled.div`
   position: relative;
+  height: 100%;
   border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
@@ -163,9 +164,19 @@ const ImageWrapper = styled.div`
 
   img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    min-height: 480px;
     display: block;
     object-fit: cover;
+  }
+
+  @media (max-width: 991px) {
+    height: auto;
+
+    img {
+      height: auto;
+      min-height: 0;
+    }
   }
 `;
 
