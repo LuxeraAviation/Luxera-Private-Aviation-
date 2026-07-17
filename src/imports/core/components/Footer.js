@@ -6,7 +6,6 @@ import styled from "styled-components";
 import Container from "@/imports/core/atom/Container";
 import {
   FOOTER_CONTACT,
-  FOOTER_ADDRESS,
   FOOTER_LINKS,
   SOCIAL_LINKS,
   COPYRIGHT,

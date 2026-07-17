@@ -10,7 +10,7 @@ import { HOME_ABOUT } from "@/imports/core/constants/homepage";
 
 export default function About() {
   return (
-    <AboutSection $gray $top="110px" $bottom="150px">
+    <AboutSection $gray $top="140px" $bottom="150px">
       <Container>
         <Inner>
           <Subtitle as={Reveal}>{HOME_ABOUT.subtitle}</Subtitle>

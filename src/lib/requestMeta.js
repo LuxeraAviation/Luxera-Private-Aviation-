@@ -1,4 +1,4 @@
-export function getClientIp(request) {
+function getClientIp(request) {
   const forwarded = request.headers.get("x-forwarded-for");
   if (forwarded) {
     return forwarded.split(",")[0].trim();
@@ -10,7 +10,7 @@ export function getClientIp(request) {
   );
 }
 
-export function parseUserAgent(ua = "") {
+function parseUserAgent(ua = "") {
   if (!ua) return "Unknown device";
 
   let device = "Desktop";
@@ -41,7 +41,7 @@ export function parseUserAgent(ua = "") {
     .join(" — ");
 }
 
-export async function lookupLocation(ip) {
+async function lookupLocation(ip) {
   if (!ip || ip === "::1" || ip === "127.0.0.1" || ip.startsWith("192.168.")) {
     return "Local / private network";
   }

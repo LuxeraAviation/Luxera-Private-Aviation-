@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import PageHeading from "@/imports/core/components/PageHeading";
 import Section from "@/imports/core/atom/Section";
 import Container from "@/imports/core/atom/Container";

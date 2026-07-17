@@ -5,11 +5,6 @@ export const FOOTER_CONTACT = {
   note: "On call 24/7 — wheels up in as little as 4 hours",
 };
 
-export const FOOTER_ADDRESS = {
-  title: "Operations",
-  lines: ["Hangar 7, Signature FBO,", "Teterboro Airport, NJ 07608, USA"],
-};
-
 export const FOOTER_LINKS = {
   title: "Links",
   links: [
@@ -22,9 +17,6 @@ export const FOOTER_LINKS = {
 
   ],
 };
-
-export const DUBAI_MAP =
-  "https://maps.google.com/maps?q=Dubai%2C%20United%20Arab%20Emirates&t=&z=11&ie=UTF8&iwloc=&output=embed";
 
 export const SOCIAL_LINKS = [
   { iconClass: "fa-brands fa-whatsapp", url: "https://wa.me/447469189255" },

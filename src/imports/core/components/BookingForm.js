@@ -9,10 +9,7 @@ import DateTimePickerPopover from "@/imports/core/components/DatePickerPopover";
 import AirportAutocomplete from "@/imports/core/components/AirportAutocomplete";
 
 const STORAGE_KEY = "luxera_quote_request";
-// Set when the user chooses "View or Update" on the success page, so the form
-// reopens pre-filled with their last request instead of empty.
 const EDIT_KEY = "luxera_quote_edit";
-
 const TRIP_TYPES = [
   { key: "oneway", label: "One way" },
   { key: "round", label: "Round trip" },
@@ -80,8 +77,6 @@ export default function BookingForm() {
     setOpenLeg(null);
   };
 
-  // Snapshot of the request used for the success summary and localStorage.
-  // Keeps both formatted strings (display) and ISO dates (to restore state).
   const buildSnapshot = () => {
     const snap = {
       tripType,
@@ -191,7 +186,6 @@ export default function BookingForm() {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
       } catch {
-        /* localStorage unavailable — success page falls back gracefully */
       }
       resetForm();
       router.push("/quote-received");
@@ -203,8 +197,6 @@ export default function BookingForm() {
     }
   };
 
-  // If the user came from the success page via "View or Update", reopen the
-  // form pre-filled with their saved request.
   useEffect(() => {
     try {
       if (sessionStorage.getItem(EDIT_KEY) === "true") {
@@ -213,7 +205,6 @@ export default function BookingForm() {
         if (raw) restoreFromSnapshot(JSON.parse(raw));
       }
     } catch {
-      /* ignore malformed storage */
     }
   }, []);
 
@@ -254,8 +245,6 @@ export default function BookingForm() {
     return `${dateStr}, ${timeStr}`;
   }
 
-  // All non-leg fields sit 2 per row (span 6). Additional Information is full
-  // width, except on one way where it pairs with Phone to keep the rows even.
   const routeSpan = tripType === "multi" ? 4 : 3;
   const contactSpan = 3;
   const requestsSpan = tripType === "round" ? 12 : 3;
