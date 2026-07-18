@@ -17,12 +17,12 @@ export default function ContactPage() {
       {!submitted && (
         <PageHeading title="Contact Us" bg="/image/luxera/new.png" />
       )}
-      <Section $top="120px" $bottom="150px">
+      <ContactSection $top="120px" $bottom="150px">
         <Container>
           <FormWrap as={Reveal} variant="fade-up">
             {!submitted && (
               <>
-                <SectionHeading
+                <Heading
                   center
                   subtitle="GET IN TOUCH"
                   title="Plan Your Next Private Flight"
@@ -41,20 +41,40 @@ export default function ContactPage() {
             />
           </FormWrap>
         </Container>
-      </Section>
+      </ContactSection>
     </main>
   );
 }
+
+const ContactSection = styled(Section)`
+  @media (max-width: 991px) {
+    padding-top: 40px;
+  }
+`;
 
 const FormWrap = styled.div`
   max-width: 760px;
   margin: 0 auto;
 `;
 
+const Heading = styled(SectionHeading)`
+  /* subtitle → title breathing room */
+  & > p {
+    margin-bottom: 22px;
+    @media (max-width: 991px) {
+      margin-bottom: 20px;
+    }
+  }
+`;
+
 const FormLead = styled.p`
   text-align: center;
   color: ${({ theme }) => theme.text};
-  margin: 0 auto 44px;
+  margin: 28px auto 44px;
   max-width: 560px;
-  line-height: 1.8em;
+  line-height: 1.9em;
+  @media (max-width: 991px) {
+    margin-top: 24px;
+    line-height: 2em;
+  }
 `;

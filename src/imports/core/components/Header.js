@@ -46,8 +46,6 @@ export default function Header() {
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 10);
-      // The header is only transparent while it overlays a dark hero banner.
-      // Pages without one (e.g. the contact success screen) get the solid header.
       const hero = document.querySelector("[data-hero]");
       const headerH = headerRef.current?.offsetHeight ?? 90;
       if (!hero) {
@@ -72,7 +70,6 @@ export default function Header() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
-    // Re-check when the hero is added/removed (e.g. contact success screen).
     const main = document.querySelector("main");
     const mo = main ? new MutationObserver(onScroll) : null;
     if (mo && main) mo.observe(main, { childList: true });

@@ -30,12 +30,12 @@ export default function Footer() {
             <Col>
               <Title>{FOOTER_CONTACT.title}</Title>
               <Menu>
-                <MenuItem>
-                  Call :{" "}
-                  <MenuLink href={FOOTER_CONTACT.phone.href}>
-                    {FOOTER_CONTACT.phone.label}
-                  </MenuLink>
-                </MenuItem>
+                {FOOTER_CONTACT.phones.map((p) => (
+                  <MenuItem key={p.href}>
+                    {p.city} :{" "}
+                    <MenuLink href={p.href}>{p.label}</MenuLink>
+                  </MenuItem>
+                ))}
                 <MenuItem>
                   Email :{" "}
                   <MenuLink href={FOOTER_CONTACT.email.href}>

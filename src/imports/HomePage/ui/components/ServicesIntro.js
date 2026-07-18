@@ -49,6 +49,7 @@ export default function ServicesIntro() {
 
 const Intro = styled(Section)`
   @media (max-width: 991px) {
+    padding-top: 40px;
     padding-bottom: 0;
   }
 `;
@@ -88,7 +89,8 @@ const Grid = styled.div`
 
   @media (max-width: 991px) {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 20px;
+    margin-top: 40px;
   }
 `;
 
@@ -115,7 +117,7 @@ const Points = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: 24px;
-  margin: 20px 0;
+  margin: 20px 0 0 0;
 
   @media (max-width: 991px) {
     justify-content: center;

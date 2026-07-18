@@ -1,6 +1,9 @@
 export const FOOTER_CONTACT = {
   title: "Contact Us",
-  phone: { label: "+447469189255", href: "tel:+447469189255" },
+  phones: [
+    { city: "London", label: "+44 7469 189255", href: "tel:+447469189255" },
+    { city: "Dubai", label: "+971 50 304 8994", href: "tel:+971503048994" },
+  ],
   email: { label: "info@luxeraaviation.com", href: "mailto:info@luxeraaviation.com" },
   note: "On call 24/7 — wheels up in as little as 4 hours",
 };
