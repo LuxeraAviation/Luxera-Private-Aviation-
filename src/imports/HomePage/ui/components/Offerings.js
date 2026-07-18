@@ -27,7 +27,7 @@ export default function Offerings() {
             resolvePerView={(width) => (width < 768 ? 1 : width < 992 ? 2 : 3)}
             loop
             autoplay
-            autoplayInterval={5000}
+            autoplayInterval={3000}
             slideGap={60}
             controls={SliderArrows}
             renderItem={(o) => (

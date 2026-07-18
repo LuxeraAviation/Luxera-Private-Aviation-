@@ -266,7 +266,7 @@ const FormZone = styled.div`
     position: relative;
     bottom: auto;
     transform: none;
-    margin-top: -40px;
+    margin-top: -90px;
   }
 `;
 

@@ -20,13 +20,17 @@ function buildRows(d) {
   if (!d) return [];
   const rows = [{ icon: "fa-arrows-rotate", label: "Trip Type", value: d.tripLabel }];
 
-  if (d.tripType === "multi" && Array.isArray(d.legs) && d.legs.length) {
+  const isMulti = d.tripType === "multi" && Array.isArray(d.legs) && d.legs.length;
+
+  if (isMulti) {
     d.legs.forEach((l, i) => {
       const route = [l.from, l.to].filter(Boolean).join(" → ");
+      const parts = [route, l.departure];
+      if (l.pax) parts.push(`${l.pax} pax`);
       rows.push({
         icon: "fa-plane",
         label: `Flight ${i + 1}`,
-        value: [route, l.departure].filter(Boolean).join("  ·  ") || "—",
+        value: parts.filter(Boolean).join("  ·  ") || "—",
       });
     });
   } else {
@@ -46,11 +50,13 @@ function buildRows(d) {
     }
   }
 
-  rows.push({
-    icon: "fa-users",
-    label: "Number of Passengers",
-    value: d.passengers ? String(d.passengers) : "—",
-  });
+  if (!isMulti) {
+    rows.push({
+      icon: "fa-users",
+      label: "Number of Passengers",
+      value: d.passengers ? String(d.passengers) : "—",
+    });
+  }
   if (d.name) rows.push({ icon: "fa-user", label: "Name", value: d.name });
   rows.push({ icon: "fa-envelope", label: "Email", value: d.email || "—" });
   if (d.phone) rows.push({ icon: "fa-phone", label: "Phone", value: d.phone });

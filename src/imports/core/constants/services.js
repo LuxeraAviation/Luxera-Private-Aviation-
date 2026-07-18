@@ -38,11 +38,31 @@ export const OFFERINGS = [
 ];
 
 export const SERVICE_LIST = [
-  "24/7 Global Charter Desk",
-  "Vetted Crews & Operators",
-  "Door-to-Door Ground Transfers",
-  "Bespoke In-Flight Catering",
-  "Pet & Family Friendly",
+  {
+    icon: "fa-solid fa-headset",
+    title: "24/7 Global Charter Desk",
+    desc: "Reach a dedicated advisor at any hour, anywhere in the world.",
+  },
+  {
+    icon: "fa-solid fa-user-shield",
+    title: "Vetted Crews & Operators",
+    desc: "Only ARGUS & Wyvern-rated operators and rigorously vetted crews.",
+  },
+  {
+    icon: "fa-solid fa-car-side",
+    title: "Door-to-Door Ground Transfers",
+    desc: "Seamless chauffeured transfers, coordinated from end to end.",
+  },
+  {
+    icon: "fa-solid fa-champagne-glasses",
+    title: "Bespoke In-Flight Catering",
+    desc: "Menus curated to your taste, from fine dining to your favourites.",
+  },
+  {
+    icon: "fa-solid fa-paw",
+    title: "Pet & Family Friendly",
+    desc: "Travel with those who matter most — pets and family always welcome.",
+  },
 ];
 
 export const SERVICES = [

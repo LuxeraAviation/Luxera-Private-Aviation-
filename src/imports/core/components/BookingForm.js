@@ -22,7 +22,7 @@ const TRIP_LABELS = {
   multi: "Multi-city",
 };
 
-const emptyLeg = () => ({ from: "", to: "", dep: null });
+const emptyLeg = () => ({ from: "", to: "", dep: null, pax: 0 });
 
 export default function BookingForm() {
   const router = useRouter();
@@ -47,11 +47,13 @@ export default function BookingForm() {
   const retDateTimeRef = useRef(null);
   const paxRef = useRef(null);
   const legRefs = useRef([]);
+  const legPaxRefs = useRef([]);
 
   const [isDepOpen, setIsDepOpen] = useState(false);
   const [isRetOpen, setIsRetOpen] = useState(false);
   const [isPaxOpen, setIsPaxOpen] = useState(false);
   const [openLeg, setOpenLeg] = useState(null);
+  const [openLegPax, setOpenLegPax] = useState(null);
 
   const updateLeg = (i, patch) =>
     setLegs((prev) => prev.map((l, idx) => (idx === i ? { ...l, ...patch } : l)));
@@ -75,6 +77,7 @@ export default function BookingForm() {
     setSpecialRequests("");
     setLegs([emptyLeg(), emptyLeg()]);
     setOpenLeg(null);
+    setOpenLegPax(null);
   };
 
   const buildSnapshot = () => {
@@ -97,6 +100,7 @@ export default function BookingForm() {
           to: l.to,
           departure: l.dep ? formatDateTime(l.dep) : "",
           depISO: l.dep ? l.dep.toISOString() : null,
+          pax: l.pax > 0 ? l.pax : "",
         }));
     } else {
       snap.from = from;
@@ -125,6 +129,7 @@ export default function BookingForm() {
         from: l.from || "",
         to: l.to || "",
         dep: l.depISO ? new Date(l.depISO) : null,
+        pax: l.pax ? Number(l.pax) : 0,
       }));
       while (restored.length < 2) restored.push(emptyLeg());
       setLegs(restored);
@@ -164,6 +169,7 @@ export default function BookingForm() {
             from: l.from,
             to: l.to,
             departure: l.dep ? formatDateTime(l.dep) : "",
+            pax: l.pax > 0 ? l.pax : "",
           }));
       } else {
         payload.from = from;
@@ -223,10 +229,14 @@ export default function BookingForm() {
         const ref = legRefs.current[openLeg];
         if (ref && !ref.contains(e.target)) setOpenLeg(null);
       }
+      if (openLegPax !== null) {
+        const ref = legPaxRefs.current[openLegPax];
+        if (ref && !ref.contains(e.target)) setOpenLegPax(null);
+      }
     }
     document.addEventListener("mousedown", clickOutside);
     return () => document.removeEventListener("mousedown", clickOutside);
-  }, [openLeg]);
+  }, [openLeg, openLegPax]);
 
   function formatDateTime(date) {
     if (!date) return "Select date & time";
@@ -533,6 +543,62 @@ export default function BookingForm() {
                   )}
                 </FieldContainer>
 
+                <FieldContainer
+                  ref={(el) => {
+                    legPaxRefs.current[i] = el;
+                  }}
+                >
+                  <Field
+                    onClick={() => setOpenLegPax(openLegPax === i ? null : i)}
+                  >
+                    <Label>
+                      <i className="fa-solid fa-users" /> Pax
+                    </Label>
+                    <Content $isPlaceholder={!leg.pax}>
+                      {leg.pax > 0
+                        ? String(leg.pax).padStart(2, "0")
+                        : "Passengers"}
+                    </Content>
+                    <Chevron>
+                      <i
+                        className={`fa-solid fa-chevron-${openLegPax === i ? "up" : "down"}`}
+                      />
+                    </Chevron>
+                  </Field>
+                  {openLegPax === i && (
+                    <DropdownMenu>
+                      <DropdownItem>
+                        <DropdownLabel>Passengers:</DropdownLabel>
+                        <CounterContainer>
+                          <CounterButton
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              updateLeg(i, { pax: Math.max(0, (leg.pax || 0) - 1) });
+                            }}
+                            aria-label={`Decrease passengers for flight ${i + 1}`}
+                          >
+                            <i className="fa-solid fa-minus" />
+                          </CounterButton>
+                          <CounterValue>
+                            {String(leg.pax || 0).padStart(2, "0")}
+                          </CounterValue>
+                          <CounterButton
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              updateLeg(i, { pax: Math.min(50, (leg.pax || 0) + 1) });
+                            }}
+                            aria-label={`Increase passengers for flight ${i + 1}`}
+                          >
+                            <i className="fa-solid fa-plus" />
+                          </CounterButton>
+                        </CounterContainer>
+                      </DropdownItem>
+                    </DropdownMenu>
+                  )}
+                </FieldContainer>
+
                 {legs.length > 2 && (
                   <RemoveLegButton
                     type="button"
@@ -546,7 +612,7 @@ export default function BookingForm() {
             ))}
           </LegsContainer>
 
-          <LegFooterRow $hasRemove={legs.length > 2}>
+          <LegFooterRow>
             <AddLegButton
               type="button"
               onClick={addLeg}
@@ -554,8 +620,6 @@ export default function BookingForm() {
             >
               <i className="fa-solid fa-plus" /> Add another flight
             </AddLegButton>
-            <PaxSlot>{PaxField}</PaxSlot>
-            {legs.length > 2 && <RemoveSpacer aria-hidden="true" />}
           </LegFooterRow>
 
           {NameField}
@@ -835,11 +899,15 @@ const LegsContainer = styled.div`
 
 const LegRow = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr${({ $hasRemove }) => ($hasRemove ? " auto" : "")};
-  gap: 18px;
+  grid-template-columns: 1.2fr 1.2fr 1.1fr 0.9fr${({ $hasRemove }) =>
+    $hasRemove ? " auto" : ""};
+  gap: 16px;
   align-items: center;
   min-width: 0;
 
+  @media (max-width: 991px) {
+    grid-template-columns: 1fr 1fr;
+  }
   @media (max-width: 767px) {
     grid-template-columns: 1fr;
   }
@@ -1029,37 +1097,9 @@ const RemoveLegButton = styled.button`
 
 const LegFooterRow = styled.div`
   grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr${({ $hasRemove }) => ($hasRemove ? " auto" : "")};
-  gap: 18px;
-  align-items: center;
-  min-width: 0;
-
-  @media (max-width: 767px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const PaxSlot = styled.div`
-  grid-column: 3;
-  min-width: 0;
-
-  @media (max-width: 767px) {
-    grid-column: 1;
-  }
-`;
-
-const RemoveSpacer = styled.span`
-  width: 42px;
-
-  @media (max-width: 767px) {
-    display: none;
-  }
 `;
 
 const AddLegButton = styled.button`
-  grid-column: 1 / 3;
-  justify-self: start;
   background: transparent;
   border: 1px dashed rgba(255, 255, 255, 0.5);
   color: #fff;

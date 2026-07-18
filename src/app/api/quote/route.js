@@ -42,10 +42,14 @@ export async function POST(request) {
     ["Urgent", urgent ? "Yes — client needs to fly urgently" : ""],
   ];
 
+  const legsHavePax = Array.isArray(legs) && legs.some((l) => l.pax);
+
   if (Array.isArray(legs) && legs.length) {
     legs.forEach((leg, i) => {
       const route = [leg.from, leg.to].filter(Boolean).join(" → ");
-      const value = [route, leg.departure].filter(Boolean).join("  ·  ");
+      const parts = [route, leg.departure];
+      if (leg.pax) parts.push(`${leg.pax} pax`);
+      const value = parts.filter(Boolean).join("  ·  ");
       fields.push([`Flight ${i + 1}`, value]);
     });
   } else {
@@ -53,10 +57,8 @@ export async function POST(request) {
     if (returnDate) fields.push(["Return", returnDate]);
   }
 
-  fields.push(
-    ["Passengers", passengers],
-    ["Additional information", additionalInfo],
-  );
+  if (!legsHavePax) fields.push(["Passengers", passengers]);
+  fields.push(["Additional information", additionalInfo]);
 
   const notification = notificationEmail({
     heading: urgent ? "New Quote Request — URGENT" : "New Quote Request",
