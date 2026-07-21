@@ -6,6 +6,14 @@ const require = createRequire(import.meta.url);
 
 const eslintConfig = defineConfig([
   ...nextVitals,
+  {
+    rules: {
+      // Allow syncing state from browser-only values (e.g. reading the URL) in
+      // an effect after mount — the recommended pattern to avoid SSR/client
+      // hydration mismatches.
+      "react-hooks/set-state-in-effect": "off",
+    },
+  },
   globalIgnores([
     ".next/**",
     "out/**",

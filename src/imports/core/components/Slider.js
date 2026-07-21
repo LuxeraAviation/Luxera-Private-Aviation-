@@ -1,6 +1,6 @@
 "use client";
 
-import React, {
+import {
   memo,
   useState,
   useMemo,
@@ -56,17 +56,10 @@ function Slider({
   bottomControls: BottomControls,
   resolvePerView,
   viewportPadding,
+  slideGap = 30,
   loop = true,
 }) {
-  const getPerView = useCallback(
-    () =>
-      typeof window === "undefined"
-        ? perView
-        : computePerView(window.innerWidth, perView, resolvePerView),
-    [perView, resolvePerView],
-  );
-
-  const [currentPerView, setCurrentPerView] = useState(getPerView);
+  const [currentPerView, setCurrentPerView] = useState(perView);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const plugins = useMemo(() => {
@@ -77,6 +70,7 @@ function Slider({
         delay: autoplayInterval,
         stopOnInteraction: false,
         stopOnMouseEnter: true,
+        playOnInit: false,
       }),
     ];
   }, [autoplay, autoplayInterval]);
@@ -146,6 +140,29 @@ function Slider({
     };
   }, [emblaApi, onSelect]);
 
+  useEffect(() => {
+    if (!emblaApi || !autoplay) return;
+
+    const autoplayPlugin = emblaApi.plugins()?.autoplay;
+    const root = emblaApi.rootNode();
+    if (!autoplayPlugin || !root || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          autoplayPlugin.play();
+        } else {
+          autoplayPlugin.stop();
+        }
+      },
+      { threshold: 0.35 },
+    );
+
+    observer.observe(root);
+
+    return () => observer.disconnect();
+  }, [emblaApi, autoplay]);
+
   const prev = useCallback(() => {
     emblaApi?.scrollPrev();
   }, [emblaApi]);
@@ -178,15 +195,15 @@ function Slider({
   const slides = useMemo(
     () =>
       renderedItems.map((item, index) => (
-        <SliderItem key={index} $basis={basis} className="slider-item">
+        <SliderItem key={index} $basis={basis} $pad={slideGap / 2} className="slider-item">
           {renderItem(item, items.length ? index % items.length : index)}
         </SliderItem>
       )),
-    [renderedItems, items.length, basis, renderItem],
+    [renderedItems, items.length, basis, renderItem, slideGap],
   );
 
   return (
-    <>
+    <SliderRoot className="slider-root">
       {Controls && <Controls {...controlProps} />}
 
       <SliderViewport
@@ -198,11 +215,15 @@ function Slider({
       </SliderViewport>
 
       {BottomControls && <BottomControls {...controlProps} />}
-    </>
+    </SliderRoot>
   );
 }
 
 export default memo(Slider);
+
+const SliderRoot = styled.div`
+  position: relative;
+`;
 
 const SliderViewport = styled.div`
   overflow: hidden;
@@ -222,5 +243,5 @@ const SliderItem = styled.div`
   max-width: ${({ $basis }) => $basis}%;
   min-width: 0;
   box-sizing: border-box;
-  padding: 0 15px;
+  padding: 0 ${({ $pad }) => $pad ?? 15}px;
 `;

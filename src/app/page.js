@@ -1,10 +1,5 @@
-import ComingSoonPage from "@/imports/ComingSoon/ui/pages/ComingSoonPage";
-
-export const metadata = {
-  title: "LUXERA — Private Aviation | Coming Soon",
-  description: "LUXERA Private Aviation — coming soon.",
-};
+import HomePage from "@/imports/HomePage/ui/pages/HomePage";
 
 export default function Page() {
-  return <ComingSoonPage />;
+  return <HomePage />;
 }

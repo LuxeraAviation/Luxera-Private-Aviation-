@@ -1,5 +1,5 @@
-import AboutUsPage from "@/imports/AboutUs/ui/pages/AboutUsPage";
+import AboutPage from "@/imports/About/ui/pages/AboutPage";
 
 export default function Page() {
-  return <AboutUsPage />;
+  return <AboutPage />;
 }

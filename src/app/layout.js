@@ -1,23 +1,24 @@
 import StyledComponentsRegistry from "@/lib/Registry";
-import { Mulish, Playfair_Display } from "next/font/google";
 import localFont from "next/font/local";
-import { ScrollToTop } from "@/styles/Theme";
+import { Poppins, Libre_Caslon_Display } from "next/font/google";
 import Preloader from "@/imports/core/components/Preloader";
 import Header from "@/imports/core/components/Header";
 import Footer from "@/imports/core/components/Footer";
-import CallWidget from "@/imports/core/components/CallWidget";
 import GlobalStyles from "@/styles/GlobalStyles";
-import LockdownGate from "@/imports/core/components/LockdownGate";
+import { ChromeProvider, Chrome } from "@/imports/core/components/ChromeGate";
+import { ThemeModeProvider } from "@/imports/core/components/ThemeMode";
 
-const mulish = Mulish({
+const mulish = Poppins({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["300", "400", "500", "600", "700"],
   variable: "--font-mulish",
+  display: "swap",
 });
-const playfairDisplay = Playfair_Display({
+const playfairDisplay = Libre_Caslon_Display({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["400"],
   variable: "--font-playfair-display",
+  display: "swap",
 });
 const nasalization = localFont({
   src: "../../public/fonts/nasalization.otf",
@@ -26,14 +27,13 @@ const nasalization = localFont({
 });
 
 export const metadata = {
-  title: "FlyNext — Book a Private Jet Instantly",
+  title: "Luxera — Luxury Private Jet Charter",
   description:
-    "FlyNext private airline & charter services — luxury and corporate private jet charter, instant booking.",
-  icons: { icon: "/image/fav.png" },
+    "Luxera private aviation — on-demand private jet charter, empty-leg deals, aircraft management, and 24/7 VIP concierge worldwide.",
+  icons: { icon: "/image/luxera-icon.svg" },
 };
 
 export default function RootLayout({ children }) {
-  const isProd = process.env.NODE_ENV === "production";
 
   return (
     <html
@@ -46,19 +46,22 @@ export default function RootLayout({ children }) {
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           referrerPolicy="no-referrer"
         />
-        <link rel="stylesheet" href="/css/icomoon.css" />
       </head>
       <body>
         <StyledComponentsRegistry>
-          <GlobalStyles />
-          <LockdownGate isProd={isProd}>
-            <Preloader />
-            <Header />
-            {children}
-            <Footer />
-            <CallWidget />
-            <ScrollToTop />
-          </LockdownGate>
+          <ThemeModeProvider>
+            <GlobalStyles />
+            <ChromeProvider>
+              <Preloader />
+              <Chrome>
+                <Header />
+              </Chrome>
+              {children}
+              <Chrome>
+                <Footer />
+              </Chrome>
+            </ChromeProvider>
+          </ThemeModeProvider>
         </StyledComponentsRegistry>
       </body>
     </html>
