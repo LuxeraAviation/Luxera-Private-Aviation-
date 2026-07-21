@@ -42,7 +42,7 @@ export default function EmptyLegsPage() {
       <Section $top="120px" $bottom="120px">
         <Container>
           <IntroGrid>
-            <div>
+            <IntroText>
               <SectionHeading subtitle={EMPTY_LEGS.subtitle} title={EMPTY_LEGS.title} />
               <Lead as={Reveal} variant="fade-up" delay={100}>
                 {EMPTY_LEGS.intro}
@@ -51,7 +51,7 @@ export default function EmptyLegsPage() {
                 <BlockTitle>{EMPTY_LEGS.what.title}</BlockTitle>
                 <p>{EMPTY_LEGS.what.body}</p>
               </Block>
-            </div>
+            </IntroText>
 
             <Aside as={Reveal} variant="fade-left" delay={200}>
               <ImageWrap>
@@ -265,6 +265,12 @@ const IntroGrid = styled.div`
   @media (max-width: 991px) {
     grid-template-columns: 1fr;
     gap: 44px;
+  }
+`;
+
+const IntroText = styled.div`
+  @media (max-width: 991px) {
+    text-align: center;
   }
 `;
 
