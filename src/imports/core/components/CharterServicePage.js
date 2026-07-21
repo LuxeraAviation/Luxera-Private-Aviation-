@@ -179,11 +179,12 @@ const IntroLead = styled.p`
   color: ${({ theme }) => theme.text};
   line-height: 1.9em;
   font-size: 18px;
-  margin: 0 auto;
+  margin: 30px auto 0;
   max-width: 760px;
 
   @media (max-width: 767px) {
     font-size: 16px;
+    margin-top: 24px;
   }
 `;
 

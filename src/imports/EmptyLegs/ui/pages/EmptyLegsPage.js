@@ -382,8 +382,12 @@ const InformLead = styled.p`
   text-align: center;
   color: ${({ theme }) => theme.text};
   line-height: 1.85em;
-  margin: 0 auto 44px;
+  margin: 30px auto 44px;
   max-width: 640px;
+
+  @media (max-width: 767px) {
+    margin-top: 24px;
+  }
 `;
 
 const SpecialistCard = styled.div`
